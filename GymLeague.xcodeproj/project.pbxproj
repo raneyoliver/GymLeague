@@ -16,6 +16,7 @@
 		A7D096572B3F502400378E5F /* GymLeagueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096562B3F502400378E5F /* GymLeagueTests.swift */; };
 		A7D096612B3F502400378E5F /* GymLeagueUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096602B3F502400378E5F /* GymLeagueUITests.swift */; };
 		A7D096632B3F502400378E5F /* GymLeagueUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096622B3F502400378E5F /* GymLeagueUITestsLaunchTests.swift */; };
+		A7D096712B3F7E5000378E5F /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = A7D096702B3F7E5000378E5F /* GooglePlaces */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7D096712B3F7E5000378E5F /* GooglePlaces in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +145,9 @@
 			dependencies = (
 			);
 			name = GymLeague;
+			packageProductDependencies = (
+				A7D096702B3F7E5000378E5F /* GooglePlaces */,
+			);
 			productName = GymLeague;
 			productReference = A7D0963C2B3F502300378E5F /* GymLeague.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +220,9 @@
 				Base,
 			);
 			mainGroup = A7D096332B3F502300378E5F;
+			packageReferences = (
+				A7D0966F2B3F7E5000378E5F /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
+			);
 			productRefGroup = A7D0963D2B3F502300378E5F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -445,6 +453,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,6 +482,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -602,6 +612,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A7D0966F2B3F7E5000378E5F /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A7D096702B3F7E5000378E5F /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A7D0966F2B3F7E5000378E5F /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A7D096342B3F502300378E5F /* Project object */;
 }
