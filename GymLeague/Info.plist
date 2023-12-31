@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>GIDClientID</key>
+    <string>999134737658-agog4ec7sdttnbmu9cga0k3oonj8ke56.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.999134737658-agog4ec7sdttnbmu9cga0k3oonj8ke56</string>
+        </array>
+      </dict>
+    </array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>location req for gym</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

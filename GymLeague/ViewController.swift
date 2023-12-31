@@ -56,7 +56,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
             } else {
                 // The place is not a gym
                 strongSelf.nameLabel.text = "Not a gym"
-                strongSelf.addressLabel.text = ""
+                strongSelf.addressLabel.text = place.formattedAddress
                 // Handle accordingly
             }
             
