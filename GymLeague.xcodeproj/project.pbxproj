@@ -16,6 +16,7 @@
 		A71750E22B42290400BC5128 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A71750E12B42290400BC5128 /* GoogleService-Info.plist */; };
 		A71750E52B4229B300BC5128 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A71750E42B4229B300BC5128 /* FirebaseAnalytics */; };
 		A71750E72B4229B300BC5128 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A71750E62B4229B300BC5128 /* FirebaseFirestore */; };
+		A71750E92B42309B00BC5128 /* LeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */; };
 		A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0963F2B3F502300378E5F /* AppDelegate.swift */; };
 		A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096412B3F502300378E5F /* SceneDelegate.swift */; };
 		A7D096442B3F502300378E5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096432B3F502300378E5F /* ViewController.swift */; };
@@ -55,6 +56,7 @@
 		A71750DD2B41EF3700BC5128 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A71750DF2B41F6F000BC5128 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		A71750E12B42290400BC5128 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableViewController.swift; sourceTree = "<group>"; };
 		A7D0963C2B3F502300378E5F /* GymLeague.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymLeague.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D0963F2B3F502300378E5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D096412B3F502300378E5F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -132,10 +134,11 @@
 				A7D0963F2B3F502300378E5F /* AppDelegate.swift */,
 				A7D096762B3F81F200378E5F /* Config.swift */,
 				A7D096412B3F502300378E5F /* SceneDelegate.swift */,
-				A7D096432B3F502300378E5F /* ViewController.swift */,
 				A71750DB2B41009600BC5128 /* LaunchScreenViewController.swift */,
 				A7D096452B3F502300378E5F /* Main.storyboard */,
 				A71750DD2B41EF3700BC5128 /* ProfileViewController.swift */,
+				A7D096432B3F502300378E5F /* ViewController.swift */,
+				A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */,
 				A71750DF2B41F6F000BC5128 /* UserData.swift */,
 				A7D096482B3F502400378E5F /* Assets.xcassets */,
 				A7D0964A2B3F502400378E5F /* LaunchScreen.storyboard */,
@@ -317,6 +320,7 @@
 				A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */,
 				A71750DC2B41009600BC5128 /* LaunchScreenViewController.swift in Sources */,
 				A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */,
+				A71750E92B42309B00BC5128 /* LeaderboardsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

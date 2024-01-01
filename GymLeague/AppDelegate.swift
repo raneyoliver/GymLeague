@@ -8,6 +8,7 @@
 import UIKit
 import GooglePlaces
 import GoogleSignIn
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         GMSPlacesClient.provideAPIKey(Config.getGooglePlacesAPIKey())
+        FirebaseApp.configure()
         
         return true
     }
