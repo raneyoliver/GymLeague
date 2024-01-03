@@ -7,6 +7,8 @@
 
 import GooglePlaces
 import UIKit
+import FirebaseFirestore
+import GoogleSignIn
 
 class ViewController : UIViewController, CLLocationManagerDelegate {
     
@@ -14,8 +16,11 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var addressLabel: UILabel!
     
+    @IBOutlet weak var typesLabel: UILabel!
     private var placesClient: GMSPlacesClient!
     var locationManager: CLLocationManager!
+    var db: Firestore!
+
     
     
     override func viewDidLoad() {
@@ -25,7 +30,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        
+        db = Firestore.firestore()
+
     }
     
     // Add a UIButton in Interface Builder, and connect the action to this function.
@@ -52,16 +58,22 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
                 // The place is a gym
                 strongSelf.nameLabel.text = place.name
                 strongSelf.addressLabel.text = place.formattedAddress
+                strongSelf.typesLabel.text = place.types?.joined(separator: "\n")
                 // Handle the logic for the user being at a gym
             } else {
                 // The place is not a gym
                 strongSelf.nameLabel.text = "Not a gym"
                 strongSelf.addressLabel.text = place.formattedAddress
+                strongSelf.typesLabel.text = place.types?.joined(separator: "\n")
                 // Handle accordingly
             }
             
         }
+
     }
+    
+    
+
 }
 
 

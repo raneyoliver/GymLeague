@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 UserData.shared.givenName = user.profile?.givenName
                 UserData.shared.familyName = user.profile?.familyName
                 UserData.shared.profilePicUrl = user.profile?.imageURL(withDimension: 320)
+                UserData.shared.userID = user.userID
 
                 // Show the app's signed-in state after UserData is populated
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
