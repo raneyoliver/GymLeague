@@ -19,6 +19,13 @@
 		A71750E92B42309B00BC5128 /* LeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */; };
 		A71750EC2B4257CA00BC5128 /* LeaderboardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750EA2B4257CA00BC5128 /* LeaderboardTableViewCell.swift */; };
 		A71750ED2B4257CA00BC5128 /* LeaderboardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71750EB2B4257CA00BC5128 /* LeaderboardTableViewCell.xib */; };
+		A71750EF2B45E6BE00BC5128 /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750EE2B45E6BD00BC5128 /* LeaderboardService.swift */; };
+		A71750F12B45EE3600BC5128 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750F02B45EE3600BC5128 /* AuthenticationService.swift */; };
+		A71750F32B4605C400BC5128 /* BackgroundImageConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750F22B4605C400BC5128 /* BackgroundImageConfig.swift */; };
+		A71750F62B462ACF00BC5128 /* BadgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */; };
+		A71750F72B462ACF00BC5128 /* BadgeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71750F52B462ACF00BC5128 /* BadgeCollectionViewCell.xib */; };
+		A71750F92B47404C00BC5128 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750F82B47404C00BC5128 /* Badge.swift */; };
+		A71750FB2B48870D00BC5128 /* LeaderboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750FA2B48870D00BC5128 /* LeaderboardSection.swift */; };
 		A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0963F2B3F502300378E5F /* AppDelegate.swift */; };
 		A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096412B3F502300378E5F /* SceneDelegate.swift */; };
 		A7D096442B3F502300378E5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096432B3F502300378E5F /* ViewController.swift */; };
@@ -61,6 +68,13 @@
 		A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableViewController.swift; sourceTree = "<group>"; };
 		A71750EA2B4257CA00BC5128 /* LeaderboardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardTableViewCell.swift; sourceTree = "<group>"; };
 		A71750EB2B4257CA00BC5128 /* LeaderboardTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LeaderboardTableViewCell.xib; sourceTree = "<group>"; };
+		A71750EE2B45E6BD00BC5128 /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
+		A71750F02B45EE3600BC5128 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		A71750F22B4605C400BC5128 /* BackgroundImageConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageConfig.swift; sourceTree = "<group>"; };
+		A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewCell.swift; sourceTree = "<group>"; };
+		A71750F52B462ACF00BC5128 /* BadgeCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BadgeCollectionViewCell.xib; sourceTree = "<group>"; };
+		A71750F82B47404C00BC5128 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
+		A71750FA2B48870D00BC5128 /* LeaderboardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardSection.swift; sourceTree = "<group>"; };
 		A7D0963C2B3F502300378E5F /* GymLeague.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymLeague.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D0963F2B3F502300378E5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D096412B3F502300378E5F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,8 +156,15 @@
 				A71750DB2B41009600BC5128 /* LaunchScreenViewController.swift */,
 				A7D096452B3F502300378E5F /* Main.storyboard */,
 				A71750DD2B41EF3700BC5128 /* ProfileViewController.swift */,
+				A71750F82B47404C00BC5128 /* Badge.swift */,
+				A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */,
+				A71750F52B462ACF00BC5128 /* BadgeCollectionViewCell.xib */,
 				A7D096432B3F502300378E5F /* ViewController.swift */,
+				A71750F02B45EE3600BC5128 /* AuthenticationService.swift */,
+				A71750EE2B45E6BD00BC5128 /* LeaderboardService.swift */,
 				A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */,
+				A71750FA2B48870D00BC5128 /* LeaderboardSection.swift */,
+				A71750F22B4605C400BC5128 /* BackgroundImageConfig.swift */,
 				A71750EA2B4257CA00BC5128 /* LeaderboardTableViewCell.swift */,
 				A71750EB2B4257CA00BC5128 /* LeaderboardTableViewCell.xib */,
 				A7D096482B3F502400378E5F /* Assets.xcassets */,
@@ -293,6 +314,7 @@
 				A7D096752B3F816D00378E5F /* .gitignore in Resources */,
 				A7D0964C2B3F502400378E5F /* LaunchScreen.storyboard in Resources */,
 				A7D096492B3F502400378E5F /* Assets.xcassets in Resources */,
+				A71750F72B462ACF00BC5128 /* BadgeCollectionViewCell.xib in Resources */,
 				A71750ED2B4257CA00BC5128 /* LeaderboardTableViewCell.xib in Resources */,
 				A7D096472B3F502300378E5F /* Main.storyboard in Resources */,
 				A71750E22B42290400BC5128 /* GoogleService-Info.plist in Resources */,
@@ -321,10 +343,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				A71750EC2B4257CA00BC5128 /* LeaderboardTableViewCell.swift in Sources */,
+				A71750F62B462ACF00BC5128 /* BadgeCollectionViewCell.swift in Sources */,
 				A71750DE2B41EF3700BC5128 /* ProfileViewController.swift in Sources */,
+				A71750FB2B48870D00BC5128 /* LeaderboardSection.swift in Sources */,
 				A7D096442B3F502300378E5F /* ViewController.swift in Sources */,
 				A71750E02B41F6F000BC5128 /* UserData.swift in Sources */,
+				A71750F12B45EE3600BC5128 /* AuthenticationService.swift in Sources */,
 				A7D096772B3F81F200378E5F /* Config.swift in Sources */,
+				A71750F92B47404C00BC5128 /* Badge.swift in Sources */,
+				A71750EF2B45E6BE00BC5128 /* LeaderboardService.swift in Sources */,
+				A71750F32B4605C400BC5128 /* BackgroundImageConfig.swift in Sources */,
 				A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */,
 				A71750DC2B41009600BC5128 /* LaunchScreenViewController.swift in Sources */,
 				A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */,

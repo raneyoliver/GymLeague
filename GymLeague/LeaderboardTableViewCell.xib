@@ -21,7 +21,7 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="352-oA-yFe">
                         <rect key="frame" x="6" y="7" width="309" height="168"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ah-6H-lkQ">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ah-6H-lkQ">
                                 <rect key="frame" x="0.0" y="0.0" width="309" height="168"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="309" id="kGJ-Q2-iiC"/>
@@ -74,7 +74,6 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="0X2-rN-rnW" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" constant="7" id="7bH-7q-mdc"/>
-                            <constraint firstAttribute="trailing" secondItem="7ah-6H-lkQ" secondAttribute="trailing" id="9IT-mu-M2h"/>
                             <constraint firstAttribute="bottom" secondItem="7ah-6H-lkQ" secondAttribute="bottom" id="Bav-jo-UTs"/>
                             <constraint firstItem="Zly-o4-yHu" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" constant="7" id="C1l-jp-UH7"/>
                             <constraint firstItem="Zly-o4-yHu" firstAttribute="leading" secondItem="0X2-rN-rnW" secondAttribute="trailing" constant="8" symbolic="YES" id="HTK-Ek-7wJ"/>

@@ -31,6 +31,13 @@ class LeaderboardTableViewCell: UITableViewCell {
     
     
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // Reset any properties that might have been altered during configuration
+        // such as backgroundImage's offset, transform, or other properties
+        backgroundImage.transform = CGAffineTransform.identity  // Reset transform
+        // Reset any other custom properties or UI elements
+    }
 
     
     // Add a function to populate cell data
@@ -39,8 +46,9 @@ class LeaderboardTableViewCell: UITableViewCell {
         nameLabel.text = entry.name
         backgroundImage.image = UIImage(named: entry.bgConfig.imageName)
         backgroundImage.tintColor = entry.bgConfig.tintColor
-        leadingConstraint.constant += entry.bgConfig.horizontalOffset
-        trailingConstraint.constant -= entry.bgConfig.horizontalOffset
+        
+        leadingConstraint.constant = entry.bgConfig.horizontalOffset
+        //trailingConstraint.constant = -entry.bgConfig.horizontalOffset
         
         //        divisionLabel.text = entry.division
         pointsLabel.text = "\(entry.points)"
@@ -50,30 +58,25 @@ class LeaderboardTableViewCell: UITableViewCell {
         pointsLabel.textColor = entry.bgConfig.textColor
         arrowButton.tintColor = entry.bgConfig.textColor
         
-        //        if entry.userID == UserData.shared.userID {
-        //            self.backgroundColor = UIColor.blue
-        //        }
+        if entry.userID == UserData.shared.userID {
+            // Additional styling if this is the user's cell
+            containerView.layer.borderWidth = 2.0  // Optional: if you want a border
+            containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.5)  // Optional: border color
+        } else {
+            // Reset styles for other cells
+            containerView.layer.borderWidth = 0  // No border
+            containerView.layer.borderColor = UIColor.clear.cgColor  // Clear color or whatever the default is
+        }
         
         rotateArrow(isExpanded: isExpanded)
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        
-//        let offsetAmount: CGFloat = 100  // Change this value to whatever you need
-//        leadingConstraint.constant -= offsetAmount  // Move image to the left
-//        widthConstraint.constant += offsetAmount   // Incr
-        //backgroundImage.transform = CGAffineTransform(translationX: offsetAmount, y: 0)  // Adjust x as needed
-        
-        // Translucency
-        //containerView.backgroundColor = containerView.backgroundColor?.withAlphaComponent(0.5)
-        
-        initialColor = containerView.backgroundColor
         
         arrowButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
 
-        
+        initialColor = containerView.backgroundColor
         // Shadow - may need to adjust containerView's layer properties
         containerView.layer.shadowColor = UIColor.black.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -92,9 +95,16 @@ class LeaderboardTableViewCell: UITableViewCell {
         backgroundImage.clipsToBounds = true
         backgroundImage.contentMode = .scaleAspectFill
         
-        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        self.addGestureRecognizer(longPressGesture)
     }
     
+    @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            // Communicate back to the view controller
+            NotificationCenter.default.post(name: NSNotification.Name("ToggleExpansionNotification"), object: nil)
+        }
+    }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         if highlighted {

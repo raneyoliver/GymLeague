@@ -9,35 +9,14 @@ import UIKit
 import FirebaseFirestore
 import GoogleSignIn
 
-struct LeaderboardEntry {
-    var userID: String
-    var rank: Int
-    var name: String
-    var points: Int
-    var division: String
-    var bgConfig: BackgroundImageConfig
-}
-
-struct BackgroundImageConfig {
-    let imageName: String
-    let horizontalOffset: CGFloat
-    let textColor: UIColor
-    let tintColor: UIColor
-    // Add any other properties you need to configure for each background image
-
-    // Initialize the structure with the settings for a particular image
-    init(imageName: String, horizontalOffset: CGFloat, textColor: UIColor, tintColor: UIColor) {
-        self.imageName = imageName
-        self.horizontalOffset = horizontalOffset
-        self.textColor = textColor
-        self.tintColor = tintColor
-    }
-}
-
 class LeaderboardsTableViewController: UITableViewController {
     
     var db: Firestore!
     var leaderboardEntries = [LeaderboardEntry]()
+
+    // Create a structure to hold leaderboard entries in each section
+    var sectionedEntries = [[LeaderboardEntry]]()
+
     var expandedCells = [Bool]()
     
     let expandedHeight:CGFloat = 168
@@ -48,7 +27,7 @@ class LeaderboardsTableViewController: UITableViewController {
     
     var lastDocumentSnapshot: DocumentSnapshot?
     
-    var isFetchingMore = false
+    var isFetchingMore = true
     
     var isMoreDataAvailable = true
     
@@ -56,18 +35,18 @@ class LeaderboardsTableViewController: UITableViewController {
     
     let pageSize:Int = 10
     
-    var backgroundImageConfigs: [String: BackgroundImageConfig] = [
-        "new": BackgroundImageConfig(imageName: "bg_new", horizontalOffset: -100, textColor: .black, tintColor: .systemBlue),
-        "beta": BackgroundImageConfig(imageName: "bg_beta", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
-        // Add more configurations as needed
-    ]
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Only fetch if the entries array is empty
-        if leaderboardEntries.isEmpty {
-            fetchLeaderboards()
-        }
+//        if !leaderboardEntries.isEmpty {
+////            sectionedEntries = Array(repeating: [], count: sections.count)
+////            self.leaderboardEntries.removeAll()
+//            refreshData()
+//        }
+        
+//        fetchLeaderboards()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,12 +64,6 @@ class LeaderboardsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
         // Initialize Firestore
         db = Firestore.firestore()
         
@@ -105,9 +78,42 @@ class LeaderboardsTableViewController: UITableViewController {
 
         // Set it as the table footer
         tableView.tableFooterView = spinner
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toggleAllCells), name: NSNotification.Name("ToggleExpansionNotification"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .badgeUpdated, object: nil)
+        
+        fetchLeaderboards()
+
+
+    }
+    
+    @objc func refreshData() {
+        // Code to refresh leaderboard data
+        isFetchingMore = true
+        sectionedEntries = Array(repeating: [], count: sections.count)
+        self.leaderboardEntries.removeAll()
+        fetchLeaderboards()  // Assuming this method fetches and reloads your data
+    }
+    
+    @objc func toggleAllCells() {
+        // Determine the new expanded state (e.g., if any cell is collapsed, expand all, and vice versa)
+        let shouldExpand = !expandedCells.contains(true)
+        expandedCells = Array(repeating: shouldExpand, count: expandedCells.count)
+        
+        // Trigger haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+        generator.impactOccurred()
+        
+        // Reload the table view
+        tableView.reloadData()
     }
     
     func fetchLeaderboards() {
+        print("Starting to fetch leaderboards") // Log start
+        sectionedEntries = Array(repeating: [], count: sections.count)
+        
         query.getDocuments { [weak self] (querySnapshot, err) in
             guard let self = self else { return }
             
@@ -115,44 +121,63 @@ class LeaderboardsTableViewController: UITableViewController {
                 print("Error getting documents: \(err)")
                 return
             }
+            
             guard let documents = querySnapshot?.documents else {
                 print("No documents returned, assuming end of data")
                 self.isMoreDataAvailable = false
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 return
             }
             
-            // Check if there are fewer documents than the limit, indicating end of data
+            // Process for end of data
             if documents.count < self.pageSize {
                 self.isMoreDataAvailable = false
-            } else {
-                self.lastDocumentSnapshot = documents.last
-            }
-            //self.leaderboardEntries.removeAll()
-            for document in documents {
-                let leaderboardRank = leaderboardEntries.count + 1
-                let entry = self.convertToLeaderboardEntry(document: document, leaderboardRank: leaderboardRank)
-                self.leaderboardEntries.append(entry)
             }
             
-            // Set the lastDocumentSnapshot for pagination
-            self.lastDocumentSnapshot = documents.last
+            // Update leaderboardEntries and sectionedEntries
+            self.processNewDocuments(documents)
             
-            expandedCells = Array(repeating: false, count: leaderboardEntries.count)
             
+            print("Finished processing documents. Now reloading data.") // Log finish
+            // Update UI on the main thread
             DispatchQueue.main.async {
-                self.tableView.reloadData()
                 self.isFetchingMore = false // Reset the fetching flag
+                self.tableView.reloadData()
+                
                 // Once data fetching is complete
                 self.tableView.tableFooterView?.isHidden = true  // Hide the spinner
+            }
+        }
+    }
 
+    func processNewDocuments(_ documents: [QueryDocumentSnapshot]) {
+        // Ensure this is called within the fetchLeaderboards completion
+        let newEntriesStartIndex = leaderboardEntries.count
+
+        for document in documents {
+            let leaderboardRank = newEntriesStartIndex + 1
+            let entry = self.convertToLeaderboardEntry(document: document, leaderboardRank: leaderboardRank)
+            self.leaderboardEntries.append(entry)
+            if let sectionIndex = sections.firstIndex(where: { entry.points >= $0.minPoints }) {
+                // Initialize the section array if needed
+                if sectionIndex >= sectionedEntries.count {
+                    sectionedEntries.append([])
+                }
+                sectionedEntries[sectionIndex].append(entry)
             }
         }
         
+        // Set the lastDocumentSnapshot for pagination
+        self.lastDocumentSnapshot = documents.last
+        expandedCells = Array(repeating: false, count: leaderboardEntries.count)
     }
+
     
     func convertToLeaderboardEntry(document: DocumentSnapshot, leaderboardRank: Int) -> LeaderboardEntry {
         let data = document.data()
-        let config = backgroundImageConfigs[data?["chosenBadge"] as? String ?? "new"]!
+        let config = backgroundImageConfigs[data?["chosenBadge"] as? String ?? "default"]!
         let entry = LeaderboardEntry(
             userID: data?["userID"] as? String ?? "can't fetch userID",
             rank: leaderboardRank,
@@ -225,19 +250,21 @@ class LeaderboardsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.leaderboardEntries.count
+        return isFetchingMore ? 0 : sectionedEntries[section].count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].name
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! LeaderboardTableViewCell
         
-        let entry = leaderboardEntries[indexPath.row]
+        let entry = sectionedEntries[indexPath.section][indexPath.row]
         cell.configure(with: entry, isExpanded: expandedCells[indexPath.row])
         
         return cell
@@ -265,50 +292,13 @@ class LeaderboardsTableViewController: UITableViewController {
             return normalHeight // Your normal height
         }
     }
+   
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+   }
+
+extension Notification.Name {
+    static let badgeUpdated = Notification.Name("BadgeUpdatedNotification")
 }

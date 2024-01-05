@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import FirebaseFirestore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -16,33 +17,76 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
 
-        GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
+        AuthenticationService.shared.restorePreviousSignIn { [weak self] user, error in
             guard let self = self else { return }
             let window = UIWindow(windowScene: windowScene)
 
             if let user = user {
-                // Populate UserData
-                UserData.shared.emailAddress = user.profile?.email
-                UserData.shared.fullName = user.profile?.name
-                UserData.shared.givenName = user.profile?.givenName
-                UserData.shared.familyName = user.profile?.familyName
-                UserData.shared.profilePicUrl = user.profile?.imageURL(withDimension: 320)
-                UserData.shared.userID = user.userID
+                // User is signed in, populate UserData
+                UserData.shared.populate(with: user)
 
-                // Show the app's signed-in state after UserData is populated
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                window.rootViewController = storyboard.instantiateViewController(withIdentifier: "TabBar")
+                // Fetch the leaderboard entry for the user
+                LeaderboardService.shared.fetchLeaderboardEntry(forUserID: user.userID!) { data, error in
+                    if let data = data {
+                        // Update UserData with leaderboard info
+                        UserData.shared.updateLeaderboardInfo(with: data.data())
+
+                        // Now that UserData is fully populated, show the main interface
+                        DispatchQueue.main.async {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            window.rootViewController = storyboard.instantiateViewController(withIdentifier: "TabBar")
+                            self.window = window
+                            window.makeKeyAndVisible()
+                            print("sign-in successfully restored")
+                        }
+                    }
+                }
             } else {
-                // Handle error or signed-out state
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                window.rootViewController = storyboard.instantiateViewController(withIdentifier: "Login")
+                // User is not signed in or there was an error, show login
+                DispatchQueue.main.async {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    window.rootViewController = storyboard.instantiateViewController(withIdentifier: "Login")
+                    self.window = window
+                    window.makeKeyAndVisible()
+                    print("error restoring sign-in")
+                }
             }
-
-            self.window = window
-            window.makeKeyAndVisible()
         }
     }
 
+
+    func fetchLeaderboardEntry() -> [String:Any] {
+        // Ensure userID is available
+        guard let userID = UserData.shared.userID else {
+            print("UserID not available")
+            return [:]
+        }
+
+        // Reference to Firestore database and specifically the leaderboards collection
+        let db = Firestore.firestore()
+        let leaderboardsCollection = db.collection("leaderboards")
+        
+        var documentData:[String:Any] = [:]
+        // Query the collection
+        leaderboardsCollection.whereField("userID", isEqualTo: userID).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                // Handle any errors (e.g., network issues, permissions, etc.)
+                print("Error getting documents: \(error)")
+            } else {
+                // Check if documents are returned
+                if let document = querySnapshot?.documents.first {
+                    // Assuming 'chosenBadge' is a field in the documents of the "leaderboards" collection
+                    documentData = document.data()
+                    // Now 'chosenBadge' contains the value, and you can use it as needed
+                    // Perform any UI updates or further logic with 'chosenBadge'
+                } else {
+                    print("No documents found matching userID")
+                }
+            }
+        }
+        
+        return documentData
+    }
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
