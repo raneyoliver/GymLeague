@@ -29,5 +29,10 @@ var backgroundImageConfigs: [String: BackgroundImageConfig] = [
     "new": BackgroundImageConfig(imageName: "bg_new", horizontalOffset: -100, textColor: .black, tintColor: .systemBlue),
     "beta": BackgroundImageConfig(imageName: "bg_beta", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
     "hotstreak": BackgroundImageConfig(imageName: "bg_hotstreak", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
-    
+    "bronze": BackgroundImageConfig(imageName: "bg_bronze", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
+    "silver": BackgroundImageConfig(imageName: "bg_silver", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
+    "gold": BackgroundImageConfig(imageName: "bg_gold", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
+    "platinum": BackgroundImageConfig(imageName: "bg_platinum", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
+    "diamond": BackgroundImageConfig(imageName: "bg_diamond", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
+    "elite": BackgroundImageConfig(imageName: "bg_elite", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
 ]

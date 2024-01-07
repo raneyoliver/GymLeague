@@ -66,7 +66,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="Dashboard" title="Dashboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="GymLeague" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="CustomBackgroundView" customModule="GymLeague" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -134,7 +134,7 @@
         <scene sceneID="b6y-gP-Kjy">
             <objects>
                 <tableViewController id="9e8-k7-R55" customClass="LeaderboardsTableViewController" customModule="GymLeague" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Mje-Qk-yLM">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" id="Mje-Qk-yLM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -163,7 +163,7 @@
         <scene sceneID="Mq0-wG-eE0">
             <objects>
                 <viewController id="qeg-GZ-6Vo" customClass="ProfileViewController" customModule="GymLeague" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="X2R-6B-EVE">
+                    <view key="view" contentMode="scaleToFill" id="X2R-6B-EVE" customClass="CustomBackgroundView" customModule="GymLeague" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -219,12 +219,12 @@
                                 </cells>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xp0-NA-gp2">
-                                <rect key="frame" x="301.66666666666669" y="674" width="75.333333333333314" height="35"/>
+                                <rect key="frame" x="243.66666666666663" y="674" width="133.33333333333337" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="Lok-yS-5bX"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Save Changes"/>
                                 <connections>
                                     <action selector="saveChangesButtonTapped:" destination="qeg-GZ-6Vo" eventType="touchUpInside" id="9X6-bl-avU"/>
                                 </connections>
@@ -244,13 +244,14 @@
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="bottom" secondItem="GXP-kG-hdw" secondAttribute="bottom" constant="60" id="RxS-qg-GzS"/>
                             <constraint firstItem="AJb-1R-A43" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="97" id="Z9Z-1k-dVE"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="trailing" secondItem="Xp0-NA-gp2" secondAttribute="trailing" constant="16" id="cKp-89-gB8"/>
-                            <constraint firstItem="Xp0-NA-gp2" firstAttribute="leading" secondItem="GXP-kG-hdw" secondAttribute="trailing" constant="60.329999999999998" id="oXb-P7-7eH"/>
+                            <constraint firstItem="Xp0-NA-gp2" firstAttribute="leading" secondItem="GXP-kG-hdw" secondAttribute="trailing" constant="2.3300018310546875" id="oXb-P7-7eH"/>
                             <constraint firstItem="GXP-kG-hdw" firstAttribute="centerX" secondItem="X2R-6B-EVE" secondAttribute="centerX" id="u46-lH-Zfw"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="person" catalog="system" id="7vs-C8-Ggb"/>
                     <connections>
                         <outlet property="collectionView" destination="A4L-oc-0Wn" id="sTI-xf-wYl"/>
+                        <outlet property="saveButton" destination="Xp0-NA-gp2" id="vaj-BU-uQ3"/>
                         <outlet property="tableView" destination="AJb-1R-A43" id="pBV-8s-hG9"/>
                     </connections>
                 </viewController>

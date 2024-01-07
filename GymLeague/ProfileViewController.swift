@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var saveButton: UIButton!
     var profileLeaderboardCell:LeaderboardTableViewCell!
     
     var availableBadges:[Badge] = Array()
@@ -29,7 +30,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         isExpanded = true
         
-        // Refresh the table view to collapse all cells
+        selectedBadge = MakeBadge(fromName: UserData.shared.chosenBadge!)
+        
         tableView.reloadData()
     }
     
@@ -47,6 +49,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         fetchBadges()
 
+        saveButton.isEnabled = false
+        selectedBadge = MakeBadge(fromName: UserData.shared.chosenBadge!)
+        
         // Rounded corners
         collectionView.layer.cornerRadius = 8
         collectionView.clipsToBounds = true
@@ -90,7 +95,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         profileLeaderboardCell = tableView.dequeueReusableCell(withIdentifier: "ProfileLeaderboardCell", for: indexPath) as? LeaderboardTableViewCell
 
         // Configure the cell
-        setupProfileLeaderboardCell(profileLeaderboardCell: profileLeaderboardCell, withBadge: UserData.shared.chosenBadge!)
+        setupProfileLeaderboardCell(profileLeaderboardCell: profileLeaderboardCell, withBadge: selectedBadge!.name)
 
         return profileLeaderboardCell
     }
@@ -121,7 +126,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return availableBadges.count
+        return allBadgeNames.count
     }
     
     func fetchBadges() {
@@ -155,15 +160,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath) as! BadgeCollectionViewCell
-        let badge = availableBadges[indexPath.row]
-        cell.configure(with: badge)
+        let badgeName = allBadgeNames[indexPath.row]
+        let badge = Badge(name: badgeName, badgeImageName: "badge_" + badgeName, bgImageName: "bg_" + badgeName)
+        let unlocked = availableBadges.contains { $0.name == badgeName }
+        cell.configure(with: badge, isUnlocked: unlocked)
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedBadge = availableBadges[indexPath.row]
-        setupProfileLeaderboardCell(profileLeaderboardCell: profileLeaderboardCell, withBadge: selectedBadge!.name)
-        //updatePreviewCell(with: selectedBadge!, at: indexPath)
+        let badgeName = allBadgeNames[indexPath.row]
+        let unlocked = availableBadges.contains { $0.name == badgeName }
+        if unlocked {
+            selectedBadge = Badge(name: badgeName, badgeImageName: "badge_" + badgeName, bgImageName: "bg_" + badgeName)
+            setupProfileLeaderboardCell(profileLeaderboardCell: profileLeaderboardCell, withBadge: selectedBadge!.name)
+            updateSaveButtonState()
+        }
+        
     }
 
 //    func updatePreviewCell(with badge: Badge, at indexPath: IndexPath) {
@@ -175,14 +187,27 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             print("Error: User ID or selected badge not available")
             return
         }
-        
+    
         LeaderboardService.shared.updateChosenBadge(forUserID: userID, chosenBadge: chosenBadge) { success in
             if success {
                 print("Chosen badge updated successfully")
+                self.updateSaveButtonState()
                 NotificationCenter.default.post(name: .badgeUpdated, object: nil)
             } else {
                 print("Failed to update chosen badge")
             }
+        }
+    }
+
+    func updateSaveButtonState() {
+        if UserData.shared.chosenBadge == selectedBadge?.name {
+            // If there is no change in badge, disable and grey out the save button
+            saveButton.isEnabled = false
+            //saveButton.backgroundColor = .gray // Or any color that indicates it's disabled
+        } else {
+            // If there is a change, enable and highlight the save button
+            saveButton.isEnabled = true
+            //saveButton.backgroundColor = .systemBlue // Or any color that indicates it's active
         }
     }
 

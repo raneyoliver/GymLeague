@@ -26,7 +26,6 @@ class LeaderboardTableViewCell: UITableViewCell {
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var widthConstraint: NSLayoutConstraint!
     var initialColor:UIColor!
     
     
@@ -61,7 +60,7 @@ class LeaderboardTableViewCell: UITableViewCell {
         if entry.userID == UserData.shared.userID {
             // Additional styling if this is the user's cell
             containerView.layer.borderWidth = 2.0  // Optional: if you want a border
-            containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.5)  // Optional: border color
+            containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)  // Optional: border color
         } else {
             // Reset styles for other cells
             containerView.layer.borderWidth = 0  // No border
@@ -83,6 +82,8 @@ class LeaderboardTableViewCell: UITableViewCell {
         containerView.layer.shadowRadius = 4
         containerView.layer.shadowOpacity = 0.25
         containerView.layer.masksToBounds = false
+        //containerView.backgroundColor = CustomBackgroundView.color
+        contentView.backgroundColor = CustomBackgroundView.color
         
         self.selectionStyle = .none
         

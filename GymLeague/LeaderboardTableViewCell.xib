@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" restorationIdentifier="LeaderboardCell" selectionStyle="default" indentationWidth="10" rowHeight="182" id="KGk-i7-Jjw" customClass="LeaderboardTableViewCell" customModule="GymLeague" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="LeaderboardCell" selectionStyle="default" indentationWidth="10" rowHeight="180" id="KGk-i7-Jjw" customClass="LeaderboardTableViewCell" customModule="GymLeague" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="182"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -23,9 +23,6 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ah-6H-lkQ">
                                 <rect key="frame" x="0.0" y="0.0" width="309" height="168"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="309" id="kGJ-Q2-iiC"/>
-                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0X2-rN-rnW">
                                 <rect key="frame" x="0.0" y="7" width="42" height="21"/>
@@ -72,6 +69,7 @@
                                 <size key="shadowOffset" width="1" height="1"/>
                             </label>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0X2-rN-rnW" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" constant="7" id="7bH-7q-mdc"/>
                             <constraint firstAttribute="bottom" secondItem="7ah-6H-lkQ" secondAttribute="bottom" id="Bav-jo-UTs"/>
@@ -106,7 +104,6 @@
                 <outlet property="pointsLabel" destination="cjI-nG-tcP" id="8Vx-Wt-C3Y"/>
                 <outlet property="rankLabel" destination="0X2-rN-rnW" id="H7y-wz-HeZ"/>
                 <outlet property="trailingConstraint" destination="v84-tX-wnR" id="o88-i4-xV2"/>
-                <outlet property="widthConstraint" destination="kGJ-Q2-iiC" id="4Rl-VX-Ztg"/>
             </connections>
             <point key="canvasLocation" x="129.7709923664122" y="35.91549295774648"/>
         </tableViewCell>

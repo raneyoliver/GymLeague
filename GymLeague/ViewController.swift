@@ -21,7 +21,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
     var db: Firestore!
 
-    
+    var currentAddress:String!
+    var isGym:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +53,9 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
                 strongSelf.addressLabel.text = ""
                 return
             }
+            
+            strongSelf.currentAddress = place.name
+            strongSelf.isGym = place.types!.contains("gym") || place.types!.contains("point_of_interest") || place.types!.contains("establishment")
             
             // Check if the types include "gym"
             if place.types?.contains("gym") ?? false {

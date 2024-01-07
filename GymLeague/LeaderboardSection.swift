@@ -13,10 +13,10 @@ struct LeaderboardSection {
 }
 
 let sections = [
-    LeaderboardSection(name: "Elite", minPoints: 1000),
-    LeaderboardSection(name: "Diamond", minPoints: 500),
-    LeaderboardSection(name: "Platinum", minPoints: 250),
-    LeaderboardSection(name: "Gold", minPoints: 125),
-    LeaderboardSection(name: "Silver", minPoints: 50),
-    LeaderboardSection(name: "Bronze", minPoints: 0)  // Assumes everyone has at least 0 points
+    LeaderboardSection(name: "elite", minPoints: 1000),
+    LeaderboardSection(name: "diamond", minPoints: 500),
+    LeaderboardSection(name: "platinum", minPoints: 250),
+    LeaderboardSection(name: "gold", minPoints: 125),
+    LeaderboardSection(name: "silver", minPoints: 50),
+    LeaderboardSection(name: "bronze", minPoints: 0)  // Assumes everyone has at least 0 points
 ]

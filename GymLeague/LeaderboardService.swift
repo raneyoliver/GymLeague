@@ -62,6 +62,7 @@ class LeaderboardService {
                 
                 // Add the new document
                 let leaderboardRef = self.db.collection("leaderboards")
+            
                 leaderboardRef.addDocument(data: leaderboardData) { err in
                     if let err = err {
                         print("Error adding document: \(err)")
@@ -70,6 +71,8 @@ class LeaderboardService {
                         completion(true)
                     }
                 }
+        
+                
             } else {
                 // Existing document found with the same idToken, don't insert new document
                 print("A leaderboard entry already exists for this user.")
@@ -83,15 +86,6 @@ class LeaderboardService {
         UserData.shared.badges = ["new"]
         UserData.shared.chosenBadge = "new"
         UserData.shared.points = 0
-
-        // Add a new leaderboard entry for the user
-//        LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, name: UserData.shared.givenName!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!) { success in
-//            if success {
-//                print("New leaderboard entry added for the user.")
-//            } else {
-//                print("Failed to add a new leaderboard entry.")
-//            }
-//        }
     }
 
     func updateUserData(with data: [String: Any]) {

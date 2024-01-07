@@ -18,3 +18,19 @@ struct Badge {
         self.bgImageName = bgImageName
     }
 }
+
+func MakeBadge(fromName name:String) -> Badge {
+    return Badge(name: name, badgeImageName: "badge_" + name, bgImageName: "bg_" + name)
+}
+
+let allBadgeNames = [
+    "new",
+    "beta",
+    "hotstreak",
+    "bronze",
+    "silver",
+    "gold",
+    "platinum",
+    "diamond",
+    "elite",
+]

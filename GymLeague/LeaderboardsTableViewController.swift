@@ -17,7 +17,7 @@ class LeaderboardsTableViewController: UITableViewController {
     // Create a structure to hold leaderboard entries in each section
     var sectionedEntries = [[LeaderboardEntry]]()
 
-    var expandedCells = [Bool]()
+    var expandedCells = [[Bool]]()
     
     let expandedHeight:CGFloat = 168
     let normalHeight:CGFloat = 50
@@ -41,11 +41,13 @@ class LeaderboardsTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         // Only fetch if the entries array is empty
 //        if !leaderboardEntries.isEmpty {
+//        let allEmpty = sectionedEntries.allSatisfy { $0.isEmpty }
+//        if !allEmpty {
 ////            sectionedEntries = Array(repeating: [], count: sections.count)
 ////            self.leaderboardEntries.removeAll()
 //            refreshData()
 //        }
-        
+        refreshData()
 //        fetchLeaderboards()
     }
     
@@ -53,10 +55,12 @@ class LeaderboardsTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
         
         // Reset all expanded states to false
-        for i in 0..<expandedCells.count {
-            expandedCells[i] = false
+        // Update expandedCells for each section
+        for (sectionIndex, section) in expandedCells.enumerated() {
+            expandedCells[sectionIndex] = Array(repeating: false, count: section.count)
         }
-        
+        sectionedEntries = Array(repeating: [], count: sections.count)
+
         // Refresh the table view to collapse all cells
         tableView.reloadData()
     }
@@ -81,25 +85,38 @@ class LeaderboardsTableViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(toggleAllCells), name: NSNotification.Name("ToggleExpansionNotification"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .badgeUpdated, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .badgeUpdated, object: nil)
         
-        fetchLeaderboards()
+        sectionedEntries = Array(repeating: [], count: sections.count)
+        
+        //initializeExpandedCells()
+        
+        //fetchLeaderboards()
 
-
+        tableView.backgroundColor = CustomBackgroundView.color
     }
+    
+    func initializeExpandedCells() {
+        expandedCells = sectionedEntries.map { section in
+            return Array(repeating: false, count: section.count)
+        }
+    }
+
     
     @objc func refreshData() {
         // Code to refresh leaderboard data
-        isFetchingMore = true
-        sectionedEntries = Array(repeating: [], count: sections.count)
         self.leaderboardEntries.removeAll()
         fetchLeaderboards()  // Assuming this method fetches and reloads your data
     }
     
     @objc func toggleAllCells() {
-        // Determine the new expanded state (e.g., if any cell is collapsed, expand all, and vice versa)
-        let shouldExpand = !expandedCells.contains(true)
-        expandedCells = Array(repeating: shouldExpand, count: expandedCells.count)
+        // Determine the new expanded state
+        let shouldExpand = expandedCells.contains { $0.contains(true) } == false
+        
+        // Update expandedCells for each section
+        for (sectionIndex, section) in expandedCells.enumerated() {
+            expandedCells[sectionIndex] = Array(repeating: shouldExpand, count: section.count)
+        }
         
         // Trigger haptic feedback
         let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -109,11 +126,12 @@ class LeaderboardsTableViewController: UITableViewController {
         // Reload the table view
         tableView.reloadData()
     }
+
     
     func fetchLeaderboards() {
         print("Starting to fetch leaderboards") // Log start
-        sectionedEntries = Array(repeating: [], count: sections.count)
-        
+        isFetchingMore = true
+                
         query.getDocuments { [weak self] (querySnapshot, err) in
             guard let self = self else { return }
             
@@ -155,9 +173,9 @@ class LeaderboardsTableViewController: UITableViewController {
     func processNewDocuments(_ documents: [QueryDocumentSnapshot]) {
         // Ensure this is called within the fetchLeaderboards completion
         let newEntriesStartIndex = leaderboardEntries.count
-
+        var leaderboardRank = newEntriesStartIndex
         for document in documents {
-            let leaderboardRank = newEntriesStartIndex + 1
+            leaderboardRank += 1
             let entry = self.convertToLeaderboardEntry(document: document, leaderboardRank: leaderboardRank)
             self.leaderboardEntries.append(entry)
             if let sectionIndex = sections.firstIndex(where: { entry.points >= $0.minPoints }) {
@@ -171,7 +189,7 @@ class LeaderboardsTableViewController: UITableViewController {
         
         // Set the lastDocumentSnapshot for pagination
         self.lastDocumentSnapshot = documents.last
-        expandedCells = Array(repeating: false, count: leaderboardEntries.count)
+        initializeExpandedCells()
     }
 
     
@@ -257,26 +275,45 @@ class LeaderboardsTableViewController: UITableViewController {
         return isFetchingMore ? 0 : sectionedEntries[section].count
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].name
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return sections[section].name
+//    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = CustomHeaderView()
+        let bgConfig = backgroundImageConfigs[sections[section].name]
+        header.titleLabel.text = sections[section].name.prefix(1).uppercased() + sections[section].name.dropFirst()  // Set this to your section title
+        header.detailLabel.text = "\(sections[section].minPoints)+"  // Set this to your detail text
+        header.titleLabel.textColor = bgConfig!.textColor
+        header.detailLabel.textColor = bgConfig!.textColor
+        
+        let imageName = bgConfig!.imageName
+        header.backgroundImage.image = UIImage(named: imageName)
+        return header
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 25  // Set a height that works for your design
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude  // Adjust this value for the desired space below each section
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! LeaderboardTableViewCell
         
         let entry = sectionedEntries[indexPath.section][indexPath.row]
-        cell.configure(with: entry, isExpanded: expandedCells[indexPath.row])
+        cell.configure(with: entry, isExpanded: expandedCells[indexPath.section][indexPath.row])
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Assuming you have an array to track expanded state for each cell
-        let isExpanded = expandedCells[indexPath.row]
-        expandedCells[indexPath.row] = !isExpanded // Toggle the state
+        toggleCellExpanded(at: indexPath)
         
         if let cell = tableView.cellForRow(at: indexPath) as? LeaderboardTableViewCell {
-            cell.rotateArrow(isExpanded: !isExpanded)
+            cell.rotateArrow(isExpanded: expandedCells[indexPath.section][indexPath.row])
         }
         
         // Option 2: Reload specific row with animation for a smoother experience
@@ -285,8 +322,20 @@ class LeaderboardsTableViewController: UITableViewController {
         tableView.endUpdates()
     }
     
+    // Example: Toggling the expanded state of a cell
+    func toggleCellExpanded(at indexPath: IndexPath) {
+        // Ensure indices are within range
+        if indexPath.section < expandedCells.count && indexPath.row < expandedCells[indexPath.section].count {
+            expandedCells[indexPath.section][indexPath.row].toggle()
+            //tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if expandedCells[indexPath.row] {
+        if expandedCells[indexPath.section][indexPath.row] {
             return expandedHeight // Your expanded height
         } else {
             return normalHeight // Your normal height

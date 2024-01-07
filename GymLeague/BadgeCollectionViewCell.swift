@@ -16,8 +16,18 @@ class BadgeCollectionViewCell: UICollectionViewCell {
         // Initialization code
     }
     
-    func configure(with badge: Badge) {
-        imageView.image = UIImage(named: badge.badgeImageName)
+    func configure(with badge: Badge, isUnlocked unlocked: Bool) {
+        if unlocked {
+            if let image = UIImage(named: badge.badgeImageName) {
+                imageView.image = image
+            } else {
+                imageView.image = UIImage(named: "bg_" + badge.name)
+            }
+            
+        } else {
+            imageView.image = UIImage(named: "locked")
+        }
+        
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
