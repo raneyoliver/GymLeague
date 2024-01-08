@@ -56,6 +56,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         collectionView.layer.cornerRadius = 8
         collectionView.clipsToBounds = true
         
+        collectionView.backgroundColor = CustomBackgroundView.oneAboveColor
+        tableView.backgroundColor = CustomBackgroundView.color
+        tableView.isScrollEnabled = false
+        
     }
     
     
@@ -212,39 +216,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     
-    @IBAction func signOut(sender: Any) {
-        // Create the alert controller
-        let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
-        
-        // Add a "Yes" action to sign out
-        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { action in
-            // Perform the sign out
-            GIDSignIn.sharedInstance.signOut()
-            
-            // Update the UI as necessary, maybe go back to the login screen or update the current view
-            self.showSignInViewController()
-        }))
-        
-        // Add a "No" action to cancel
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        
-        // Present the alert
-        present(alert, animated: true, completion: nil)
-    }
-    
-    
-    
-    func showSignInViewController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let signInViewController = storyboard.instantiateViewController(withIdentifier: "Login")
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let sceneDelegate = windowScene.delegate as? SceneDelegate,
-           let window = sceneDelegate.window {
-            
-            window.rootViewController = signInViewController
-            window.makeKeyAndVisible()
-        }
-    }
 }
 
 extension UIImageView {

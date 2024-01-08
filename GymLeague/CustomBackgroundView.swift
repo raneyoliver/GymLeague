@@ -19,6 +19,7 @@ class CustomBackgroundView: UIView {
     }
     
     static let color:UIColor = UIColor.systemGray6
+    static let oneAboveColor:UIColor = UIColor.systemGray5
     
     private func commonInit() {
         backgroundColor = CustomBackgroundView.color

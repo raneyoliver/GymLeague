@@ -16,6 +16,9 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var addressLabel: UILabel!
     
+    let gymCheckButton = UIButton() // Create a button
+
+    
     @IBOutlet weak var typesLabel: UILabel!
     private var placesClient: GMSPlacesClient!
     var locationManager: CLLocationManager!
@@ -33,7 +36,43 @@ class ViewController : UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         db = Firestore.firestore()
 
+        setupGymCheckButton() // Call this to setup button
+        gymCheckButton.addTarget(self, action: #selector(checkInToGym), for: .touchUpInside)
+
     }
+    
+    @objc func checkInToGym() {
+        // Perform the action when the user confirms they are at the gym
+    }
+    
+    func setupGymCheckButton() {
+        gymCheckButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(gymCheckButton)
+        
+        // Set button properties
+        gymCheckButton.setTitle("Check Gym", for: .normal)
+        gymCheckButton.backgroundColor = .systemBlue
+        gymCheckButton.setTitleColor(.white, for: .normal)
+        gymCheckButton.layer.cornerRadius = 75  // Half of width and height to make it circular
+        gymCheckButton.layer.masksToBounds = true
+        
+        // Set constraints to make it a large, centered circle
+        NSLayoutConstraint.activate([
+            gymCheckButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            gymCheckButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            gymCheckButton.widthAnchor.constraint(equalToConstant: 150),   // Diameter of circle
+            gymCheckButton.heightAnchor.constraint(equalToConstant: 150)  // Diameter of circle
+        ])
+        
+        // Initially disabled
+        gymCheckButton.isEnabled = false
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        // Do something with the location
+    }
+
     
     // Add a UIButton in Interface Builder, and connect the action to this function.
     @IBAction func getCurrentPlace(_ sender: UIButton) {

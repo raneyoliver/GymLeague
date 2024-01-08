@@ -59,7 +59,7 @@ class LeaderboardTableViewCell: UITableViewCell {
         
         if entry.userID == UserData.shared.userID {
             // Additional styling if this is the user's cell
-            containerView.layer.borderWidth = 2.0  // Optional: if you want a border
+            containerView.layer.borderWidth = 3.0  // Optional: if you want a border
             containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)  // Optional: border color
         } else {
             // Reset styles for other cells
