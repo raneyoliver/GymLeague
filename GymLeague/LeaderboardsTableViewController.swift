@@ -284,11 +284,14 @@ class LeaderboardsTableViewController: UITableViewController {
         let bgConfig = backgroundImageConfigs[sections[section].name]
         header.titleLabel.text = sections[section].name.prefix(1).uppercased() + sections[section].name.dropFirst()  // Set this to your section title
         header.detailLabel.text = "\(sections[section].minPoints)+"  // Set this to your detail text
-        header.titleLabel.textColor = bgConfig!.textColor
-        header.detailLabel.textColor = bgConfig!.textColor
+        
+        header.titleLabel.textColor = UIColor.label
+        header.detailLabel.textColor = UIColor.label
+//        header.titleLabel.textColor = bgConfig!.textColor
+//        header.detailLabel.textColor = bgConfig!.textColor
         
         let imageName = bgConfig!.imageName
-        header.backgroundImage.image = UIImage(named: imageName)
+        //header.backgroundImage.image = UIImage(named: imageName)
         return header
     }
 

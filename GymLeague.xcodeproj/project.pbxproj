@@ -30,6 +30,9 @@
 		A71750FF2B49DEBB00BC5128 /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750FE2B49DEBB00BC5128 /* CustomHeaderView.swift */; };
 		A71751012B4B26C700BC5128 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71751002B4B26C700BC5128 /* SettingsTableViewController.swift */; };
 		A71751032B4B2C8500BC5128 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71751022B4B2C8500BC5128 /* SettingsHeaderView.swift */; };
+		A71751052B4C6B3B00BC5128 /* GymButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71751042B4C6B3B00BC5128 /* GymButton.swift */; };
+		A71751082B4CD5F200BC5128 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */; };
+		A71751092B4CD5F200BC5128 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */; };
 		A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0963F2B3F502300378E5F /* AppDelegate.swift */; };
 		A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096412B3F502300378E5F /* SceneDelegate.swift */; };
 		A7D096442B3F502300378E5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096432B3F502300378E5F /* ViewController.swift */; };
@@ -83,6 +86,9 @@
 		A71750FE2B49DEBB00BC5128 /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		A71751002B4B26C700BC5128 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		A71751022B4B2C8500BC5128 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
+		A71751042B4C6B3B00BC5128 /* GymButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymButton.swift; sourceTree = "<group>"; };
+		A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
+		A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
 		A7D0963C2B3F502300378E5F /* GymLeague.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymLeague.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D0963F2B3F502300378E5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D096412B3F502300378E5F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +177,9 @@
 				A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */,
 				A71750F52B462ACF00BC5128 /* BadgeCollectionViewCell.xib */,
 				A7D096432B3F502300378E5F /* ViewController.swift */,
+				A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */,
+				A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */,
+				A71751042B4C6B3B00BC5128 /* GymButton.swift */,
 				A71750F02B45EE3600BC5128 /* AuthenticationService.swift */,
 				A71750EE2B45E6BD00BC5128 /* LeaderboardService.swift */,
 				A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */,
@@ -324,6 +333,7 @@
 				A7D096782B3F852400378E5F /* keys.plist in Resources */,
 				A71750D92B40FC2600BC5128 /* credentials.plist in Resources */,
 				A7D096752B3F816D00378E5F /* .gitignore in Resources */,
+				A71751092B4CD5F200BC5128 /* PlaceTableViewCell.xib in Resources */,
 				A7D0964C2B3F502400378E5F /* LaunchScreen.storyboard in Resources */,
 				A7D096492B3F502400378E5F /* Assets.xcassets in Resources */,
 				A71750F72B462ACF00BC5128 /* BadgeCollectionViewCell.xib in Resources */,
@@ -357,6 +367,7 @@
 				A71750EC2B4257CA00BC5128 /* LeaderboardTableViewCell.swift in Sources */,
 				A71750F62B462ACF00BC5128 /* BadgeCollectionViewCell.swift in Sources */,
 				A71750DE2B41EF3700BC5128 /* ProfileViewController.swift in Sources */,
+				A71751052B4C6B3B00BC5128 /* GymButton.swift in Sources */,
 				A71750FB2B48870D00BC5128 /* LeaderboardSection.swift in Sources */,
 				A7D096442B3F502300378E5F /* ViewController.swift in Sources */,
 				A71751032B4B2C8500BC5128 /* SettingsHeaderView.swift in Sources */,
@@ -370,6 +381,7 @@
 				A71750F32B4605C400BC5128 /* BackgroundImageConfig.swift in Sources */,
 				A71750FD2B49C02400BC5128 /* CustomBackgroundView.swift in Sources */,
 				A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */,
+				A71751082B4CD5F200BC5128 /* PlaceTableViewCell.swift in Sources */,
 				A71750DC2B41009600BC5128 /* LaunchScreenViewController.swift in Sources */,
 				A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */,
 				A71750E92B42309B00BC5128 /* LeaderboardsTableViewController.swift in Sources */,

@@ -56,35 +56,35 @@ class CustomHeaderView: UIView {
         ])
         
         // Setup top line
-        topLine.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(topLine)
-        topLine.backgroundColor = .gray  // or any color you prefer
-        NSLayoutConstraint.activate([
-            topLine.heightAnchor.constraint(equalToConstant: 1),  // 1 pixel line
-            topLine.topAnchor.constraint(equalTo: self.topAnchor),
-            topLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            topLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-        ])
+//        topLine.translatesAutoresizingMaskIntoConstraints = false
+//        addSubview(topLine)
+//        topLine.backgroundColor = .gray  // or any color you prefer
+//        NSLayoutConstraint.activate([
+//            topLine.heightAnchor.constraint(equalToConstant: 1),  // 1 pixel line
+//            topLine.topAnchor.constraint(equalTo: self.topAnchor),
+//            topLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            topLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+//        ])
 
         // Setup bottom line
-        bottomLine.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(bottomLine)
-        bottomLine.backgroundColor = .gray  // or any color you prefer
-        NSLayoutConstraint.activate([
-            bottomLine.heightAnchor.constraint(equalToConstant: 1),  // 1 pixel line
-            bottomLine.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            bottomLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            bottomLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-        ])
+//        bottomLine.translatesAutoresizingMaskIntoConstraints = false
+//        addSubview(bottomLine)
+//        bottomLine.backgroundColor = .gray  // or any color you prefer
+//        NSLayoutConstraint.activate([
+//            bottomLine.heightAnchor.constraint(equalToConstant: 1),  // 1 pixel line
+//            bottomLine.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+//            bottomLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            bottomLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+//        ])
 
         // Additional styling
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        titleLabel.shadowColor = UIColor.black
-        titleLabel.shadowOffset = CGSize(width: 1, height: 1)
+//        titleLabel.shadowColor = UIColor.black
+//        titleLabel.shadowOffset = CGSize(width: 1, height: 1)
         detailLabel.font = UIFont.systemFont(ofSize: 14)
         detailLabel.textAlignment = .right
-        detailLabel.shadowColor = UIColor.black
-        detailLabel.shadowOffset = CGSize(width: 1, height: 1)
+//        detailLabel.shadowColor = UIColor.black
+//        detailLabel.shadowOffset = CGSize(width: 1, height: 1)
         
         backgroundImage.contentMode = .scaleAspectFill // or .scaleToFill based on your need
         backgroundImage.clipsToBounds = true  // If you want to ensure it doesn't extend outside its bounds
