@@ -18,9 +18,15 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i7u-On-vaO">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i7u-On-vaO">
                         <rect key="frame" x="5" y="5" width="310" height="118"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxd-2w-Tvf">
+                                <rect key="frame" x="8" y="29" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8UE-rH-4qp">
                                 <rect key="frame" x="8" y="0.0" width="42" height="21"/>
                                 <constraints>
@@ -30,19 +36,24 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxd-2w-Tvf">
-                                <rect key="frame" x="8" y="29" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dumbbell" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mAt-iw-kOT">
+                                <rect key="frame" x="156" y="11.333333333333329" width="146" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="146" id="j2A-cL-frU"/>
+                                    <constraint firstAttribute="height" constant="102" id="nfk-jU-4xo"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="8UE-rH-4qp" firstAttribute="leading" secondItem="i7u-On-vaO" secondAttribute="leading" constant="8" id="GVN-PF-IIH"/>
+                            <constraint firstItem="mAt-iw-kOT" firstAttribute="centerY" secondItem="i7u-On-vaO" secondAttribute="centerY" id="Igt-w6-wss"/>
                             <constraint firstItem="8UE-rH-4qp" firstAttribute="top" secondItem="i7u-On-vaO" secondAttribute="top" id="KJ0-SE-Fnz"/>
                             <constraint firstItem="Oxd-2w-Tvf" firstAttribute="leading" secondItem="i7u-On-vaO" secondAttribute="leading" constant="8" id="XfV-8G-PfY"/>
                             <constraint firstItem="Oxd-2w-Tvf" firstAttribute="top" secondItem="8UE-rH-4qp" secondAttribute="bottom" constant="8" symbolic="YES" id="avJ-f9-NV4"/>
+                            <constraint firstItem="mAt-iw-kOT" firstAttribute="top" secondItem="i7u-On-vaO" secondAttribute="top" constant="8" id="feG-4F-Y8Q"/>
+                            <constraint firstAttribute="trailing" secondItem="mAt-iw-kOT" secondAttribute="trailing" constant="8" id="iIH-rS-Mdq"/>
+                            <constraint firstAttribute="bottom" secondItem="mAt-iw-kOT" secondAttribute="bottom" constant="8" id="vjh-ZJ-J6g"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -55,6 +66,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="backgroundImage" destination="mAt-iw-kOT" id="ph6-S8-wWq"/>
                 <outlet property="containerView" destination="i7u-On-vaO" id="UMU-9O-mME"/>
                 <outlet property="nameLabel" destination="8UE-rH-4qp" id="VMx-o1-asG"/>
                 <outlet property="typeLabel" destination="Oxd-2w-Tvf" id="eDN-tK-MQa"/>
@@ -63,6 +75,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="dumbbell" catalog="system" width="128" height="72"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -89,7 +89,7 @@ class CustomHeaderView: UIView {
         backgroundImage.contentMode = .scaleAspectFill // or .scaleToFill based on your need
         backgroundImage.clipsToBounds = true  // If you want to ensure it doesn't extend outside its bounds
         backgroundImage.alpha = 0.6
-        self.backgroundColor = CustomBackgroundView.color
+        self.backgroundColor = CustomBackgroundView.oneAboveColor //CustomBackgroundView.color
         
     }
 }

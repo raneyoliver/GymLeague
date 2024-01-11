@@ -33,6 +33,7 @@
 		A71751052B4C6B3B00BC5128 /* GymButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71751042B4C6B3B00BC5128 /* GymButton.swift */; };
 		A71751082B4CD5F200BC5128 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */; };
 		A71751092B4CD5F200BC5128 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */; };
+		A77C89002B4F0BF200EB2120 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */; };
 		A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0963F2B3F502300378E5F /* AppDelegate.swift */; };
 		A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096412B3F502300378E5F /* SceneDelegate.swift */; };
 		A7D096442B3F502300378E5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096432B3F502300378E5F /* ViewController.swift */; };
@@ -89,6 +90,7 @@
 		A71751042B4C6B3B00BC5128 /* GymButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymButton.swift; sourceTree = "<group>"; };
 		A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
+		A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		A7D0963C2B3F502300378E5F /* GymLeague.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymLeague.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D0963F2B3F502300378E5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D096412B3F502300378E5F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				A71750F82B47404C00BC5128 /* Badge.swift */,
 				A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */,
 				A71750F52B462ACF00BC5128 /* BadgeCollectionViewCell.xib */,
+				A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */,
 				A7D096432B3F502300378E5F /* ViewController.swift */,
 				A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */,
 				A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */,
@@ -383,6 +386,7 @@
 				A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */,
 				A71751082B4CD5F200BC5128 /* PlaceTableViewCell.swift in Sources */,
 				A71750DC2B41009600BC5128 /* LaunchScreenViewController.swift in Sources */,
+				A77C89002B4F0BF200EB2120 /* FullScreenImageViewController.swift in Sources */,
 				A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */,
 				A71750E92B42309B00BC5128 /* LeaderboardsTableViewController.swift in Sources */,
 			);

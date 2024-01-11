@@ -82,7 +82,8 @@ class LeaderboardTableViewCell: UITableViewCell {
         containerView.layer.shadowRadius = 4
         containerView.layer.shadowOpacity = 0.25
         containerView.layer.masksToBounds = false
-        //containerView.backgroundColor = CustomBackgroundView.color
+        
+        containerView.backgroundColor = UIColor.init(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)
         contentView.backgroundColor = CustomBackgroundView.color
         
         self.selectionStyle = .none
@@ -107,24 +108,24 @@ class LeaderboardTableViewCell: UITableViewCell {
         }
     }
     
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if highlighted {
-            containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.3) // Adjust as needed
-        } else {
-            containerView.backgroundColor = initialColor // Or your default color
-        }
-    }
+//    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+//        if highlighted {
+//            containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.3) // Adjust as needed
+//        } else {
+//            containerView.backgroundColor = initialColor // Or your default color
+//        }
+//    }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-        if selected {
-            containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.3) // Adjust as needed
-        } else {
-            containerView.backgroundColor = initialColor // Or your default color
-        }
-    }
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
+//        // Configure the view for the selected state
+//        if selected {
+//            containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.3) // Adjust as needed
+//        } else {
+//            containerView.backgroundColor = initialColor // Or your default color
+//        }
+//    }
     
     func rotateArrow(isExpanded: Bool) {
         // Assuming 0 radians means arrow is pointing left

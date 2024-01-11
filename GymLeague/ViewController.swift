@@ -14,19 +14,19 @@ import MapKit
 struct Place {
     let name: String
     let types: [String]
+    let coordinate: CLLocationCoordinate2D
+    let photoReference: String?
+    var image:UIImage?
 }
 
-class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate {
+class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, PlaceTableViewCellDelegate {
     
-    // Add a pair of UILabels in Interface Builder, and connect the outlets to these variables.
-    @IBOutlet private var nameLabel: UILabel!
-    @IBOutlet private var addressLabel: UILabel!
-    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var noGymsLabel: UILabel!
     let gymCheckButton = UIButton() // Create a button
     
     var myButton = GymButton()
     
-    @IBOutlet weak var typesLabel: UILabel!
     private var placesClient: GMSPlacesClient!
     var locationManager: CLLocationManager!
     var db: Firestore!
@@ -40,24 +40,27 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     var tableView: UITableView!
     var places = [Place]()
     
+    let spinner = UIActivityIndicatorView(style: .large)
+    
     var workoutZoneOverlay: MKCircle!
     var countdownTimer: Timer!
     
     let minimumWorkoutTime = 10 //20 * 60 // 20 minutes in seconds
     var timeLeft:Int!
-    let radiusInMeters:Double = 100
+    let workoutRadiusInMeters:Double = 100
+    let searchRadiusInMeters:Double = 50
     
     let gymTypes = ["gym", "establishment", "point_of_interest"]
-    let nonGymTypes = ["locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2"]
+    let nonGymTypes = ["route", "locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2", "parking", "grocery_or_supermarket"]
 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Request permission and start updating locations
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.startUpdatingLocation()
-        }
+//        if CLLocationManager.locationServicesEnabled() {
+//            locationManager.startUpdatingLocation()
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -80,26 +83,45 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
 
         // Start receiving location updates
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.startUpdatingLocation()
-        }
+//        if CLLocationManager.locationServicesEnabled() {
+//            locationManager.startUpdatingLocation()
+//        }
         db = Firestore.firestore()
                 
         myButton = GymButton(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
-        myButton.setTitle("Check In", for: .normal)
+        myButton.setTitle("Start", for: .normal)
         myButton.center = view.center
+        myButton.isHidden = false
         view.addSubview(myButton)
-        myButton.addTarget(self, action: #selector(checkInToGym), for: .touchUpInside)
+        myButton.addTarget(self, action: #selector(startWorkoutProcess), for: .touchUpInside)
+        
+        noGymsLabel.isHidden = true
         
         setupMapContainerView()
         setupTableView()
+        setupSpinner()
 
+        
+        titleLabel.text = "Start a workout"
+
+    }
+    
+    func setupSpinner() {
+        view.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     func setupMapContainerView() {
         mapViewContainer = UIView(frame: CGRect(x: 20, y: 100, width: self.view.bounds.width - 40, height: 300)) // Adjust frame as needed
         mapViewContainer.backgroundColor = .lightGray // So you can see the container
         mapViewContainer.isHidden = true
+        mapViewContainer.layer.cornerRadius = 8
+        mapViewContainer.clipsToBounds = true
+        mapViewContainer.center = view.center
         view.addSubview(mapViewContainer)
         
         // Now add the map view to this container
@@ -128,29 +150,40 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         // Set tableView frame or constraints here
         // Example frame setup
-        tableView.frame = CGRect(x: 5, y: mapViewContainer.frame.maxY, width: view.bounds.width - 10, height: view.bounds.height - mapViewContainer.frame.maxY)
+        tableView.frame = CGRect(x: 5, y: 0, width: view.bounds.width - 10, height: view.bounds.height * 2 / 3)
+        tableView.center = view.center
+        tableView.isHidden = true
     }
     
-    @objc func checkInToGym() {
+    @objc func startWorkoutProcess() {
         // Hide the button
         myButton.isHidden = true
+        tableView.isHidden = false
+        titleLabel.text = "Choose a nearby gym"
         
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func checkInToGym(gym: Place) {
         // Show the map
         mapViewContainer.isHidden = false
         
         tableView.isHidden = true
         
+        titleLabel.text = "Stay at the gym"
+        
         timeLeft = minimumWorkoutTime
         
-        if let userLocation = locationManager.location {
-            // Center the map at user's current location
-            let region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
-            mapView.setRegion(region, animated: true)
-            
-            // Add circular overlay to the map
-            workoutZoneOverlay = MKCircle(center: userLocation.coordinate, radius: radiusInMeters)
-            mapView.addOverlay(workoutZoneOverlay)
-        }
+        let gymLocation = gym.coordinate
+        // Center the map at user's current location
+        let region = MKCoordinateRegion(center: gymLocation, latitudinalMeters: 500, longitudinalMeters: 500)
+        mapView.setRegion(region, animated: true)
+        
+        // Add circular overlay to the map
+        workoutZoneOverlay = MKCircle(center: gymLocation, radius: workoutRadiusInMeters)
+        mapView.addOverlay(workoutZoneOverlay)
         
         // Start the countdown timer
         countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
@@ -193,10 +226,11 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         // Do something when the workout is completed
         // Maybe show a congratulatory message or log the workout
         mapViewContainer.isHidden = true
-        tableView.isHidden = false
+        tableView.isHidden = true
         myButton.isHidden = false
         timeLeft = minimumWorkoutTime
         print("workout complete!")
+        titleLabel.text = "Start a workout"
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -209,6 +243,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             return  // Less than 5 seconds passed, ignoring this update
         }
         
+        spinner.startAnimating()
+        
         lastLocationUpdate = Date()  // Update the timestamp
         
         // Now, use the Google Places API to check for nearby gyms
@@ -220,7 +256,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             }
             
             DispatchQueue.main.async {
-                self.gymCheckButton.isEnabled = isNearby
+                self.updateUIWithGyms()
+                //self.gymCheckButton.isEnabled = isNearby
             }
         }
         
@@ -246,6 +283,19 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         tryNextType(index: 0)  // Start with the first type
     }
     
+    func updateUIWithGyms() {
+        if titleLabel.text == "Choose a nearby gym" {
+            if places.isEmpty {
+                tableView.isHidden = true
+                noGymsLabel.isHidden = false  // noGymsLabel is your 'No Gyms' message label
+            } else {
+                tableView.isHidden = false
+                noGymsLabel.isHidden = true
+                tableView.reloadData()
+            }
+        }
+    }
+
     
     func locationString(from location: CLLocation) -> String {
         let latitude = location.coordinate.latitude
@@ -261,7 +311,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         let apiKey = Config.getGooglePlacesAPIKey()
         
-        let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(radiusInMeters)&type=\(type)&key=\(apiKey)"
+        let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(searchRadiusInMeters)&type=\(type)&key=\(apiKey)"
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
             completion(false)
@@ -271,9 +321,16 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data, error == nil else {
                 print("Error fetching places: \(error?.localizedDescription ?? "Unknown error")")
+                DispatchQueue.main.async {
+                    self.spinner.stopAnimating()
+                    self.noGymsLabel.isHidden = false
+                }
                 completion(false)
                 return
             }
+            
+            var newPlaces: [Place] = []
+            let group = DispatchGroup()
             
             do {
                 if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -283,32 +340,81 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                         if let name = result["name"] as? String,
                            let types = result["types"] as? [String],
                            self.isGym(types),
-                           !self.places.contains(where: { $0.name == name }) {
-
-                            // Add the place if it's not already in the list
-                            let newPlace = Place(name: name, types: types)
-                            self.places.append(newPlace)
+                           !self.places.contains(where: { $0.name == name }),
+                           let geometry = result["geometry"] as? [String: Any],
+                           let location = geometry["location"] as? [String: Double],
+                           let lat = location["lat"],
+                           let lng = location["lng"] {
+                            
+                            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                            let photoReference = (result["photos"] as? [[String: Any]])?.first?["photo_reference"] as? String
+                            
+                            if let photoReference = photoReference {
+                                group.enter()
+                                self.fetchPhoto(for: photoReference) { fetchedImage in
+                                    let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: fetchedImage)
+                                    //newPlaces.append(newPlace)
+                                    group.leave()
+                                }
+                            } else {
+                                let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, image: nil)
+                                //newPlaces.append(newPlace)
+                            }
+                            
                         }
                         
                         print(result)
                     }
                     
-                    DispatchQueue.main.async {
+                    group.notify(queue: .main) {
+                        self.places = newPlaces
                         self.tableView.reloadData()
+                        completion(!results.isEmpty)
                     }
-                    
-                    // If any results are found, return true, otherwise false
-                    completion(!results.isEmpty)
+    
                 } else {
-                    completion(false)
+                    DispatchQueue.main.async {
+                        completion(false)
+                    }
                 }
             } catch {
-                print("JSON parsing error: \(error)")
-                completion(false)
+                DispatchQueue.main.async {
+                    print("JSON parsing error: \(error)")
+                    completion(false)
+                }
             }
+            
+            DispatchQueue.main.async {
+                self.spinner.stopAnimating()
+                if !self.places.isEmpty {
+                    self.tableView.reloadData()
+                } else {
+                    self.noGymsLabel.isHidden = false
+                }
+            }
+            
         }
         task.resume()
     }
+    
+    func fetchPhoto(for reference: String, completion: @escaping (UIImage?) -> Void) {
+        let photoURLString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=373&photoreference=\(reference)&key=\(Config.getGooglePlacesAPIKey())"
+        guard let photoURL = URL(string: photoURLString) else {
+            completion(nil)
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: photoURL) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil)
+                return
+            }
+            let image = UIImage(data: data)
+            completion(image)
+        }
+        task.resume()
+    }
+
     
     func isGym(_ types: [String]) -> Bool {
         return !types.contains(where: nonGymTypes.contains)
@@ -323,13 +429,46 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             fatalError("Could not dequeue PlaceTableViewCell")
         }
         
+        cell.delegate = self
+        
         let place = places[indexPath.row]
         cell.configure(with: place)
+        
+//        if let image = place.image {
+//            cell.backgroundImage.image = image
+//        }
+        
         return cell
+    }
+    
+    func didTapImageView(in cell: PlaceTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let place = places[indexPath.row]
+        if place.image != nil {
+            let fullScreenVC = FullScreenImageViewController()
+            fullScreenVC.modalPresentationStyle = .fullScreen
+            fullScreenVC.image = place.image  // Set the image to be displayed
+            present(fullScreenVC, animated: true, completion: nil)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 125
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedGym = places[indexPath.row]  // Assuming gyms is your data source
+        presentWorkoutConfirmationAlert(for: selectedGym)
+    }
+    
+    func presentWorkoutConfirmationAlert(for gym: Place) {
+        let alert = UIAlertController(title: "Start Workout", message: "Stay around \(gym.name) for at least 20 minutes to complete the workout. Are you ready to start?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Start", style: .default, handler: { _ in
+            self.checkInToGym(gym: gym)
+        }))
+        present(alert, animated: true)
     }
     
     // Add a UIButton in Interface Builder, and connect the action to this function.
