@@ -34,7 +34,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <size key="shadowOffset" width="1" height="1"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2o9-yU-1L8">
                                 <rect key="frame" x="270" y="0.0" width="39" height="35"/>
@@ -55,7 +55,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <size key="shadowOffset" width="1" height="1"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjI-nG-tcP">
                                 <rect key="frame" x="220" y="7" width="42" height="21"/>
@@ -66,18 +66,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <size key="shadowOffset" width="1" height="1"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV1-gs-kIm">
+                                <rect key="frame" x="272.33333333333331" y="149.66666666666666" width="28.666666666666686" height="13.333333333333343"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0X2-rN-rnW" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" constant="7" id="7bH-7q-mdc"/>
+                            <constraint firstAttribute="bottom" secondItem="fV1-gs-kIm" secondAttribute="bottom" constant="5" id="8jU-OF-CFE"/>
                             <constraint firstAttribute="bottom" secondItem="7ah-6H-lkQ" secondAttribute="bottom" id="Bav-jo-UTs"/>
                             <constraint firstItem="Zly-o4-yHu" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" constant="7" id="C1l-jp-UH7"/>
                             <constraint firstItem="Zly-o4-yHu" firstAttribute="leading" secondItem="0X2-rN-rnW" secondAttribute="trailing" constant="8" symbolic="YES" id="HTK-Ek-7wJ"/>
                             <constraint firstItem="7ah-6H-lkQ" firstAttribute="centerY" secondItem="352-oA-yFe" secondAttribute="centerY" id="LLu-0W-Y7d"/>
                             <constraint firstItem="7ah-6H-lkQ" firstAttribute="leading" secondItem="352-oA-yFe" secondAttribute="leading" id="QgV-uH-vHR"/>
                             <constraint firstItem="0X2-rN-rnW" firstAttribute="leading" secondItem="352-oA-yFe" secondAttribute="leading" id="Wsu-js-6ds"/>
+                            <constraint firstAttribute="trailing" secondItem="fV1-gs-kIm" secondAttribute="trailing" constant="8" id="azD-eb-Qkp"/>
                             <constraint firstItem="cjI-nG-tcP" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" constant="7" id="fMe-Xx-8MT"/>
                             <constraint firstItem="2o9-yU-1L8" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" id="fa0-HH-bZG"/>
                             <constraint firstAttribute="trailing" secondItem="2o9-yU-1L8" secondAttribute="trailing" id="ghl-8D-tRP"/>
@@ -98,6 +106,7 @@
             <connections>
                 <outlet property="arrowButton" destination="2o9-yU-1L8" id="iY9-8D-wZy"/>
                 <outlet property="backgroundImage" destination="7ah-6H-lkQ" id="oab-gk-IOV"/>
+                <outlet property="badgeDescriptionLabel" destination="fV1-gs-kIm" id="KoW-VZ-2Gf"/>
                 <outlet property="containerView" destination="352-oA-yFe" id="B7D-VB-cV8"/>
                 <outlet property="leadingConstraint" destination="QgV-uH-vHR" id="Sfp-tb-ase"/>
                 <outlet property="nameLabel" destination="Zly-o4-yHu" id="dye-n1-5D5"/>

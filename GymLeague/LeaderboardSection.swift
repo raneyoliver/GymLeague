@@ -9,7 +9,7 @@ import Foundation
 
 struct LeaderboardSection {
     let name: String
-    let minPoints: Int
+    let minPoints: Double
 }
 
 let sections = [

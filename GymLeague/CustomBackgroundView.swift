@@ -21,6 +21,7 @@ class CustomBackgroundView: UIView {
     static let color:UIColor = UIColor.systemGray6
     static let oneAboveColor:UIColor = UIColor.systemGray5
     static let twoAboveColor:UIColor = UIColor.systemGray4
+    static let threeAboveColor:UIColor = UIColor.systemGray3
     
     private func commonInit() {
         backgroundColor = CustomBackgroundView.color

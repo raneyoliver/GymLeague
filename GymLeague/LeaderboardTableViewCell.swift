@@ -16,6 +16,8 @@ class LeaderboardTableViewCell: UITableViewCell {
     @IBOutlet weak var rankLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var divisionLabel: UILabel!
+    
+    @IBOutlet weak var badgeDescriptionLabel: UILabel!
     @IBOutlet weak var pointsLabel: UILabel!
     
     @IBOutlet weak var containerView: UIView!
@@ -40,9 +42,11 @@ class LeaderboardTableViewCell: UITableViewCell {
 
     
     // Add a function to populate cell data
-    func configure(with entry: LeaderboardEntry, isExpanded: Bool) {
+    func configure(with entry: LeaderboardEntry, isExpanded: Bool, badgeName: String) {
         rankLabel.text = "\(entry.rank)"
         nameLabel.text = entry.name
+        badgeDescriptionLabel.text = Config.capitalizeFirstLetter(of: badgeName)
+        badgeDescriptionLabel.isHidden = !isExpanded
         backgroundImage.image = UIImage(named: entry.bgConfig.imageName)
         backgroundImage.tintColor = entry.bgConfig.tintColor
         
@@ -50,12 +54,23 @@ class LeaderboardTableViewCell: UITableViewCell {
         //trailingConstraint.constant = -entry.bgConfig.horizontalOffset
         
         //        divisionLabel.text = entry.division
-        pointsLabel.text = "\(entry.points)"
+        pointsLabel.text = "\(Int(entry.points))"
         
         rankLabel.textColor = entry.bgConfig.textColor
         nameLabel.textColor = entry.bgConfig.textColor
+        badgeDescriptionLabel.textColor = entry.bgConfig.textColor
         pointsLabel.textColor = entry.bgConfig.textColor
         arrowButton.tintColor = entry.bgConfig.textColor
+        
+        if entry.bgConfig.textColor == UIColor.white {
+            rankLabel.shadowColor = UIColor.black
+            nameLabel.shadowColor = UIColor.black
+            pointsLabel.shadowColor = UIColor.black
+        } else if entry.bgConfig.textColor == UIColor.black {
+            rankLabel.shadowColor = UIColor.clear
+            nameLabel.shadowColor = UIColor.clear
+            pointsLabel.shadowColor = UIColor.clear
+        }
         
         if entry.userID == UserData.shared.userID {
             // Additional styling if this is the user's cell

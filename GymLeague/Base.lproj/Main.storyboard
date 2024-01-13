@@ -82,20 +82,42 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-tI-5rJ">
+                                <rect key="frame" x="135.33333333333334" y="409" width="122.66666666666666" height="34.333333333333314"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Select a gym"/>
+                                <connections>
+                                    <action selector="startWorkoutButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="seQ-5p-F2y"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uen-Dc-yzw">
+                                <rect key="frame" x="124" y="408.66666666666669" width="145" height="35"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Cancel Workout">
+                                    <color key="baseForegroundColor" systemColor="systemRedColor"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="cancelWorkoutButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pMI-J0-9Pk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="hQv-ZT-2iO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2E3-JG-Hgp"/>
-                            <constraint firstItem="hQv-ZT-2iO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="IVA-O0-qPE"/>
+                            <constraint firstItem="Tdu-tI-5rJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3uW-Vw-F9Y"/>
+                            <constraint firstItem="Tdu-tI-5rJ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="P4p-hG-Odc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9RM-Hq-cDk" secondAttribute="trailing" constant="16" id="Vgs-7y-hCd"/>
+                            <constraint firstItem="uen-Dc-yzw" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="fKV-l4-ao5"/>
+                            <constraint firstItem="uen-Dc-yzw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kdU-rv-i81"/>
                             <constraint firstItem="9RM-Hq-cDk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="n2e-l7-tAT"/>
+                            <constraint firstItem="hQv-ZT-2iO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="npT-np-ysV"/>
                             <constraint firstItem="9RM-Hq-cDk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="v3d-3E-0sx"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="dumbbell" catalog="system" id="yWp-0i-sK8"/>
+                    <tabBarItem key="tabBarItem" title="" image="plus" catalog="system" id="yWp-0i-sK8"/>
                     <connections>
+                        <outlet property="cancelWorkoutButton" destination="uen-Dc-yzw" id="7qH-PQ-5e9"/>
                         <outlet property="noGymsLabel" destination="hQv-ZT-2iO" id="LNh-t9-U6R"/>
+                        <outlet property="startWorkoutButton" destination="Tdu-tI-5rJ" id="AcD-8j-bQt"/>
                         <outlet property="titleLabel" destination="9RM-Hq-cDk" id="1k8-0L-lVF"/>
                     </connections>
                 </viewController>
@@ -126,7 +148,7 @@
                             <outlet property="delegate" destination="9e8-k7-R55" id="Fyz-cI-LOH"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="" image="list.number" catalog="system" id="BZ3-C4-HoL"/>
+                    <tabBarItem key="tabBarItem" title="" image="rosette" catalog="system" id="BZ3-C4-HoL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="522-aa-K7X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -137,7 +159,7 @@
             <objects>
                 <tableViewController id="ZDn-O4-0f7" customClass="SettingsTableViewController" customModule="GymLeague" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="9Ig-8K-JlH">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -214,21 +236,20 @@
                                 </cells>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTD-2j-EMw">
-                                <rect key="frame" x="332.66666666666669" y="59" width="50.333333333333314" height="40"/>
+                                <rect key="frame" x="332.66666666666669" y="67" width="50.333333333333314" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="2fh-pl-zbx"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="gearshape" catalog="system"/>
                                 <connections>
-                                    <segue destination="ZDn-O4-0f7" kind="presentation" modalPresentationStyle="fullScreen" id="naq-3K-Je1"/>
+                                    <segue destination="ZDn-O4-0f7" kind="show" id="naq-3K-Je1"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xp0-NA-gp2">
-                                <rect key="frame" x="305.33333333333331" y="662" width="77" height="35"/>
+                                <rect key="frame" x="290.33333333333331" y="662" width="92" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="Lok-yS-5bX"/>
-                                    <constraint firstAttribute="width" constant="77" id="XJF-Fj-H7e"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Save Changes"/>
@@ -256,12 +277,14 @@
                             <constraint firstItem="vRD-jT-rfS" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="8" id="B9o-4A-WaK"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="trailing" secondItem="AJb-1R-A43" secondAttribute="trailing" id="JpG-GB-I94"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="trailing" secondItem="A4L-oc-0Wn" secondAttribute="trailing" constant="10" id="K1g-Mq-8aG"/>
-                            <constraint firstItem="tTD-2j-EMw" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" id="Mn7-yl-eWF"/>
+                            <constraint firstItem="tTD-2j-EMw" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="8" id="Mn7-yl-eWF"/>
                             <constraint firstItem="A4L-oc-0Wn" firstAttribute="top" secondItem="AJb-1R-A43" secondAttribute="bottom" constant="20" id="N5m-6C-AOk"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="trailing" secondItem="Xp0-NA-gp2" secondAttribute="trailing" constant="10.67" id="Udn-bx-ls1"/>
+                            <constraint firstItem="Xp0-NA-gp2" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="290.32998657226562" id="Z7d-z6-gF6"/>
                             <constraint firstItem="AJb-1R-A43" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="97" id="Z9Z-1k-dVE"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="bottom" secondItem="Xp0-NA-gp2" secondAttribute="bottom" constant="72" id="ni9-4Q-QlV"/>
                             <constraint firstItem="vRD-jT-rfS" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="16" id="ttY-WW-J3g"/>
+                            <constraint firstItem="tTD-2j-EMw" firstAttribute="leading" secondItem="vRD-jT-rfS" secondAttribute="trailing" constant="224.66999999999999" id="vUG-YJ-rsp"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="person" catalog="system" id="7vs-C8-Ggb"/>
@@ -277,15 +300,18 @@
         </scene>
     </scenes>
     <resources>
-        <image name="dumbbell" catalog="system" width="128" height="72"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
-        <image name="list.number" catalog="system" width="128" height="97"/>
         <image name="person" catalog="system" width="128" height="121"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="rosette" catalog="system" width="107" height="128"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

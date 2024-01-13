@@ -200,7 +200,7 @@ class LeaderboardsTableViewController: UITableViewController {
             userID: data?["userID"] as? String ?? "can't fetch userID",
             rank: leaderboardRank,
             name: data?["name"] as? String ?? "can't fetch name",
-            points: data?["points"] as? Int ?? 0,
+            points: data?["points"] as? Double ?? 0,
             division: "placeholderDivision",
             bgConfig: config)
         
@@ -281,16 +281,16 @@ class LeaderboardsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = CustomHeaderView()
-        let bgConfig = backgroundImageConfigs[sections[section].name]
-        header.titleLabel.text = sections[section].name.prefix(1).uppercased() + sections[section].name.dropFirst()  // Set this to your section title
-        header.detailLabel.text = "\(sections[section].minPoints)+"  // Set this to your detail text
+        //let bgConfig = backgroundImageConfigs[sections[section].name]
+        header.titleLabel.text = Config.capitalizeFirstLetter(of: sections[section].name)
+        header.detailLabel.text = "\(Int(sections[section].minPoints))+"  // Set this to your detail text
         
         header.titleLabel.textColor = UIColor.label
         header.detailLabel.textColor = UIColor.label
 //        header.titleLabel.textColor = bgConfig!.textColor
 //        header.detailLabel.textColor = bgConfig!.textColor
         
-        let imageName = bgConfig!.imageName
+        //let imageName = bgConfig!.imageName
         //header.backgroundImage.image = UIImage(named: imageName)
         return header
     }
@@ -306,8 +306,9 @@ class LeaderboardsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! LeaderboardTableViewCell
         
+        let isExpanded = expandedCells[indexPath.section][indexPath.row]
         let entry = sectionedEntries[indexPath.section][indexPath.row]
-        cell.configure(with: entry, isExpanded: expandedCells[indexPath.section][indexPath.row])
+        cell.configure(with: entry, isExpanded: isExpanded, badgeName: backgroundImageConfigs.first(where: {$0.value.imageName == entry.bgConfig.imageName})!.key)
         
         return cell
     }
@@ -330,7 +331,8 @@ class LeaderboardsTableViewController: UITableViewController {
         // Ensure indices are within range
         if indexPath.section < expandedCells.count && indexPath.row < expandedCells[indexPath.section].count {
             expandedCells[indexPath.section][indexPath.row].toggle()
-            //tableView.reloadRows(at: [indexPath], with: .automatic)
+            //tableView.reloadRows(at: [indexPath], with: .none)
+            tableView.reloadData()
             tableView.beginUpdates()
             tableView.endUpdates()
         }

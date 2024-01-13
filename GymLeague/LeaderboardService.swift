@@ -12,7 +12,7 @@ struct LeaderboardEntry {
     var userID: String
     var rank: Int
     var name: String
-    var points: Int
+    var points: Double
     var division: String
     var bgConfig: BackgroundImageConfig
 }
@@ -40,7 +40,7 @@ class LeaderboardService {
     }
 
     /// Adds a user by id
-    func addLeaderboardEntry(forUserID userID: String, name: String, points: Int, badges: [String?], chosenBadge: String, completion: @escaping (Bool) -> Void) {
+    func addLeaderboardEntry(forUserID userID: String, name: String, points: Double, badges: [String?], chosenBadge: String, timeSinceLastWorkout: TimeInterval, completion: @escaping (Bool) -> Void) {
         print("attempting to add leaderboard entry")
         
         fetchLeaderboardEntry(forUserID: userID) { document, error in
@@ -57,7 +57,8 @@ class LeaderboardService {
                     "name": name,
                     "points": points,
                     "badges": badges,
-                    "chosenBadge": chosenBadge
+                    "chosenBadge": chosenBadge,
+                    "timeSinceLastWorkout": timeSinceLastWorkout
                 ]
                 
                 // Add the new document
@@ -83,16 +84,17 @@ class LeaderboardService {
     
     func handleNewUser() {
         // Set default values for a new user
-        UserData.shared.badges = ["new"]
+        UserData.shared.badges = ["new", "beta", "bronze", "silver", "gold", "platinum", "diamond"]
         UserData.shared.chosenBadge = "new"
-        UserData.shared.points = 0
+        UserData.shared.points = 25
+        UserData.shared.timeSinceLastWorkout = Date().timeIntervalSince1970
     }
 
     func updateUserData(with data: [String: Any]) {
         // Update local user data with the fetched data
         UserData.shared.badges = data["badges"] as? [String?] ?? []
         UserData.shared.chosenBadge = data["chosenBadge"] as? String ?? "default"
-        UserData.shared.points = data["points"] as? Int ?? 0
+        UserData.shared.points = data["points"] as? Double ?? 0
     }
 
     func updateChosenBadge(forUserID userID: String, chosenBadge: String, completion: @escaping (Bool) -> Void) {

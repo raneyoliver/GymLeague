@@ -25,6 +25,20 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     let expandedHeight:CGFloat = 168
     let normalHeight:CGFloat = 50
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if profileLeaderboardCell != nil {
+            setupProfileLeaderboardCell(profileLeaderboardCell: profileLeaderboardCell, withBadge: selectedBadge!.name)
+            selectedBadge = MakeBadge(fromName: UserData.shared.chosenBadge!)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.collectionView.reloadData()
+                self.updateSaveButtonState()
+            }
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -80,7 +94,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         division: "placeholderDivision",
                         bgConfig: config!)
                     
-                    profileLeaderboardCell.configure(with: entry, isExpanded: self.isExpanded)
+                    profileLeaderboardCell.configure(with: entry, isExpanded: self.isExpanded, badgeName: chosenBadgeName)
                     
                 } else if let error = error {
                     print("Error getting user rank: \(error.localizedDescription)")
@@ -110,14 +124,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         isExpanded = !isExpanded // Toggle the state
+        tableView.reloadData()
+        tableView.beginUpdates()
+        tableView.endUpdates()
         
         if let cell = tableView.cellForRow(at: indexPath) as? LeaderboardTableViewCell {
             cell.rotateArrow(isExpanded: isExpanded)
         }
         
         // Option 2: Reload specific row with animation for a smoother experience
+        //tableView.reloadData()
         tableView.beginUpdates()
         //tableView.reloadRows(at: [indexPath], with: .automatic)
+        
         tableView.endUpdates()
     }
     
@@ -167,7 +186,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let badgeName = allBadgeNames[indexPath.row]
         let badge = Badge(name: badgeName, badgeImageName: "badge_" + badgeName, bgImageName: "bg_" + badgeName)
         let unlocked = availableBadges.contains { $0.name == badgeName }
-        cell.configure(with: badge, isUnlocked: unlocked)
+        cell.configure(with: badge, isUnlocked: unlocked, selectedBadge: selectedBadge!)
         return cell
     }
 
@@ -179,6 +198,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             setupProfileLeaderboardCell(profileLeaderboardCell: profileLeaderboardCell, withBadge: selectedBadge!.name)
             updateSaveButtonState()
         }
+        
+        collectionView.reloadData()
         
     }
 

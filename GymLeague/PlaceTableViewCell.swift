@@ -23,8 +23,8 @@ class PlaceTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.25
         containerView.layer.masksToBounds = false
         
-        containerView.backgroundColor = UIColor.init(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)
-        contentView.backgroundColor = CustomBackgroundView.color
+        containerView.backgroundColor = CustomBackgroundView.twoAboveColor //UIColor.init(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)
+        contentView.backgroundColor = CustomBackgroundView.oneAboveColor
         
         self.selectionStyle = .none
         
@@ -66,14 +66,17 @@ class PlaceTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        containerView.backgroundColor = selected ? CustomBackgroundView.twoAboveColor : CustomBackgroundView.oneAboveColor  // Change colors as needed
+        containerView.backgroundColor = selected ? CustomBackgroundView.threeAboveColor : CustomBackgroundView.twoAboveColor  // Change colors as needed
+        
+        containerView.layer.borderWidth = selected ? 3.0 : 0.0  // Optional: if you want a border
+        containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)  // Optional: border color
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
 
         // Configure the view for the highlighted state
-        containerView.backgroundColor = highlighted ? CustomBackgroundView.twoAboveColor : CustomBackgroundView.oneAboveColor  // Change colors as needed
+        containerView.backgroundColor = highlighted ? CustomBackgroundView.threeAboveColor : CustomBackgroundView.twoAboveColor  // Change colors as needed
     }
     
     func configure(with place: Place) {

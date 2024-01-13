@@ -23,5 +23,9 @@ class Config {
         }
         return key
     }
+    
+    static func capitalizeFirstLetter(of text: String) -> String {
+        return text.prefix(1).uppercased() + text.dropFirst()
+    }
 }
 

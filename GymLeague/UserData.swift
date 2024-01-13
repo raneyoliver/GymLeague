@@ -17,9 +17,10 @@ class UserData {
     var givenName: String?
     var familyName: String?
     var profilePicUrl: URL?
-    var points: Int?
+    var points: Double?
     var chosenBadge: String?
     var badges: [String?] = Array()
+    var timeSinceLastWorkout: TimeInterval?
     
     // Prevent external instantiation
     private init() {}
@@ -38,6 +39,6 @@ class UserData {
         // Update leaderboard related information
         UserData.shared.badges = data["badges"] as! [String?]
         UserData.shared.chosenBadge = data["chosenBadge"] as? String? ?? "default"
-        UserData.shared.points = data["points"] as? Int
+        UserData.shared.points = data["points"] as? Double
     }
 }

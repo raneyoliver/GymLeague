@@ -16,7 +16,7 @@ class BadgeCollectionViewCell: UICollectionViewCell {
         // Initialization code
     }
     
-    func configure(with badge: Badge, isUnlocked unlocked: Bool) {
+    func configure(with badge: Badge, isUnlocked unlocked: Bool, selectedBadge: Badge) {
         if unlocked {
             if let image = UIImage(named: badge.badgeImageName) {
                 imageView.image = image
@@ -42,9 +42,15 @@ class BadgeCollectionViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageView.bounds.width / 2
         imageView.clipsToBounds = true  // Ensure image clips to the bounds of the imageView
         
-        // Additional styling
-        //imageView.layer.borderWidth = 1.0  // Optional: if you want a border
-        //imageView.layer.borderColor = UIColor.lightGray.cgColor  // Optional: border color
+        if badge.name == selectedBadge.name {
+            // Additional styling if this is the user's cell
+            imageView.layer.borderWidth = 2.0  // Optional: if you want a border
+            imageView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)  // Optional: border color
+        } else {
+            // Reset styles for other cells
+            imageView.layer.borderWidth = 0  // No border
+            imageView.layer.borderColor = UIColor.clear.cgColor  // Clear color or whatever the default is
+        }
     }
     
     override func layoutSubviews() {

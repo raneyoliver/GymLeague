@@ -23,6 +23,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noGymsLabel: UILabel!
+    @IBOutlet weak var startWorkoutButton: UIButton!
+    @IBOutlet weak var cancelWorkoutButton: UIButton!
     let gymCheckButton = UIButton() // Create a button
     
     var myButton = GymButton()
@@ -36,6 +38,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
 
     var mapView: MKMapView!
     var mapViewContainer: UIView!
+    var currentCircle: MKCircle?
 
     var tableView: UITableView!
     var places = [Place]()
@@ -52,6 +55,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     let gymTypes = ["gym", "establishment", "point_of_interest"]
     let nonGymTypes = ["route", "locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2", "parking", "grocery_or_supermarket"]
+    
+    var selectedGym:Place!
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,45 +88,83 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
 
         // Start receiving location updates
-//        if CLLocationManager.locationServicesEnabled() {
-//            locationManager.startUpdatingLocation()
-//        }
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+        }
         db = Firestore.firestore()
                 
-        myButton = GymButton(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
-        myButton.setTitle("Start", for: .normal)
-        myButton.center = view.center
-        myButton.isHidden = false
-        view.addSubview(myButton)
-        myButton.addTarget(self, action: #selector(startWorkoutProcess), for: .touchUpInside)
+//        myButton = GymButton(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
+//        myButton.setTitle("Start", for: .normal)
+//        myButton.center = view.center
+//        myButton.isHidden = false
+//        view.addSubview(myButton)
+//        myButton.addTarget(self, action: #selector(startWorkoutProcess), for: .touchUpInside)
         
         noGymsLabel.isHidden = true
+        cancelWorkoutButton.isHidden = true
         
-        setupMapContainerView()
         setupTableView()
+        setupMapContainerView()
         setupSpinner()
-
         
         titleLabel.text = "Start a workout"
 
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        startWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let distance = tabBarController!.tabBar.frame.minY - tableView.frame.maxY
+        NSLayoutConstraint.activate([
+            startWorkoutButton.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
+            cancelWorkoutButton.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
+        ])
+    }
+
+    
+    func updateStartWorkoutButtonState() {
+        DispatchQueue.main.async {
+            if self.selectedGym != nil {
+                self.startWorkoutButton.setTitle("Start Workout", for: .normal)
+                self.startWorkoutButton.isEnabled = true
+            } else {
+                self.startWorkoutButton.setTitle("Select a gym", for: .normal)
+                self.startWorkoutButton.isEnabled = false
+            }
+        }
+    }
+
+    
+    @IBAction func startWorkoutButtonPressed(_ sender: Any) {
+        presentWorkoutConfirmationAlert(for: selectedGym)
+    }
+    
+    @IBAction func cancelWorkoutButtonPressed(_ sender: Any) {
+        presentCancelWorkoutConfirmationAlert()
+    }
     func setupSpinner() {
         view.addSubview(spinner)
         spinner.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            noGymsLabel.centerYAnchor.constraint(equalTo: tableView.centerYAnchor),
+            spinner.centerXAnchor.constraint(equalTo: noGymsLabel.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: noGymsLabel.centerYAnchor)
         ])
+        view.bringSubviewToFront(noGymsLabel)
     }
     
     func setupMapContainerView() {
-        mapViewContainer = UIView(frame: CGRect(x: 20, y: 100, width: self.view.bounds.width - 40, height: 300)) // Adjust frame as needed
+        mapViewContainer = UIView() // Adjust frame as needed
+        mapViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        mapViewContainer.frame = tableView.frame
         mapViewContainer.backgroundColor = .lightGray // So you can see the container
         mapViewContainer.isHidden = true
         mapViewContainer.layer.cornerRadius = 8
         mapViewContainer.clipsToBounds = true
-        mapViewContainer.center = view.center
+        //mapViewContainer.center = view.center
         view.addSubview(mapViewContainer)
         
         // Now add the map view to this container
@@ -142,7 +185,9 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.backgroundColor = CustomBackgroundView.color
+        tableView.backgroundColor = CustomBackgroundView.oneAboveColor
+        tableView.layer.cornerRadius = 8
+        tableView.clipsToBounds = true
         
         tableView.register(UINib(nibName: "PlaceTableViewCell", bundle: nil), forCellReuseIdentifier: "PlaceCell")
 
@@ -150,27 +195,19 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         // Set tableView frame or constraints here
         // Example frame setup
-        tableView.frame = CGRect(x: 5, y: 0, width: view.bounds.width - 10, height: view.bounds.height * 2 / 3)
-        tableView.center = view.center
-        tableView.isHidden = true
-    }
-    
-    @objc func startWorkoutProcess() {
-        // Hide the button
-        myButton.isHidden = true
+        let tabBarHeight:CGFloat = 41.5
+        tableView.frame = CGRect(x: 5, y: (view.bounds.height / 4) - tabBarHeight, width: view.bounds.width - 10, height: view.bounds.height / 2)
+        //tableView.center = view.center
         tableView.isHidden = false
-        titleLabel.text = "Choose a nearby gym"
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.startUpdatingLocation()
-        }
     }
     
     func checkInToGym(gym: Place) {
         // Show the map
         mapViewContainer.isHidden = false
-        
         tableView.isHidden = true
+        startWorkoutButton.isHidden = true
+        noGymsLabel.isHidden = true
+        cancelWorkoutButton.isHidden = false
         
         titleLabel.text = "Stay at the gym"
         
@@ -181,9 +218,15 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         let region = MKCoordinateRegion(center: gymLocation, latitudinalMeters: 500, longitudinalMeters: 500)
         mapView.setRegion(region, animated: true)
         
+        // Remove the existing circle if it exists
+        if let existingCircle = currentCircle {
+            mapView.removeOverlay(existingCircle)
+        }
+        
         // Add circular overlay to the map
         workoutZoneOverlay = MKCircle(center: gymLocation, radius: workoutRadiusInMeters)
         mapView.addOverlay(workoutZoneOverlay)
+        currentCircle = workoutZoneOverlay
         
         // Start the countdown timer
         countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
@@ -193,7 +236,10 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         if timeLeft > 0 {
             timeLeft -= 1
             // Update your label or annotation on the map with the remaining time
-            updateMapAnnotationWithTime()
+            DispatchQueue.main.async {
+                self.updateMapAnnotationWithTime()
+            }
+            
         } else {
             countdownTimer.invalidate()
             // Handle completion of the 20-minute period
@@ -225,12 +271,27 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     func handleWorkoutCompletion() {
         // Do something when the workout is completed
         // Maybe show a congratulatory message or log the workout
-        mapViewContainer.isHidden = true
-        tableView.isHidden = true
-        myButton.isHidden = false
+        DispatchQueue.main.async {
+            self.mapViewContainer.isHidden = true
+            self.tableView.isHidden = false
+            self.startWorkoutButton.isHidden = false
+            self.cancelWorkoutButton.isHidden = true
+            self.titleLabel.text = "Start a workout"
+            self.tableView.reloadData()
+            self.selectedGym = nil
+            self.updateStartWorkoutButtonState()
+        }
+        
         timeLeft = minimumWorkoutTime
         print("workout complete!")
-        titleLabel.text = "Start a workout"
+        
+        PointsService.shared.awardPoints(forUserID: UserData.shared.userID!) { success in
+            if success {
+                print("points awarded succesfully")
+            } else {
+                print("could not award points")
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -284,14 +345,18 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
     
     func updateUIWithGyms() {
-        if titleLabel.text == "Choose a nearby gym" {
+        if titleLabel.text == "Start a workout" {
+            updateStartWorkoutButtonState()
+            
             if places.isEmpty {
-                tableView.isHidden = true
+                //tableView.isHidden = true
                 noGymsLabel.isHidden = false  // noGymsLabel is your 'No Gyms' message label
+                startWorkoutButton.isEnabled = false
             } else {
-                tableView.isHidden = false
+                //tableView.isHidden = false
                 noGymsLabel.isHidden = true
                 tableView.reloadData()
+                startWorkoutButton.isEnabled = true
             }
         }
     }
@@ -353,12 +418,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                                 group.enter()
                                 self.fetchPhoto(for: photoReference) { fetchedImage in
                                     let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: fetchedImage)
-                                    //newPlaces.append(newPlace)
+                                    newPlaces.append(newPlace)
                                     group.leave()
                                 }
                             } else {
                                 let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, image: nil)
-                                //newPlaces.append(newPlace)
+                                newPlaces.append(newPlace)
                             }
                             
                         }
@@ -457,9 +522,10 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let selectedGym = places[indexPath.row]  // Assuming gyms is your data source
-        presentWorkoutConfirmationAlert(for: selectedGym)
+        selectedGym = places[indexPath.row]  // Assuming gyms is your data source
+        DispatchQueue.main.async {
+            self.updateStartWorkoutButtonState()
+        }
     }
     
     func presentWorkoutConfirmationAlert(for gym: Place) {
@@ -469,6 +535,32 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             self.checkInToGym(gym: gym)
         }))
         present(alert, animated: true)
+    }
+    
+    func presentCancelWorkoutConfirmationAlert() {
+        let alert = UIAlertController(title: "Cancel Workout", message: "You will not receive any points. Are you sure you want to cancel this workout?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+            self.cancelWorkout()
+        }))
+        present(alert, animated: true)
+    }
+    
+    func cancelWorkout () {
+        DispatchQueue.main.async {
+            self.mapViewContainer.isHidden = true
+            self.tableView.isHidden = false
+            self.startWorkoutButton.isHidden = false
+            self.cancelWorkoutButton.isHidden = true
+            self.titleLabel.text = "Start a workout"
+            self.tableView.reloadData()
+            self.selectedGym = nil
+            self.updateStartWorkoutButtonState()
+        }
+        
+        countdownTimer.invalidate()
+        timeLeft = minimumWorkoutTime
+        print("workout canceled by user")
     }
     
     // Add a UIButton in Interface Builder, and connect the action to this function.

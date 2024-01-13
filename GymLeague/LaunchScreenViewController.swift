@@ -63,7 +63,7 @@ class LaunchScreenViewController: UIViewController {
                 // User is new or error occurred, handle accordingly, perhaps adding the user
                 // For new user, add them to leaderboard here
                 // Add a new leaderboard entry for the user
-                LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, name: UserData.shared.givenName!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!) { success in
+                LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, name: UserData.shared.givenName!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!) { success in
                     if success {
                         print("New leaderboard entry added for the user.")
                     } else {

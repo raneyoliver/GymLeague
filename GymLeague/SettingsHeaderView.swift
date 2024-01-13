@@ -26,14 +26,16 @@ class SettingsHeaderView: UITableViewHeaderFooterView {
 
     private func setupHeader() {
         // Configure returnButton
-        if let image = UIImage(systemName: "arrow.left") {
+        if let image = UIImage(systemName: "chevron.down") {
             returnButton.setImage(image, for: .normal)
         }
         returnButton.addTarget(self, action: #selector(returnButtonTapped), for: .touchUpInside)
         
         // Configure titleLabel
         titleLabel.text = "Settings"
-        titleLabel.textAlignment = .center
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        titleLabel.textAlignment = .left
         
         addSubview(titleLabel)
         addSubview(returnButton)
@@ -44,15 +46,15 @@ class SettingsHeaderView: UITableViewHeaderFooterView {
         
         // Constraints for titleLabel (centered in header)
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            titleLabel.widthAnchor.constraint(equalToConstant: 100),
-            titleLabel.heightAnchor.constraint(equalToConstant: 50)
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            //titleLabel.widthAnchor.constraint(equalToConstant: 100),
+            //titleLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         // Constraints for returnButton (aligned to left and vertically centered)
         NSLayoutConstraint.activate([
-            returnButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+            returnButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
             returnButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             returnButton.widthAnchor.constraint(equalToConstant: 50),
             returnButton.heightAnchor.constraint(equalToConstant: 50)
