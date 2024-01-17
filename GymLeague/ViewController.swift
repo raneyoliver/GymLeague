@@ -16,7 +16,10 @@ struct Place {
     let types: [String]
     let coordinate: CLLocationCoordinate2D
     let photoReference: String?
-    var image:UIImage?
+    var image: UIImage?
+    let backgroundColor: UIColor
+    let distance: Double?
+    let isGym: Bool
 }
 
 class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, PlaceTableViewCellDelegate {
@@ -25,6 +28,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     @IBOutlet weak var noGymsLabel: UILabel!
     @IBOutlet weak var startWorkoutButton: UIButton!
     @IBOutlet weak var cancelWorkoutButton: UIButton!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
     let gymCheckButton = UIButton() // Create a button
     
     var myButton = GymButton()
@@ -33,13 +38,14 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     var locationManager: CLLocationManager!
     var db: Firestore!
     
-    var currentAddress:String!
+    var location: CLLocation!
     var lastLocationUpdate: Date?
 
     var mapView: MKMapView!
     var mapViewContainer: UIView!
     var currentCircle: MKCircle?
 
+    private let refreshControl = UIRefreshControl()
     var tableView: UITableView!
     var places = [Place]()
     
@@ -53,7 +59,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     let workoutRadiusInMeters:Double = 100
     let searchRadiusInMeters:Double = 50
     
-    let gymTypes = ["gym", "establishment", "point_of_interest"]
+    let gymTypes = ["gym"]
     let nonGymTypes = ["route", "locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2", "parking", "grocery_or_supermarket"]
     
     var selectedGym:Place!
@@ -92,18 +98,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             locationManager.startUpdatingLocation()
         }
         db = Firestore.firestore()
-                
-//        myButton = GymButton(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
-//        myButton.setTitle("Start", for: .normal)
-//        myButton.center = view.center
-//        myButton.isHidden = false
-//        view.addSubview(myButton)
-//        myButton.addTarget(self, action: #selector(startWorkoutProcess), for: .touchUpInside)
         
         noGymsLabel.isHidden = true
         cancelWorkoutButton.isHidden = true
         
         setupTableView()
+        setupSegmentedControl()
         setupMapContainerView()
         setupSpinner()
         
@@ -122,6 +122,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             startWorkoutButton.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
             cancelWorkoutButton.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
         ])
+
     }
 
     
@@ -145,6 +146,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     @IBAction func cancelWorkoutButtonPressed(_ sender: Any) {
         presentCancelWorkoutConfirmationAlert()
     }
+
+    @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        tableView.reloadData() // Reload the table view data whenever the segment changes
+        updateUIWithGyms()
+    }
+    
     func setupSpinner() {
         view.addSubview(spinner)
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -154,6 +161,14 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             spinner.centerYAnchor.constraint(equalTo: noGymsLabel.centerYAnchor)
         ])
         view.bringSubviewToFront(noGymsLabel)
+    }
+    
+    func setupSegmentedControl() {
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            segmentedControl.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -8),
+            segmentedControl.trailingAnchor.constraint(equalTo: tableView.trailingAnchor)
+        ])
     }
     
     func setupMapContainerView() {
@@ -199,6 +214,29 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         tableView.frame = CGRect(x: 5, y: (view.bounds.height / 4) - tabBarHeight, width: view.bounds.width - 10, height: view.bounds.height / 2)
         //tableView.center = view.center
         tableView.isHidden = false
+        
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        } else {
+            tableView.addSubview(refreshControl)
+        }
+        
+        // Configure Refresh Control
+        refreshControl.addTarget(self, action: #selector(refreshPlacesData(_:)), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Scroll up to refresh")
+    }
+    
+    @objc private func refreshPlacesData(_ sender: Any) {
+        // Perform the re-search here
+        isTypeNearby(location: location, type: nil) { success in
+            // Handle the result of the unfiltered search
+            DispatchQueue.main.async {
+                // Update the UI accordingly
+                self.updateUIWithGyms()
+                self.refreshControl.endRefreshing()
+            }
+        }
     }
     
     func checkInToGym(gym: Place) {
@@ -208,6 +246,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         startWorkoutButton.isHidden = true
         noGymsLabel.isHidden = true
         cancelWorkoutButton.isHidden = false
+        segmentedControl.isHidden = true
         
         titleLabel.text = "Stay at the gym"
         
@@ -276,6 +315,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             self.tableView.isHidden = false
             self.startWorkoutButton.isHidden = false
             self.cancelWorkoutButton.isHidden = true
+            self.segmentedControl.isHidden = false
             self.titleLabel.text = "Start a workout"
             self.tableView.reloadData()
             self.selectedGym = nil
@@ -295,9 +335,10 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if !mapViewContainer.isHidden { return }
+        location = locations.last
         
-        guard let location = locations.last else { return }
+    
+        if !mapViewContainer.isHidden { return }
         
         // Check if at least 5 seconds have passed since the last update
         if let lastUpdate = lastLocationUpdate, Date().timeIntervalSince(lastUpdate) < 5 {
@@ -309,53 +350,27 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         lastLocationUpdate = Date()  // Update the timestamp
         
         // Now, use the Google Places API to check for nearby gyms
-        checkForNearbyGyms(location: location) { isNearby in
-            if isNearby {
-                print("User is within radius of a relevant location")
-            } else {
-                print("No relevant locations found within radius.")
-            }
-            
+        isTypeNearby(location: location, type: nil) { success in
+            // Handle the result of the unfiltered search
             DispatchQueue.main.async {
+                // Update the UI accordingly
                 self.updateUIWithGyms()
-                //self.gymCheckButton.isEnabled = isNearby
             }
         }
-        
     }
-    
-    func checkForNearbyGyms(location: CLLocation, completion: @escaping (Bool) -> Void) {
-        // Recursive function to try the next type if the current one fails
-        func tryNextType(index: Int) {
-            if index >= gymTypes.count {
-                completion(false)  // No more types to try
-                return
-            }
-            
-            isTypeNearby(location: location, type: gymTypes[index]) { found in
-                if found {
-                    completion(true)  // Found places of the current type
-                } else {
-                    tryNextType(index: index + 1)  // Try the next type
-                }
-            }
-        }
-        
-        tryNextType(index: 0)  // Start with the first type
-    }
-    
+
     func updateUIWithGyms() {
         if titleLabel.text == "Start a workout" {
             updateStartWorkoutButtonState()
             
-            if places.isEmpty {
+            if tableView.numberOfRows(inSection: 0) == 0 {
                 //tableView.isHidden = true
                 noGymsLabel.isHidden = false  // noGymsLabel is your 'No Gyms' message label
                 startWorkoutButton.isEnabled = false
             } else {
                 //tableView.isHidden = false
                 noGymsLabel.isHidden = true
-                tableView.reloadData()
+                //tableView.reloadData()
                 startWorkoutButton.isEnabled = true
             }
         }
@@ -371,12 +386,16 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         return coordinateString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
     
-    func isTypeNearby(location: CLLocation, type: String, completion: @escaping (Bool) -> Void) {
+    func isTypeNearby(location: CLLocation, type: String?, completion: @escaping (Bool) -> Void) {
         let locationString = locationString(from: location)
         
         let apiKey = Config.getGooglePlacesAPIKey()
         
-        let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(searchRadiusInMeters)&type=\(type)&key=\(apiKey)"
+        var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(searchRadiusInMeters)&key=\(apiKey)"
+        if let type = type {
+            urlString += "&type=\(type)"
+        }
+        
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
             completion(false)
@@ -404,7 +423,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                     for result in results {
                         if let name = result["name"] as? String,
                            let types = result["types"] as? [String],
-                           self.isGym(types),
+                           (type == nil || self.isGym(types)),
                            !self.places.contains(where: { $0.name == name }),
                            let geometry = result["geometry"] as? [String: Any],
                            let location = geometry["location"] as? [String: Double],
@@ -413,16 +432,20 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                             
                             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
                             let photoReference = (result["photos"] as? [[String: Any]])?.first?["photo_reference"] as? String
+                            let backgroundColor = CustomBackgroundView.randomColor()
+                            let toLocation = CLLocation(latitude: lat, longitude: lng)
+                            let distance = self.calculateDistance(fromLocation: self.location, toLocation: toLocation)
+                            let isGym = self.isGym(types)
                             
                             if let photoReference = photoReference {
                                 group.enter()
                                 self.fetchPhoto(for: photoReference) { fetchedImage in
-                                    let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: fetchedImage)
+                                    let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: fetchedImage, backgroundColor: backgroundColor, distance: distance, isGym: isGym)
                                     newPlaces.append(newPlace)
                                     group.leave()
                                 }
                             } else {
-                                let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, image: nil)
+                                let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym)
                                 newPlaces.append(newPlace)
                             }
                             
@@ -432,11 +455,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                     }
                     
                     group.notify(queue: .main) {
+                        newPlaces = newPlaces.sorted {$0.distance! < $1.distance!}
                         self.places = newPlaces
                         self.tableView.reloadData()
                         completion(!results.isEmpty)
                     }
-    
+                    
                 } else {
                     DispatchQueue.main.async {
                         completion(false)
@@ -457,13 +481,20 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                     self.noGymsLabel.isHidden = false
                 }
             }
-            
         }
         task.resume()
     }
     
+    func calculateDistance(fromLocation: CLLocation, toLocation: CLLocation) -> Double {
+        let distanceInMeters = fromLocation.distance(from: toLocation)
+        let distanceInMiles = distanceInMeters / 1609.34  // meters to miles
+
+        return distanceInMiles
+    }
+
+    
     func fetchPhoto(for reference: String, completion: @escaping (UIImage?) -> Void) {
-        let photoURLString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=373&photoreference=\(reference)&key=\(Config.getGooglePlacesAPIKey())"
+        let photoURLString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=\(reference)&key=\(Config.getGooglePlacesAPIKey())"
         guard let photoURL = URL(string: photoURLString) else {
             completion(nil)
             return
@@ -482,11 +513,18 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
 
     
     func isGym(_ types: [String]) -> Bool {
-        return !types.contains(where: nonGymTypes.contains)
+        return types.contains(where: gymTypes.contains)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return places.count
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // Filter segment
+            return places.filter { place in
+                gymTypes.contains(where: place.types.contains)
+            }.count
+        default: // All segment
+            return places.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -494,10 +532,20 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             fatalError("Could not dequeue PlaceTableViewCell")
         }
         
+        let place: Place
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // Filter segment
+            place = places.filter { place in
+                gymTypes.contains(where: place.types.contains)
+            }[indexPath.row]
+        default: // All segment
+            place = places[indexPath.row]
+        }
+        
         cell.delegate = self
         
-        let place = places[indexPath.row]
-        cell.configure(with: place)
+        //let place = places[indexPath.row]
+        cell.configure(with: place, location: location)
         
 //        if let image = place.image {
 //            cell.backgroundImage.image = image
@@ -552,6 +600,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             self.tableView.isHidden = false
             self.startWorkoutButton.isHidden = false
             self.cancelWorkoutButton.isHidden = true
+            self.segmentedControl.isHidden = false
             self.titleLabel.text = "Start a workout"
             self.tableView.reloadData()
             self.selectedGym = nil

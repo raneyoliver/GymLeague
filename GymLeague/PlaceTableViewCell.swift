@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class PlaceTableViewCell: UITableViewCell {
     weak var delegate: PlaceTableViewCellDelegate?
@@ -14,6 +15,10 @@ class PlaceTableViewCell: UITableViewCell {
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
+    
+    @IBOutlet weak var symbolButton: UIButton!
+    @IBOutlet weak var textLabelView: UIView!
+    var initialColor: UIColor!
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -43,7 +48,12 @@ class PlaceTableViewCell: UITableViewCell {
         backgroundImage.isUserInteractionEnabled = true
         
         // Initialization code
+        nameLabel.numberOfLines = 0
+        //nameLabel.backgroundColor = CustomBackgroundView.twoAboveColor
+        textLabelView.layer.cornerRadius = 8
+        textLabelView.clipsToBounds = true
         typeLabel.numberOfLines = 0
+        
 //
         //setupLayout()
 
@@ -66,7 +76,7 @@ class PlaceTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        containerView.backgroundColor = selected ? CustomBackgroundView.threeAboveColor : CustomBackgroundView.twoAboveColor  // Change colors as needed
+        containerView.backgroundColor = selected ? initialColor.withAlphaComponent(0.2) : initialColor  // Change colors as needed
         
         containerView.layer.borderWidth = selected ? 3.0 : 0.0  // Optional: if you want a border
         containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)  // Optional: border color
@@ -76,13 +86,36 @@ class PlaceTableViewCell: UITableViewCell {
         super.setHighlighted(highlighted, animated: animated)
 
         // Configure the view for the highlighted state
-        containerView.backgroundColor = highlighted ? CustomBackgroundView.threeAboveColor : CustomBackgroundView.twoAboveColor  // Change colors as needed
+        containerView.backgroundColor = highlighted ? initialColor.withAlphaComponent(0.2) : initialColor  // Change colors as needed
     }
     
-    func configure(with place: Place) {
+    func configure(with place: Place, location: CLLocation) {
         // Set up the cell's UI elements with data from the place
         nameLabel.text = place.name
-        typeLabel.text = place.types.joined(separator: "\n")
+        typeLabel.text = distanceToString(distanceInMiles: place.distance!)
+        //print(typeLabel.text!)
+        initialColor = CustomBackgroundView.twoAboveColor //place.backgroundColor.withAlphaComponent(0.3)
+        containerView.backgroundColor = initialColor
+        textLabelView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        backgroundImage.image = UIImage(systemName: "photo")
+        if let image = place.image {
+            backgroundImage.image = image
+            backgroundImage.isUserInteractionEnabled = true
+        } else {
+            backgroundImage.isUserInteractionEnabled = false
+        }
+        
+        let image:UIImage?
+        let symbolConfiguration = UIImage.SymbolConfiguration(scale: .small)
+        if place.isGym {
+            image = UIImage(systemName: "checkmark.seal.fill", withConfiguration: symbolConfiguration)
+            symbolButton.tintColor = UIColor.systemBlue
+        } else {
+            image = UIImage(systemName: "exclamationmark.triangle.fill", withConfiguration: symbolConfiguration)
+            symbolButton.tintColor = UIColor.systemYellow
+        }
+        
+        symbolButton.setImage(image, for: .normal)
     }
 
 //    private func setupLayout() {
@@ -100,7 +133,15 @@ class PlaceTableViewCell: UITableViewCell {
         // Adjust the frame of backgroundImage to match the containerView
         backgroundImage.frame = containerView.bounds
     }
-
+    
+    func distanceToString(distanceInMiles: Double) -> String {
+        if distanceInMiles < 0.2 {
+            let distanceInFeet = distanceInMiles * 5280  // miles to feet
+            return "\(Int(distanceInFeet)) ft"
+        } else {
+            return String(format: "%.2f mi", distanceInMiles)
+        }
+    }
     
 }
 

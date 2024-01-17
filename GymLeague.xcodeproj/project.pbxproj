@@ -35,6 +35,7 @@
 		A71751092B4CD5F200BC5128 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */; };
 		A77C89002B4F0BF200EB2120 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */; };
 		A77C89022B5086E800EB2120 /* PointsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C89012B5086E800EB2120 /* PointsService.swift */; };
+		A77C89042B53626F00EB2120 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */; };
 		A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0963F2B3F502300378E5F /* AppDelegate.swift */; };
 		A7D096422B3F502300378E5F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096412B3F502300378E5F /* SceneDelegate.swift */; };
 		A7D096442B3F502300378E5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096432B3F502300378E5F /* ViewController.swift */; };
@@ -93,6 +94,7 @@
 		A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
 		A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		A77C89012B5086E800EB2120 /* PointsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsService.swift; sourceTree = "<group>"; };
+		A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		A7D0963C2B3F502300378E5F /* GymLeague.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymLeague.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D0963F2B3F502300378E5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D096412B3F502300378E5F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				A71750FC2B49C02400BC5128 /* CustomBackgroundView.swift */,
+				A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */,
 				A7D0963F2B3F502300378E5F /* AppDelegate.swift */,
 				A7D096762B3F81F200378E5F /* Config.swift */,
 				A7D096412B3F502300378E5F /* SceneDelegate.swift */,
@@ -379,6 +382,7 @@
 				A71751032B4B2C8500BC5128 /* SettingsHeaderView.swift in Sources */,
 				A71750E02B41F6F000BC5128 /* UserData.swift in Sources */,
 				A71750FF2B49DEBB00BC5128 /* CustomHeaderView.swift in Sources */,
+				A77C89042B53626F00EB2120 /* MainTabBarViewController.swift in Sources */,
 				A77C89022B5086E800EB2120 /* PointsService.swift in Sources */,
 				A71750F12B45EE3600BC5128 /* AuthenticationService.swift in Sources */,
 				A71751012B4B26C700BC5128 /* SettingsTableViewController.swift in Sources */,

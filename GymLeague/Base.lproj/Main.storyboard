@@ -73,7 +73,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No gyms found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQv-ZT-2iO">
                                 <rect key="frame" x="144.33333333333334" y="417" width="104.33333333333334" height="18"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Workout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RM-Hq-cDk">
@@ -82,13 +82,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-tI-5rJ">
-                                <rect key="frame" x="135.33333333333334" y="409" width="122.66666666666666" height="34.333333333333314"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Select a gym"/>
-                                <connections>
-                                    <action selector="startWorkoutButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="seQ-5p-F2y"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uen-Dc-yzw">
                                 <rect key="frame" x="124" y="408.66666666666669" width="145" height="35"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Cancel Workout">
@@ -98,15 +91,38 @@
                                     <action selector="cancelWorkoutButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pMI-J0-9Pk"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-tI-5rJ">
+                                <rect key="frame" x="110" y="402" width="173" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="CQc-ju-cFN"/>
+                                    <constraint firstAttribute="width" constant="173" id="Qpm-CE-Vaa"/>
+                                </constraints>
+                                <buttonConfiguration key="configuration" style="filled" title="Select a gym"/>
+                                <connections>
+                                    <action selector="startWorkoutButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="seQ-5p-F2y"/>
+                                </connections>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="wKP-hi-H0Y">
+                                <rect key="frame" x="149" y="205" width="95" height="32"/>
+                                <segments>
+                                    <segment title="Gym"/>
+                                    <segment title="All"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControlValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="ocM-73-yf2"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="hQv-ZT-2iO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2E3-JG-Hgp"/>
+                            <constraint firstItem="wKP-hi-H0Y" firstAttribute="top" secondItem="9RM-Hq-cDk" secondAttribute="bottom" constant="97" placeholder="YES" id="2c2-dV-gzG"/>
                             <constraint firstItem="Tdu-tI-5rJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3uW-Vw-F9Y"/>
                             <constraint firstItem="Tdu-tI-5rJ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="P4p-hG-Odc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9RM-Hq-cDk" secondAttribute="trailing" constant="16" id="Vgs-7y-hCd"/>
                             <constraint firstItem="uen-Dc-yzw" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="fKV-l4-ao5"/>
+                            <constraint firstItem="wKP-hi-H0Y" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="j8D-mb-8CP"/>
                             <constraint firstItem="uen-Dc-yzw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kdU-rv-i81"/>
                             <constraint firstItem="9RM-Hq-cDk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="n2e-l7-tAT"/>
                             <constraint firstItem="hQv-ZT-2iO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="npT-np-ysV"/>
@@ -117,6 +133,7 @@
                     <connections>
                         <outlet property="cancelWorkoutButton" destination="uen-Dc-yzw" id="7qH-PQ-5e9"/>
                         <outlet property="noGymsLabel" destination="hQv-ZT-2iO" id="LNh-t9-U6R"/>
+                        <outlet property="segmentedControl" destination="wKP-hi-H0Y" id="TSV-Rp-jXV"/>
                         <outlet property="startWorkoutButton" destination="Tdu-tI-5rJ" id="AcD-8j-bQt"/>
                         <outlet property="titleLabel" destination="9RM-Hq-cDk" id="1k8-0L-lVF"/>
                     </connections>
