@@ -19,25 +19,72 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tvu-cg-sOZ" customClass="GIDSignInButton">
-                                <rect key="frame" x="132.66666666666666" y="362" width="127.99999999999997" height="128"/>
+                                <rect key="frame" x="172.66666666666666" y="631" width="48" height="48"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="128" id="3SP-F6-09i"/>
-                                    <constraint firstAttribute="height" constant="128" id="Gm7-Wh-XN3"/>
+                                    <constraint firstAttribute="height" constant="48" id="G0L-CA-c2e"/>
+                                    <constraint firstAttribute="width" constant="48" id="Ijz-kZ-Xxy"/>
                                 </constraints>
                                 <connections>
                                     <action selector="signInButtonTapped:" destination="QgF-fW-tUm" eventType="touchUpInside" id="Or8-Qq-iAn"/>
                                 </connections>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="badge_new" translatesAutoresizingMaskIntoConstraints="NO" id="tPL-F2-OAF">
+                                <rect key="frame" x="76.666666666666686" y="306" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="3Ss-fb-Vcj"/>
+                                    <constraint firstAttribute="height" constant="240" id="Te7-Qm-1Y6"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Fv-pa-H77">
+                                <rect key="frame" x="164.33333333333334" y="575" width="64.666666666666657" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="27" id="Xye-X2-WtE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gym League" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42P-3j-hGe">
+                                <rect key="frame" x="104" y="162" width="185" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="41" id="XZ7-HA-JEg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beta" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z38-nU-8oF">
+                                <rect key="frame" x="181" y="211" width="31.333333333333343" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RSb-BR-ddL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
                         <constraints>
-                            <constraint firstItem="tvu-cg-sOZ" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="Ept-Lg-Ugw"/>
-                            <constraint firstItem="tvu-cg-sOZ" firstAttribute="centerY" secondItem="KwN-dO-mvh" secondAttribute="centerY" id="GPp-uF-bMF"/>
+                            <constraint firstItem="42P-3j-hGe" firstAttribute="top" secondItem="RSb-BR-ddL" secondAttribute="top" constant="103" id="7SI-V5-hvZ"/>
+                            <constraint firstItem="8Fv-pa-H77" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="7eP-Ey-qel"/>
+                            <constraint firstItem="8Fv-pa-H77" firstAttribute="top" secondItem="tPL-F2-OAF" secondAttribute="bottom" constant="29" id="B4D-Y2-hzp"/>
+                            <constraint firstItem="tPL-F2-OAF" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="FOb-QU-gm0"/>
+                            <constraint firstItem="z38-nU-8oF" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="JHH-Q3-NFA"/>
+                            <constraint firstItem="42P-3j-hGe" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="Oaj-UJ-AXL"/>
+                            <constraint firstItem="z38-nU-8oF" firstAttribute="top" secondItem="42P-3j-hGe" secondAttribute="bottom" constant="8" symbolic="YES" id="SjE-pW-F9n"/>
+                            <constraint firstItem="tvu-cg-sOZ" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="brL-As-KXZ"/>
+                            <constraint firstItem="tPL-F2-OAF" firstAttribute="centerY" secondItem="KwN-dO-mvh" secondAttribute="centerY" id="oYJ-T4-xyd"/>
+                            <constraint firstItem="tvu-cg-sOZ" firstAttribute="top" secondItem="8Fv-pa-H77" secondAttribute="bottom" constant="29" id="rWI-rA-zdH"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="signInButton" destination="tvu-cg-sOZ" id="AkW-dd-4YW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xau-5c-D2T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -329,10 +376,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="badge_new" width="1024" height="1024"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="rosette" catalog="system" width="107" height="128"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

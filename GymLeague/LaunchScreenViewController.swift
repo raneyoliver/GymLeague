@@ -17,9 +17,18 @@ class LaunchScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = CustomBackgroundView.color
+        
         db = Firestore.firestore()
+        
+        setupSignInButton()
     }
     
+    func setupSignInButton() {
+        signInButton.style = GIDSignInButtonStyle.iconOnly
+    }
+    
+    @IBOutlet weak var signInButton: GIDSignInButton!
     
     @IBAction func signInButtonTapped(_ sender: Any) {
         print("sign-in button tapped")
