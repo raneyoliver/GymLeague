@@ -60,7 +60,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     var workoutZoneOverlay: MKCircle!
     var countdownTimer: Timer!
     
-    let minimumWorkoutTime = 10 //20 * 60 // 20 minutes in seconds
+    let minimumWorkoutTime = 20 * 60 // 20 minutes in seconds
     var timeLeft:Int!
     let workoutRadiusInMeters:Double = 100
     let searchRadiusInMeters:Double = 75

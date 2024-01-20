@@ -67,6 +67,7 @@ class LaunchScreenViewController: UIViewController {
             if document != nil {
                 // User already has a leaderboard entry
                 print("ensureUserOnLeaderboard: User already has a leaderboard entry")
+                UserData.shared.updateLeaderboardInfo(with: document!.data())
                 completion(true)
             } else {
                 // User is new or error occurred, handle accordingly, perhaps adding the user
