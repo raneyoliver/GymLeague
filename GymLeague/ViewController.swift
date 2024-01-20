@@ -63,7 +63,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     let minimumWorkoutTime = 10 //20 * 60 // 20 minutes in seconds
     var timeLeft:Int!
     let workoutRadiusInMeters:Double = 100
-    let searchRadiusInMeters:Double = 50
+    let searchRadiusInMeters:Double = 75
     
     let gymTypes = ["gym"]
     let nonGymTypes = ["route", "locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2", "administrative_area_level_3", "parking", "grocery_or_supermarket", "airport", "bus_station", "train_station", "transit_station", "subway_station", "natural_feature", "store", "supermarket", "shopping_mall", "restaurant", "cafe", "food", "clothing_store", "book_store", "furniture_store", "lodging", "hotel", "park", "campground", "zoo", "aquarium", "cemetery", "funeral_home", "library", "museum", "art_gallery", "church", "mosque", "synagogue"]
@@ -482,6 +482,18 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
 
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        // Check if this is the first location update
+        if location == nil {
+            location = locations.last
+            spinner.startAnimating()
+            isTypeNearby(location: location, type: nil) { success in
+                DispatchQueue.main.async {
+                    self.updateUIWithGyms()
+                }
+            }
+        }
+        
         location = locations.last
         
     
@@ -498,18 +510,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             return  // Less than 5 seconds passed, ignoring this update
         }
         
-        spinner.startAnimating()
-        
         lastLocationUpdate = Date()  // Update the timestamp
         
-        // Now, use the Google Places API to check for nearby gyms
-        isTypeNearby(location: location, type: nil) { success in
-            // Handle the result of the unfiltered search
-            DispatchQueue.main.async {
-                // Update the UI accordingly
-                self.updateUIWithGyms()
-            }
-        }
     }
 
     func updateUIWithGyms() {
@@ -684,12 +686,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         FirestoreService.shared.checkWhitelistStatus(for: gym) { whitelistStatus in
             if whitelistStatus == "whitelisted" {
-                print("The gym is whitelisted.")
                 completion(true)
             } else {
-                print("The gym is not whitelisted.")
                 completion(types.contains(where: self.gymTypes.contains))
             }
+            
+            print("\(gym.name) has whitelistStatus: \(whitelistStatus).")
         }
     }
     
@@ -698,13 +700,17 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        let potentialPlaces = places.filter { place in
+            place.whitelistStatus != "blacklisted"
+        }
         switch segmentedControl.selectedSegmentIndex {
         case 0: // Filter segment
-            return places.filter { place in
+            return potentialPlaces.filter { place in
                 place.isGym
             }.count
         default: // All segment
-            return places.filter { place in
+            return potentialPlaces.filter { place in
                 !place.isRouteCityOrOther
             }.count
         }
@@ -716,13 +722,16 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         }
         
         let place: Place
+        let potentialPlaces = places.filter { place in
+            place.whitelistStatus != "blacklisted"
+        }
         switch segmentedControl.selectedSegmentIndex {
         case 0: // Filter segment
-            place = places.filter { place in
+            place = potentialPlaces.filter { place in
                 place.isGym
             }[indexPath.row]
         default: // All segment
-            place = places.filter { place in
+            place = potentialPlaces.filter { place in
                 !place.isRouteCityOrOther
             }[indexPath.row]
         }
