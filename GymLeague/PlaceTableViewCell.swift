@@ -111,7 +111,7 @@ class PlaceTableViewCell: UITableViewCell {
         if place.isGym {
             image = UIImage(systemName: "checkmark.seal.fill", withConfiguration: symbolConfiguration)
             symbolButton.tintColor = UIColor.systemBlue
-        } else if place.hasWhitelistRequest {
+        } else if place.whitelistStatus == "pending" {
             image = UIImage(systemName: "hourglass", withConfiguration: symbolConfiguration)
             symbolButton.tintColor = UIColor.lightGray
         } else {

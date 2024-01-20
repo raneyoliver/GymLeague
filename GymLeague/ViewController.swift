@@ -21,7 +21,7 @@ struct Place {
     let distance: Double?
     let isGym: Bool
     let isRouteCityOrOther: Bool
-    var hasWhitelistRequest: Bool = false
+    var whitelistStatus: String
 }
 
 class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, PlaceTableViewCellDelegate {
@@ -329,7 +329,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
 
     func checkInToGym(gym: Place, viewController: UIViewController) {
-        if !gym.isGym, !gym.hasWhitelistRequest {
+        if !gym.isGym, gym.whitelistStatus == "none" {
             showUnverifiedGymAlert(for: gym, viewController: viewController) {
                 // Logic to handle the gym whitelisting request
                 FirestoreService.shared.storeWhitelistRequest(for: gym) { success, error in
@@ -593,9 +593,11 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                             self.isGym(name: name, coordinate: coordinate, types: types) { isGym in
                                 // Check if the place has a whitelist request
                                 group.enter()
-                                FirestoreService.shared.checkWhitelistRequest(for: Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym, isRouteCityOrOther: isRouteCityOrOther, hasWhitelistRequest: false)) { hasWhitelistRequest in
+                                FirestoreService.shared.checkWhitelistStatus(for: Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym, isRouteCityOrOther: isRouteCityOrOther, whitelistStatus: "")) { whitelistStatus in
                                     
-                                    var newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym, isRouteCityOrOther: isRouteCityOrOther, hasWhitelistRequest: hasWhitelistRequest)
+                                    
+                            
+                                    var newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym, isRouteCityOrOther: isRouteCityOrOther, whitelistStatus: whitelistStatus)
                                     
                                     if let photoReference = photoReference {
                                         self.fetchPhoto(for: photoReference) { fetchedImage in
@@ -678,10 +680,10 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
 
     
     func isGym(name: String, coordinate: CLLocationCoordinate2D, types: [String], completion: @escaping (Bool) -> Void) {
-        let gym = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, backgroundColor: UIColor(), distance: nil, isGym: false, isRouteCityOrOther: false)
+        let gym = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, backgroundColor: UIColor(), distance: nil, isGym: false, isRouteCityOrOther: false, whitelistStatus: "")
         
-        FirestoreService.shared.isGymWhitelisted(gym: gym) { isWhitelisted in
-            if isWhitelisted {
+        FirestoreService.shared.checkWhitelistStatus(for: gym) { whitelistStatus in
+            if whitelistStatus == "whitelisted" {
                 print("The gym is whitelisted.")
                 completion(true)
             } else {

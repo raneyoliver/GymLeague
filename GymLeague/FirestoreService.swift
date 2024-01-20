@@ -31,7 +31,8 @@ class FirestoreService {
                     "name": place.name,
                     "latitude": place.coordinate.latitude,
                     "longitude": place.coordinate.longitude,
-                    "timestamp": Date().timeIntervalSince1970
+                    "timestamp": Date().timeIntervalSince1970,
+                    "status": "pending"
                 ]
 
                 collectionRef.addDocument(data: requestData) { error in
@@ -48,7 +49,7 @@ class FirestoreService {
         }
     }
     
-    func checkWhitelistRequest(for place: Place, completion: @escaping (Bool) -> Void) {
+    func checkWhitelistStatus(for place: Place, completion: @escaping (String) -> Void) {
         let collectionRef = db.collection("gym_whitelist_requests")
         let query = collectionRef.whereField("name", isEqualTo: place.name)
                                 .whereField("latitude", isEqualTo: place.coordinate.latitude)
@@ -57,40 +58,19 @@ class FirestoreService {
         query.getDocuments { snapshot, error in
             if let error = error {
                 print("Error checking whitelist requests: \(error)")
-                completion(false)
+                completion("")
                 return
             }
 
             if let snapshot = snapshot, !snapshot.documents.isEmpty {
                 // Place has a whitelist request
-                completion(true)
+                let status = (snapshot.documents.first?["status"] ?? "") as? String
+                completion(status!)
             } else {
                 // Place does not have a whitelist request
-                completion(false)
+                completion("none")
             }
         }
     }
     
-    func isGymWhitelisted(gym: Place, completion: @escaping (Bool) -> Void) {
-        let collectionRef = db.collection("whitelisted_gyms")
-        let query = collectionRef.whereField("name", isEqualTo: gym.name)
-                                .whereField("latitude", isEqualTo: gym.coordinate.latitude)
-                                .whereField("longitude", isEqualTo: gym.coordinate.longitude)
-
-        query.getDocuments { snapshot, error in
-            if let error = error {
-                print("Error checking whitelisted gyms: \(error)")
-                completion(false)
-                return
-            }
-
-            if let snapshot = snapshot, !snapshot.documents.isEmpty {
-                // Gym is whitelisted
-                completion(true)
-            } else {
-                // Gym is not whitelisted
-                completion(false)
-            }
-        }
-    }
 }
