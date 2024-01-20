@@ -61,15 +61,25 @@ class LaunchScreenViewController: UIViewController {
                 completion(true)
             } else {
                 // User is new or error occurred, handle accordingly, perhaps adding the user
-                // For new user, add them to leaderboard here
-                // Add a new leaderboard entry for the user
-                LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, name: UserData.shared.givenName!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!) { success in
-                    if success {
-                        print("New leaderboard entry added for the user.")
-                    } else {
-                        print("Failed to add a new leaderboard entry.")
+                
+                AuthenticationService.shared.promptForUsername(viewController: self) { username in
+                    guard let username = username else {
+                        print("Username entry was cancelled")
+                        return
                     }
-                    completion(success)
+                    
+                    UserData.shared.username = username
+                    
+                    // For new user, add them to leaderboard here
+                    // Add a new leaderboard entry for the user
+                    LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, name: UserData.shared.givenName!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username) { success in
+                        if success {
+                            print("New leaderboard entry added for the user.")
+                        } else {
+                            print("Failed to add a new leaderboard entry.")
+                        }
+                        completion(success)
+                    }
                 }
             }
         }

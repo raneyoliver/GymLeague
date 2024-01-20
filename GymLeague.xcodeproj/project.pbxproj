@@ -48,7 +48,9 @@
 		A7D096712B3F7E5000378E5F /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = A7D096702B3F7E5000378E5F /* GooglePlaces */; };
 		A7D096752B3F816D00378E5F /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A7D096742B3F816D00378E5F /* .gitignore */; };
 		A7D096772B3F81F200378E5F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D096762B3F81F200378E5F /* Config.swift */; };
-		A7D096782B3F852400378E5F /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7D096722B3F808600378E5F /* keys.plist */; };
+		A7DF6CB72B583C5500422D13 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7DF6CB62B583C5500422D13 /* keys.plist */; };
+		A7DF6CBE2B5ADEFF00422D13 /* username_filters in Resources */ = {isa = PBXBuildFile; fileRef = A7DF6CBD2B5ADEFF00422D13 /* username_filters */; };
+		A7DF6CC02B5B492B00422D13 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +72,6 @@
 
 /* Begin PBXFileReference section */
 		A71750D82B40FC2600BC5128 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = credentials.plist; path = ../../Downloads/credentials.plist; sourceTree = "<group>"; };
-		A71750DA2B40FC2D00BC5128 /* credentials.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		A71750DB2B41009600BC5128 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		A71750DD2B41EF3700BC5128 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A71750DF2B41F6F000BC5128 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -108,9 +109,13 @@
 		A7D0965C2B3F502400378E5F /* GymLeagueUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymLeagueUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D096602B3F502400378E5F /* GymLeagueUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymLeagueUITests.swift; sourceTree = "<group>"; };
 		A7D096622B3F502400378E5F /* GymLeagueUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymLeagueUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		A7D096722B3F808600378E5F /* keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		A7D096742B3F816D00378E5F /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A7D096762B3F81F200378E5F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		A7DF6CB62B583C5500422D13 /* keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
+		A7DF6CBA2B58916A00422D13 /* credentials.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
+		A7DF6CBC2B58929900422D13 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A7DF6CBD2B5ADEFF00422D13 /* username_filters */ = {isa = PBXFileReference; lastKnownFileType = folder; name = username_filters; path = ../../username_filters; sourceTree = "<group>"; };
+		A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +174,7 @@
 		A7D0963E2B3F502300378E5F /* GymLeague */ = {
 			isa = PBXGroup;
 			children = (
+				A7DF6CBC2B58929900422D13 /* GoogleService-Info.plist */,
 				A71750FC2B49C02400BC5128 /* CustomBackgroundView.swift */,
 				A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */,
 				A7D0963F2B3F502300378E5F /* AppDelegate.swift */,
@@ -194,14 +200,16 @@
 				A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */,
 				A71750FA2B48870D00BC5128 /* LeaderboardSection.swift */,
 				A71750FE2B49DEBB00BC5128 /* CustomHeaderView.swift */,
+				A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */,
 				A71750F22B4605C400BC5128 /* BackgroundImageConfig.swift */,
 				A71750EA2B4257CA00BC5128 /* LeaderboardTableViewCell.swift */,
 				A71750EB2B4257CA00BC5128 /* LeaderboardTableViewCell.xib */,
 				A7D096482B3F502400378E5F /* Assets.xcassets */,
 				A7D0964A2B3F502400378E5F /* LaunchScreen.storyboard */,
+				A7DF6CBD2B5ADEFF00422D13 /* username_filters */,
 				A7D0964D2B3F502400378E5F /* Info.plist */,
-				A7D096722B3F808600378E5F /* keys.plist */,
-				A71750DA2B40FC2D00BC5128 /* credentials.plist */,
+				A7DF6CB62B583C5500422D13 /* keys.plist */,
+				A7DF6CBA2B58916A00422D13 /* credentials.plist */,
 			);
 			path = GymLeague;
 			sourceTree = "<group>";
@@ -339,9 +347,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7D096782B3F852400378E5F /* keys.plist in Resources */,
+				A7DF6CB72B583C5500422D13 /* keys.plist in Resources */,
 				A71750D92B40FC2600BC5128 /* credentials.plist in Resources */,
 				A7D096752B3F816D00378E5F /* .gitignore in Resources */,
+				A7DF6CBE2B5ADEFF00422D13 /* username_filters in Resources */,
 				A71751092B4CD5F200BC5128 /* PlaceTableViewCell.xib in Resources */,
 				A7D0964C2B3F502400378E5F /* LaunchScreen.storyboard in Resources */,
 				A7D096492B3F502400378E5F /* Assets.xcassets in Resources */,
@@ -374,6 +383,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A71750EC2B4257CA00BC5128 /* LeaderboardTableViewCell.swift in Sources */,
+				A7DF6CC02B5B492B00422D13 /* FirestoreService.swift in Sources */,
 				A71750F62B462ACF00BC5128 /* BadgeCollectionViewCell.swift in Sources */,
 				A71750DE2B41EF3700BC5128 /* ProfileViewController.swift in Sources */,
 				A71751052B4C6B3B00BC5128 /* GymButton.swift in Sources */,

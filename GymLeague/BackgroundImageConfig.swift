@@ -26,7 +26,7 @@ struct BackgroundImageConfig {
 
 var backgroundImageConfigs: [String: BackgroundImageConfig] = [
     "default": BackgroundImageConfig(imageName: "bg_default", horizontalOffset: 0, textColor: .black, tintColor: .systemRed),
-    "new": BackgroundImageConfig(imageName: "bg_new", horizontalOffset: -100, textColor: .black, tintColor: .systemBlue),
+    "new": BackgroundImageConfig(imageName: "bg_new", horizontalOffset: -100, textColor: .black, tintColor: .systemGreen),
     "beta": BackgroundImageConfig(imageName: "bg_beta", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
     "hotstreak": BackgroundImageConfig(imageName: "bg_hotstreak", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),
     "bronze": BackgroundImageConfig(imageName: "bg_bronze", horizontalOffset: 0, textColor: .white, tintColor: .systemRed),

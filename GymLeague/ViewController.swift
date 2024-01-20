@@ -20,6 +20,8 @@ struct Place {
     let backgroundColor: UIColor
     let distance: Double?
     let isGym: Bool
+    let isRouteCityOrOther: Bool
+    var hasWhitelistRequest: Bool = false
 }
 
 class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, PlaceTableViewCellDelegate {
@@ -30,6 +32,10 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     @IBOutlet weak var cancelWorkoutButton: UIButton!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
+    @IBOutlet weak var countdownView: UIView!
+    var digitLabels = [UILabel]()
+
+    @IBOutlet weak var countdownAndCancelView: UIView!
     let gymCheckButton = UIButton() // Create a button
     
     var myButton = GymButton()
@@ -60,7 +66,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     let searchRadiusInMeters:Double = 50
     
     let gymTypes = ["gym"]
-    let nonGymTypes = ["route", "locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2", "parking", "grocery_or_supermarket"]
+    let nonGymTypes = ["route", "locality", "political", "country", "administrative_area_level_1", "administrative_area_level_2", "administrative_area_level_3", "parking", "grocery_or_supermarket", "airport", "bus_station", "train_station", "transit_station", "subway_station", "natural_feature", "store", "supermarket", "shopping_mall", "restaurant", "cafe", "food", "clothing_store", "book_store", "furniture_store", "lodging", "hotel", "park", "campground", "zoo", "aquarium", "cemetery", "funeral_home", "library", "museum", "art_gallery", "church", "mosque", "synagogue"]
     
     var selectedGym:Place!
 
@@ -101,11 +107,13 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         noGymsLabel.isHidden = true
         cancelWorkoutButton.isHidden = true
+        countdownAndCancelView.isHidden = true
         
         setupTableView()
         setupSegmentedControl()
         setupMapContainerView()
         setupSpinner()
+        setupCountdownView()
         
         titleLabel.text = "Start a workout"
 
@@ -116,11 +124,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         startWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
         cancelWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
+        countdownAndCancelView.translatesAutoresizingMaskIntoConstraints = false
         
         let distance = tabBarController!.tabBar.frame.minY - tableView.frame.maxY
         NSLayoutConstraint.activate([
             startWorkoutButton.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
-            cancelWorkoutButton.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
+            countdownAndCancelView.centerYAnchor.constraint(equalTo: tableView.bottomAnchor, constant: distance / 2),
         ])
 
     }
@@ -163,6 +172,71 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         view.bringSubviewToFront(noGymsLabel)
     }
     
+    func setupCountdownView() {
+        let width: CGFloat = 150
+        let countdownHeight: CGFloat = 40
+        countdownView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            //countdownView.bottomAnchor.constraint(equalTo: mapViewContainer.topAnchor, constant: -8),
+            countdownView.heightAnchor.constraint(equalToConstant: countdownHeight),
+            countdownView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countdownView.widthAnchor.constraint(equalToConstant: width)
+        ])
+        countdownView.backgroundColor = CustomBackgroundView.color
+        countdownView.layer.cornerRadius = 8
+        countdownView.clipsToBounds = true
+        
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        stackView.spacing = 2 // Adjust the spacing as needed
+
+        countdownView.addSubview(stackView)
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: countdownView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: countdownView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: countdownView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: countdownView.trailingAnchor)
+        ])
+
+        
+        let characters = ["0", "0", ":", "0", "0"]
+        for char in characters {
+            let label = UILabel()
+            label.text = char
+            label.font = UIFont.monospacedDigitSystemFont(ofSize: 30, weight: .bold)
+            label.textAlignment = .center
+            label.backgroundColor = UIColor.black.withAlphaComponent(0.15) // Set individual background color here
+            label.layer.cornerRadius = 4
+            label.clipsToBounds = true
+            stackView.addArrangedSubview(label)
+
+//
+//            // Add constraints or set frame
+//            label.translatesAutoresizingMaskIntoConstraints = false
+//            NSLayoutConstraint.activate([
+//                label.widthAnchor.constraint(equalToConstant: 20),
+//                label.heightAnchor.constraint(equalTo: countdownView.heightAnchor),
+//                label.centerYAnchor.constraint(equalTo: countdownView.centerYAnchor),
+//                // Adjust horizontal positioning based on index
+//            ])
+//
+            digitLabels.append(label)
+        }
+        
+        NSLayoutConstraint.activate([
+            countdownAndCancelView.widthAnchor.constraint(equalToConstant: width),
+            countdownAndCancelView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countdownAndCancelView.heightAnchor.constraint(equalToConstant: countdownHeight + cancelWorkoutButton.frame.height + 8),
+            cancelWorkoutButton.topAnchor.constraint(equalTo: countdownView.bottomAnchor, constant: 8),
+        ])
+        
+        countdownAndCancelView.backgroundColor = CustomBackgroundView.color
+    }
+    
     func setupSegmentedControl() {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -173,7 +247,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     func setupMapContainerView() {
         mapViewContainer = UIView() // Adjust frame as needed
-        mapViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        //mapViewContainer.translatesAutoresizingMaskIntoConstraints = false
         mapViewContainer.frame = tableView.frame
         mapViewContainer.backgroundColor = .lightGray // So you can see the container
         mapViewContainer.isHidden = true
@@ -229,6 +303,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     @objc private func refreshPlacesData(_ sender: Any) {
         // Perform the re-search here
+        guard let location = self.location else { return }
         isTypeNearby(location: location, type: nil) { success in
             // Handle the result of the unfiltered search
             DispatchQueue.main.async {
@@ -239,7 +314,41 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         }
     }
     
-    func checkInToGym(gym: Place) {
+    func showUnverifiedGymAlert(for gym: Place, viewController: UIViewController, onWhitelistRequest: @escaping () -> Void) {
+        let alert = UIAlertController(title: "Unverified Gym", message: "The gym you've selected, '\(gym.name)', is not a verified gym. Would you like to continue and send a request to whitelist this place as a gym?", preferredStyle: .alert)
+
+        let continueAction = UIAlertAction(title: "Continue", style: .default) { _ in
+            onWhitelistRequest()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        alert.addAction(continueAction)
+        alert.addAction(cancelAction)
+
+        viewController.present(alert, animated: true)
+    }
+
+    func checkInToGym(gym: Place, viewController: UIViewController) {
+        if !gym.isGym, !gym.hasWhitelistRequest {
+            showUnverifiedGymAlert(for: gym, viewController: viewController) {
+                // Logic to handle the gym whitelisting request
+                FirestoreService.shared.storeWhitelistRequest(for: gym) { success, error in
+                    if let error = error {
+                        print("Error storing whitelist request: \(error)")
+                    } else if success {
+                        print("Whitelist request stored successfully.")
+                    } else {
+                        print("Duplicate request found. Not stored.")
+                    }
+                }
+                self.continueCheckIn(gym: gym)
+            }
+        } else {
+            continueCheckIn(gym: gym)
+        }
+    }
+    
+    func continueCheckIn(gym: Place) {
         // Show the map
         mapViewContainer.isHidden = false
         tableView.isHidden = true
@@ -247,10 +356,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         noGymsLabel.isHidden = true
         cancelWorkoutButton.isHidden = false
         segmentedControl.isHidden = true
+        countdownAndCancelView.isHidden = false
         
         titleLabel.text = "Stay at the gym"
         
         timeLeft = minimumWorkoutTime
+        updateTimeLeftLabel()
         
         let gymLocation = gym.coordinate
         // Center the map at user's current location
@@ -277,6 +388,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             // Update your label or annotation on the map with the remaining time
             DispatchQueue.main.async {
                 self.updateMapAnnotationWithTime()
+                self.updateTimeLeftLabel()
             }
             
         } else {
@@ -286,14 +398,27 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         }
     }
 
-    func updateMapAnnotationWithTime() {
-        // Remove old annotations and add a new one with the updated time
-        let timeAnnotation = MKPointAnnotation()
-        timeAnnotation.coordinate = workoutZoneOverlay.coordinate
+    func updateTimeLeftLabel() {
         let minutes = timeLeft / 60
-        timeAnnotation.title = "Stay within this area for \(minutes > 0 ? "\(minutes) minutes and " : "")\(timeLeft % 60) seconds!"
+        let seconds = timeLeft % 60
+
+        digitLabels[0].text = "\(minutes / 10)"
+        digitLabels[1].text = "\(minutes % 10)"
+        digitLabels[3].text = "\(seconds / 10)"
+        digitLabels[4].text = "\(seconds % 10)"
+            
+//        let minutes = timeLeft / 60
+//        timeLeftLabel.text = "Stay within the circle for \(minutes > 0 ? "\(minutes) minutes and " : "")\(timeLeft % 60) seconds!"
+    }
+    
+    func updateMapAnnotationWithTime() {
+        let userAnnotation = MKPointAnnotation()
+        userAnnotation.coordinate = location.coordinate
+        userAnnotation.title = "Your Location"
+
+        // Remove old annotation and add new one
         mapView.removeAnnotations(mapView.annotations)
-        mapView.addAnnotation(timeAnnotation)
+        mapView.addAnnotation(userAnnotation)
     }
 
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -316,6 +441,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             self.startWorkoutButton.isHidden = false
             self.cancelWorkoutButton.isHidden = true
             self.segmentedControl.isHidden = false
+            self.countdownAndCancelView.isHidden = true
             self.titleLabel.text = "Start a workout"
             self.tableView.reloadData()
             self.selectedGym = nil
@@ -328,17 +454,44 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         PointsService.shared.awardPoints(forUserID: UserData.shared.userID!) { success in
             if success {
                 print("points awarded succesfully")
+                self.addCompletedWorkout(for: UserData.shared.userID!, username: UserData.shared.username!, newPoints: UserData.shared.points!)
             } else {
                 print("could not award points")
             }
         }
     }
     
+    func addCompletedWorkout(for userId: String, username: String, newPoints: Double) {
+        // Prepare data
+        let workoutData: [String: Any] = [
+            "userId": userId,
+            "username": username,
+            "points": newPoints,
+            "date": Int(Date().timeIntervalSince1970) // Current date as Unix timestamp
+        ]
+
+        // Add a new document to the completed_workouts collection
+        db.collection("completed_workouts").addDocument(data: workoutData) { error in
+            if let error = error {
+                print("Error adding document: \(error)")
+            } else {
+                print("Document added successfully")
+            }
+        }
+    }
+
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.last
         
     
-        if !mapViewContainer.isHidden { return }
+        if !mapViewContainer.isHidden {
+            let gymCoordinate = CLLocation(latitude: selectedGym.coordinate.latitude, longitude: selectedGym.coordinate.longitude)
+            let distance = location.distance(from: gymCoordinate)
+            if distance > workoutRadiusInMeters {
+                cancelWorkout()
+            }
+        }
         
         // Check if at least 5 seconds have passed since the last update
         if let lastUpdate = lastLocationUpdate, Date().timeIntervalSince(lastUpdate) < 5 {
@@ -423,7 +576,6 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                     for result in results {
                         if let name = result["name"] as? String,
                            let types = result["types"] as? [String],
-                           (type == nil || self.isGym(types)),
                            !self.places.contains(where: { $0.name == name }),
                            let geometry = result["geometry"] as? [String: Any],
                            let location = geometry["location"] as? [String: Double],
@@ -435,23 +587,36 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
                             let backgroundColor = CustomBackgroundView.randomColor()
                             let toLocation = CLLocation(latitude: lat, longitude: lng)
                             let distance = self.calculateDistance(fromLocation: self.location, toLocation: toLocation)
-                            let isGym = self.isGym(types)
-                            
-                            if let photoReference = photoReference {
+                            let isRouteCityOrOther = self.isRouteCityOrOther(types)
+                        
+                            group.enter()
+                            self.isGym(name: name, coordinate: coordinate, types: types) { isGym in
+                                // Check if the place has a whitelist request
                                 group.enter()
-                                self.fetchPhoto(for: photoReference) { fetchedImage in
-                                    let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: fetchedImage, backgroundColor: backgroundColor, distance: distance, isGym: isGym)
-                                    newPlaces.append(newPlace)
-                                    group.leave()
+                                FirestoreService.shared.checkWhitelistRequest(for: Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym, isRouteCityOrOther: isRouteCityOrOther, hasWhitelistRequest: false)) { hasWhitelistRequest in
+                                    
+                                    var newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: photoReference, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym, isRouteCityOrOther: isRouteCityOrOther, hasWhitelistRequest: hasWhitelistRequest)
+                                    
+                                    if let photoReference = photoReference {
+                                        self.fetchPhoto(for: photoReference) { fetchedImage in
+                                            newPlace.image = fetchedImage
+                                            DispatchQueue.main.async {
+                                                newPlaces.append(newPlace)
+                                                group.leave()
+                                            }
+                                        }
+                                    } else {
+                                        DispatchQueue.main.async {
+                                            newPlaces.append(newPlace)
+                                            group.leave()
+                                        }
+                                    }
+                                    group.leave() // Leave the group for the whitelist check
                                 }
-                            } else {
-                                let newPlace = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, image: nil, backgroundColor: backgroundColor, distance: distance, isGym: isGym)
-                                newPlaces.append(newPlace)
                             }
-                            
                         }
                         
-                        print(result)
+                        
                     }
                     
                     group.notify(queue: .main) {
@@ -512,18 +677,34 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
 
     
-    func isGym(_ types: [String]) -> Bool {
-        return types.contains(where: gymTypes.contains)
+    func isGym(name: String, coordinate: CLLocationCoordinate2D, types: [String], completion: @escaping (Bool) -> Void) {
+        let gym = Place(name: name, types: types, coordinate: coordinate, photoReference: nil, backgroundColor: UIColor(), distance: nil, isGym: false, isRouteCityOrOther: false)
+        
+        FirestoreService.shared.isGymWhitelisted(gym: gym) { isWhitelisted in
+            if isWhitelisted {
+                print("The gym is whitelisted.")
+                completion(true)
+            } else {
+                print("The gym is not whitelisted.")
+                completion(types.contains(where: self.gymTypes.contains))
+            }
+        }
+    }
+    
+    func isRouteCityOrOther(_ types: [String]) -> Bool {
+        return types.contains(where: nonGymTypes.contains)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch segmentedControl.selectedSegmentIndex {
         case 0: // Filter segment
             return places.filter { place in
-                gymTypes.contains(where: place.types.contains)
+                place.isGym
             }.count
         default: // All segment
-            return places.count
+            return places.filter { place in
+                !place.isRouteCityOrOther
+            }.count
         }
     }
 
@@ -536,20 +717,18 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         switch segmentedControl.selectedSegmentIndex {
         case 0: // Filter segment
             place = places.filter { place in
-                gymTypes.contains(where: place.types.contains)
+                place.isGym
             }[indexPath.row]
         default: // All segment
-            place = places[indexPath.row]
+            place = places.filter { place in
+                !place.isRouteCityOrOther
+            }[indexPath.row]
         }
         
         cell.delegate = self
         
         //let place = places[indexPath.row]
         cell.configure(with: place, location: location)
-        
-//        if let image = place.image {
-//            cell.backgroundImage.image = image
-//        }
         
         return cell
     }
@@ -580,7 +759,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         let alert = UIAlertController(title: "Start Workout", message: "Stay around \(gym.name) for at least 20 minutes to complete the workout. Are you ready to start?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Start", style: .default, handler: { _ in
-            self.checkInToGym(gym: gym)
+            self.checkInToGym(gym: gym, viewController: self)
         }))
         present(alert, animated: true)
     }
@@ -604,6 +783,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             self.titleLabel.text = "Start a workout"
             self.tableView.reloadData()
             self.selectedGym = nil
+            self.countdownAndCancelView.isHidden = true
             self.updateStartWorkoutButtonState()
         }
         
@@ -611,49 +791,6 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         timeLeft = minimumWorkoutTime
         print("workout canceled by user")
     }
-    
-    // Add a UIButton in Interface Builder, and connect the action to this function.
-//    @IBAction func getCurrentPlace(_ sender: UIButton) {
-//        let placeFields: GMSPlaceField = [.name, .formattedAddress, .types]
-//        placesClient.findPlaceLikelihoodsFromCurrentLocation(withPlaceFields: placeFields) { [weak self] (placeLikelihoods, error) in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//
-//            guard error == nil else {
-//                print("Current place error: \(error?.localizedDescription ?? "")")
-//                return
-//            }
-//
-//            guard let place = placeLikelihoods?.first?.place else {
-//                strongSelf.nameLabel.text = "No current place"
-//                strongSelf.addressLabel.text = ""
-//                return
-//            }
-//
-//            strongSelf.currentAddress = place.name
-//            strongSelf.isGym = place.types!.contains("gym") || place.types!.contains("point_of_interest") || place.types!.contains("establishment")
-//
-//            // Check if the types include "gym"
-//            if place.types?.contains("gym") ?? false {
-//                // The place is a gym
-//                strongSelf.nameLabel.text = place.name
-//                strongSelf.addressLabel.text = place.formattedAddress
-//                strongSelf.typesLabel.text = place.types?.joined(separator: "\n")
-//                // Handle the logic for the user being at a gym
-//            } else {
-//                // The place is not a gym
-//                strongSelf.nameLabel.text = "Not a gym"
-//                strongSelf.addressLabel.text = place.formattedAddress
-//                strongSelf.typesLabel.text = place.types?.joined(separator: "\n")
-//                // Handle accordingly
-//            }
-//
-//        }
-//
-//    }
-    
-    
     
 }
 

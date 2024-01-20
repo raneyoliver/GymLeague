@@ -28,6 +28,7 @@ class LeaderboardTableViewCell: UITableViewCell {
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var minimizedView: UIView!
     var initialColor:UIColor!
     
     
@@ -48,29 +49,48 @@ class LeaderboardTableViewCell: UITableViewCell {
         badgeDescriptionLabel.text = Config.capitalizeFirstLetter(of: badgeName)
         badgeDescriptionLabel.isHidden = !isExpanded
         backgroundImage.image = UIImage(named: entry.bgConfig.imageName)
-        backgroundImage.tintColor = entry.bgConfig.tintColor
+        //backgroundImage.tintColor = entry.bgConfig.tintColor
         
         leadingConstraint.constant = entry.bgConfig.horizontalOffset
         //trailingConstraint.constant = -entry.bgConfig.horizontalOffset
         
         //        divisionLabel.text = entry.division
         pointsLabel.text = "\(Int(entry.points))"
+
+        let textLabelColor = entry.bgConfig.textColor
+        rankLabel.textColor = textLabelColor
+        nameLabel.textColor = textLabelColor
+        badgeDescriptionLabel.textColor = textLabelColor
+        pointsLabel.textColor = textLabelColor
+        arrowButton.tintColor = textLabelColor
         
-        rankLabel.textColor = entry.bgConfig.textColor
-        nameLabel.textColor = entry.bgConfig.textColor
-        badgeDescriptionLabel.textColor = entry.bgConfig.textColor
-        pointsLabel.textColor = entry.bgConfig.textColor
-        arrowButton.tintColor = entry.bgConfig.textColor
+        let minimizedViewBackgroundColor = entry.bgConfig.tintColor.withAlphaComponent(0.8)
+        minimizedView.backgroundColor = minimizedViewBackgroundColor
+        let textBackgroundTintColor = UIColor.white.withAlphaComponent(0.3)
+//        nameLabel.backgroundColor = textBackgroundTintColor
+        rankLabel.backgroundColor = textBackgroundTintColor
+        pointsLabel.backgroundColor = textBackgroundTintColor
+        let textCornerRadius:CGFloat = 4
+        nameLabel.layer.cornerRadius = textCornerRadius
+        rankLabel.layer.cornerRadius = textCornerRadius
+        pointsLabel.layer.cornerRadius = textCornerRadius
+        minimizedView.layer.cornerRadius = 8
+        nameLabel.clipsToBounds = true
+        rankLabel.clipsToBounds = true
+        pointsLabel.clipsToBounds = true
+        minimizedView.clipsToBounds = true
         
-        if entry.bgConfig.textColor == UIColor.white {
-            rankLabel.shadowColor = UIColor.black
-            nameLabel.shadowColor = UIColor.black
-            pointsLabel.shadowColor = UIColor.black
-        } else if entry.bgConfig.textColor == UIColor.black {
-            rankLabel.shadowColor = UIColor.clear
-            nameLabel.shadowColor = UIColor.clear
-            pointsLabel.shadowColor = UIColor.clear
-        }
+        //arrowButton.backgroundColor = entry.bgConfig.tintColor
+        
+//        if entry.bgConfig.textColor != UIColor.black {
+//            rankLabel.shadowColor = UIColor.black
+//            nameLabel.shadowColor = UIColor.black
+//            pointsLabel.shadowColor = UIColor.black
+//        } else {
+//            rankLabel.shadowColor = UIColor.clear
+//            nameLabel.shadowColor = UIColor.clear
+//            pointsLabel.shadowColor = UIColor.clear
+//        }
         
         if entry.userID == UserData.shared.userID {
             // Additional styling if this is the user's cell
@@ -98,7 +118,7 @@ class LeaderboardTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.25
         containerView.layer.masksToBounds = false
         
-        containerView.backgroundColor = UIColor.init(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)
+        containerView.backgroundColor = UIColor.white
         contentView.backgroundColor = CustomBackgroundView.color
         
         self.selectionStyle = .none
@@ -122,25 +142,6 @@ class LeaderboardTableViewCell: UITableViewCell {
             NotificationCenter.default.post(name: NSNotification.Name("ToggleExpansionNotification"), object: nil)
         }
     }
-    
-//    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-//        if highlighted {
-//            containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.3) // Adjust as needed
-//        } else {
-//            containerView.backgroundColor = initialColor // Or your default color
-//        }
-//    }
-    
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//        if selected {
-//            containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.3) // Adjust as needed
-//        } else {
-//            containerView.backgroundColor = initialColor // Or your default color
-//        }
-//    }
     
     func rotateArrow(isExpanded: Bool) {
         // Assuming 0 radians means arrow is pointing left

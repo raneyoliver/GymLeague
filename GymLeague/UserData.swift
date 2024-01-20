@@ -21,6 +21,7 @@ class UserData {
     var chosenBadge: String?
     var badges: [String?] = Array()
     var timeSinceLastWorkout: TimeInterval?
+    var username: String?
     
     // Prevent external instantiation
     private init() {}
@@ -40,5 +41,6 @@ class UserData {
         UserData.shared.badges = data["badges"] as! [String?]
         UserData.shared.chosenBadge = data["chosenBadge"] as? String? ?? "default"
         UserData.shared.points = data["points"] as? Double
+        UserData.shared.username = data["username"] as? String
     }
 }

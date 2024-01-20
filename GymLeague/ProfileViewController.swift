@@ -89,7 +89,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     let entry = LeaderboardEntry(
                         userID: "", //not needed
                         rank: rank,
-                        name: UserData.shared.givenName!,
+                        name: UserData.shared.username!,
                         points: UserData.shared.points!,
                         division: "placeholderDivision",
                         bgConfig: config!)

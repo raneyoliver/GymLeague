@@ -51,31 +51,9 @@ class CustomHeaderView: UIView {
             backgroundImage.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             backgroundImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             backgroundImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            backgroundImage.widthAnchor.constraint(equalToConstant: 309),
+            //backgroundImage.widthAnchor.constraint(equalToConstant: 309),
             //backgroundImage.heightAnchor.constraint(equalToConstant: 25)
         ])
-        
-        // Setup top line
-//        topLine.translatesAutoresizingMaskIntoConstraints = false
-//        addSubview(topLine)
-//        topLine.backgroundColor = .gray  // or any color you prefer
-//        NSLayoutConstraint.activate([
-//            topLine.heightAnchor.constraint(equalToConstant: 1),  // 1 pixel line
-//            topLine.topAnchor.constraint(equalTo: self.topAnchor),
-//            topLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            topLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//        ])
-
-        // Setup bottom line
-//        bottomLine.translatesAutoresizingMaskIntoConstraints = false
-//        addSubview(bottomLine)
-//        bottomLine.backgroundColor = .gray  // or any color you prefer
-//        NSLayoutConstraint.activate([
-//            bottomLine.heightAnchor.constraint(equalToConstant: 1),  // 1 pixel line
-//            bottomLine.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-//            bottomLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            bottomLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//        ])
 
         // Additional styling
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -88,7 +66,7 @@ class CustomHeaderView: UIView {
         
         backgroundImage.contentMode = .scaleAspectFill // or .scaleToFill based on your need
         backgroundImage.clipsToBounds = true  // If you want to ensure it doesn't extend outside its bounds
-        backgroundImage.alpha = 0.6
+        backgroundImage.alpha = 0.1
         self.backgroundColor = CustomBackgroundView.oneAboveColor //CustomBackgroundView.color
         
     }

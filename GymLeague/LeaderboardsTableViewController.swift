@@ -199,7 +199,7 @@ class LeaderboardsTableViewController: UITableViewController {
         let entry = LeaderboardEntry(
             userID: data?["userID"] as? String ?? "can't fetch userID",
             rank: leaderboardRank,
-            name: data?["name"] as? String ?? "can't fetch name",
+            name: data?["username"] as? String ?? "can't fetch username",
             points: data?["points"] as? Double ?? 0,
             division: "placeholderDivision",
             bgConfig: config)
@@ -281,7 +281,7 @@ class LeaderboardsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = CustomHeaderView()
-        //let bgConfig = backgroundImageConfigs[sections[section].name]
+        let bgConfig = backgroundImageConfigs[sections[section].name]
         header.titleLabel.text = Config.capitalizeFirstLetter(of: sections[section].name)
         header.detailLabel.text = "\(Int(sections[section].minPoints))+"  // Set this to your detail text
         
@@ -290,8 +290,8 @@ class LeaderboardsTableViewController: UITableViewController {
 //        header.titleLabel.textColor = bgConfig!.textColor
 //        header.detailLabel.textColor = bgConfig!.textColor
         
-        //let imageName = bgConfig!.imageName
-        //header.backgroundImage.image = UIImage(named: imageName)
+        let imageName = bgConfig!.imageName
+        header.backgroundImage.image = UIImage(named: imageName)
         return header
     }
 

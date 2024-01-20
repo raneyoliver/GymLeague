@@ -40,7 +40,7 @@ class LeaderboardService {
     }
 
     /// Adds a user by id
-    func addLeaderboardEntry(forUserID userID: String, name: String, points: Double, badges: [String?], chosenBadge: String, timeSinceLastWorkout: TimeInterval, completion: @escaping (Bool) -> Void) {
+    func addLeaderboardEntry(forUserID userID: String, name: String, points: Double, badges: [String?], chosenBadge: String, timeSinceLastWorkout: TimeInterval, username: String, completion: @escaping (Bool) -> Void) {
         print("attempting to add leaderboard entry")
         
         fetchLeaderboardEntry(forUserID: userID) { document, error in
@@ -58,7 +58,8 @@ class LeaderboardService {
                     "points": points,
                     "badges": badges,
                     "chosenBadge": chosenBadge,
-                    "timeSinceLastWorkout": timeSinceLastWorkout
+                    "timeSinceLastWorkout": timeSinceLastWorkout,
+                    "username": username,
                 ]
                 
                 // Add the new document
@@ -84,9 +85,9 @@ class LeaderboardService {
     
     func handleNewUser() {
         // Set default values for a new user
-        UserData.shared.badges = ["new", "beta", "bronze", "silver", "gold", "platinum", "diamond"]
+        UserData.shared.badges = ["new", "beta"]
         UserData.shared.chosenBadge = "new"
-        UserData.shared.points = 25
+        UserData.shared.points = 20
         UserData.shared.timeSinceLastWorkout = Date().timeIntervalSince1970
     }
 
