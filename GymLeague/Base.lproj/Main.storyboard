@@ -124,7 +124,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Workout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RM-Hq-cDk">
-                                <rect key="frame" x="16" y="67" width="361" height="41"/>
+                                <rect key="frame" x="8" y="67" width="369" height="41"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -184,7 +184,7 @@
                             <constraint firstItem="wKP-hi-H0Y" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="j8D-mb-8CP"/>
                             <constraint firstItem="9RM-Hq-cDk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="n2e-l7-tAT"/>
                             <constraint firstItem="hQv-ZT-2iO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" placeholder="YES" id="npT-np-ysV"/>
-                            <constraint firstItem="9RM-Hq-cDk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="v3d-3E-0sx"/>
+                            <constraint firstItem="9RM-Hq-cDk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="v3d-3E-0sx"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="plus" catalog="system" id="yWp-0i-sK8"/>
@@ -335,7 +335,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vRD-jT-rfS">
-                                <rect key="frame" x="16" y="67" width="92" height="40.666666666666657"/>
+                                <rect key="frame" x="8" y="67" width="100" height="40.666666666666657"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -359,7 +359,7 @@
                             <constraint firstItem="Xp0-NA-gp2" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="290.32998657226562" id="Z7d-z6-gF6"/>
                             <constraint firstItem="AJb-1R-A43" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="97" id="Z9Z-1k-dVE"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="bottom" secondItem="Xp0-NA-gp2" secondAttribute="bottom" constant="72" id="ni9-4Q-QlV"/>
-                            <constraint firstItem="vRD-jT-rfS" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="16" id="ttY-WW-J3g"/>
+                            <constraint firstItem="vRD-jT-rfS" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="8" id="ttY-WW-J3g"/>
                             <constraint firstItem="tTD-2j-EMw" firstAttribute="leading" secondItem="vRD-jT-rfS" secondAttribute="trailing" constant="224.66999999999999" id="vUG-YJ-rsp"/>
                         </constraints>
                     </view>

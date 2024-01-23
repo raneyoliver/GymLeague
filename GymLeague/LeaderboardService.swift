@@ -85,7 +85,7 @@ class LeaderboardService {
     
     func handleNewUser() {
         // Set default values for a new user
-        UserData.shared.badges = ["new", "beta"]
+        UserData.shared.badges = ["new", "beta", "hotstreak", "bronze"]
         UserData.shared.chosenBadge = "new"
         UserData.shared.points = 20
         UserData.shared.timeSinceLastWorkout = Date().timeIntervalSince1970

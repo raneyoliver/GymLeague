@@ -60,7 +60,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     var workoutZoneOverlay: MKCircle!
     var countdownTimer: Timer!
     
-    let minimumWorkoutTime = 20 * 60 // 20 minutes in seconds
+    let minimumWorkoutTime = 10 //20 * 60 // 20 minutes in seconds
+    var timeStarted: TimeInterval?
     var timeLeft:Int!
     let workoutRadiusInMeters:Double = 100
     let searchRadiusInMeters:Double = 75
@@ -360,6 +361,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         titleLabel.text = "Stay at the gym"
         
+        timeStarted = Date().timeIntervalSince1970
         timeLeft = minimumWorkoutTime
         updateTimeLeftLabel()
         
@@ -384,7 +386,10 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     @objc func updateTime() {
         if timeLeft > 0 {
-            timeLeft -= 1
+            let currentTime = Date().timeIntervalSince1970
+            let elapsedTime = Int(currentTime - timeStarted!)
+            timeLeft = max(minimumWorkoutTime - elapsedTime, 0) // Ensure timeLeft is not negative
+
             // Update your label or annotation on the map with the remaining time
             DispatchQueue.main.async {
                 self.updateMapAnnotationWithTime()
@@ -455,6 +460,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             if success {
                 print("points awarded succesfully")
                 self.addCompletedWorkout(for: UserData.shared.userID!, username: UserData.shared.username!, newPoints: UserData.shared.points!)
+                FirestoreService.shared.updateLeaderboardBadges(forUserID: UserData.shared.userID!)
             } else {
                 print("could not award points")
             }
@@ -701,19 +707,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let potentialPlaces = places.filter { place in
-            place.whitelistStatus != "blacklisted"
-        }
-        switch segmentedControl.selectedSegmentIndex {
-        case 0: // Filter segment
-            return potentialPlaces.filter { place in
-                place.isGym
-            }.count
-        default: // All segment
-            return potentialPlaces.filter { place in
-                !place.isRouteCityOrOther
-            }.count
-        }
+        return getFilteredPlaces().count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -721,20 +715,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             fatalError("Could not dequeue PlaceTableViewCell")
         }
         
-        let place: Place
-        let potentialPlaces = places.filter { place in
-            place.whitelistStatus != "blacklisted"
-        }
-        switch segmentedControl.selectedSegmentIndex {
-        case 0: // Filter segment
-            place = potentialPlaces.filter { place in
-                place.isGym
-            }[indexPath.row]
-        default: // All segment
-            place = potentialPlaces.filter { place in
-                !place.isRouteCityOrOther
-            }[indexPath.row]
-        }
+        let place = getFilteredPlaces()[indexPath.row]
         
         cell.delegate = self
         
@@ -746,7 +727,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     
     func didTapImageView(in cell: PlaceTableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let place = places[indexPath.row]
+        let place = getFilteredPlaces()[indexPath.row]
         if place.image != nil {
             let fullScreenVC = FullScreenImageViewController()
             fullScreenVC.modalPresentationStyle = .fullScreen
@@ -760,10 +741,29 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedGym = places[indexPath.row]  // Assuming gyms is your data source
+        
+        selectedGym = getFilteredPlaces()[indexPath.row]
+        
         DispatchQueue.main.async {
             self.updateStartWorkoutButtonState()
         }
+    }
+    
+    func getFilteredPlaces() -> [Place] {
+        let potentialPlaces = places.filter { place in
+            place.whitelistStatus != "blacklisted"
+        }
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // Filter segment
+            return potentialPlaces.filter { place in
+                place.isGym
+            }
+        default: // All segment
+            return potentialPlaces.filter { place in
+                !place.isRouteCityOrOther
+            }
+        }
+        
     }
     
     func presentWorkoutConfirmationAlert(for gym: Place) {

@@ -28,6 +28,7 @@ class LeaderboardTableViewCell: UITableViewCell {
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var backgroundImageTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var minimizedView: UIView!
     var initialColor:UIColor!
     
@@ -37,7 +38,7 @@ class LeaderboardTableViewCell: UITableViewCell {
         super.prepareForReuse()
         // Reset any properties that might have been altered during configuration
         // such as backgroundImage's offset, transform, or other properties
-        backgroundImage.transform = CGAffineTransform.identity  // Reset transform
+        //backgroundImage.transform = CGAffineTransform.identity  // Reset transform
         // Reset any other custom properties or UI elements
     }
 
@@ -57,16 +58,17 @@ class LeaderboardTableViewCell: UITableViewCell {
         //        divisionLabel.text = entry.division
         pointsLabel.text = "\(Int(entry.points))"
 
-        let textLabelColor = entry.bgConfig.textColor
+        let textLabelColor =  entry.bgConfig.textColor
         rankLabel.textColor = textLabelColor
         nameLabel.textColor = textLabelColor
         badgeDescriptionLabel.textColor = textLabelColor
         pointsLabel.textColor = textLabelColor
-        arrowButton.tintColor = textLabelColor
         
-        let minimizedViewBackgroundColor = entry.bgConfig.tintColor.withAlphaComponent(0.8)
+        arrowButton.tintColor = entry.bgConfig.accentColor
+        
+        let minimizedViewBackgroundColor = entry.bgConfig.tintColor.withAlphaComponent(0.6)
         minimizedView.backgroundColor = minimizedViewBackgroundColor
-        let textBackgroundTintColor = UIColor.white.withAlphaComponent(0.3)
+        let textBackgroundTintColor = entry.bgConfig.accentColor.withAlphaComponent(0.3) //UIColor.white.withAlphaComponent(0.3)
 //        nameLabel.backgroundColor = textBackgroundTintColor
         rankLabel.backgroundColor = textBackgroundTintColor
         pointsLabel.backgroundColor = textBackgroundTintColor
@@ -74,11 +76,11 @@ class LeaderboardTableViewCell: UITableViewCell {
         nameLabel.layer.cornerRadius = textCornerRadius
         rankLabel.layer.cornerRadius = textCornerRadius
         pointsLabel.layer.cornerRadius = textCornerRadius
-        minimizedView.layer.cornerRadius = 8
+        //minimizedView.layer.cornerRadius = 8
         nameLabel.clipsToBounds = true
         rankLabel.clipsToBounds = true
         pointsLabel.clipsToBounds = true
-        minimizedView.clipsToBounds = true
+        //minimizedView.clipsToBounds = true
         
         //arrowButton.backgroundColor = entry.bgConfig.tintColor
         
@@ -100,6 +102,13 @@ class LeaderboardTableViewCell: UITableViewCell {
             // Reset styles for other cells
             containerView.layer.borderWidth = 0  // No border
             containerView.layer.borderColor = UIColor.clear.cgColor  // Clear color or whatever the default is
+        }
+        
+
+        if isExpanded {
+            animateConstraintChange(of: backgroundImageTopConstraint, withConstant: minimizedView.frame.height)
+        } else {
+            animateConstraintChange(of: backgroundImageTopConstraint, withConstant: 0)
         }
         
         rotateArrow(isExpanded: isExpanded)
@@ -128,12 +137,14 @@ class LeaderboardTableViewCell: UITableViewCell {
         containerView.clipsToBounds = true
         
         
-        backgroundImage.layer.cornerRadius = containerView.layer.cornerRadius
-        backgroundImage.clipsToBounds = true
+        //backgroundImage.layer.cornerRadius = containerView.layer.cornerRadius
+        //backgroundImage.clipsToBounds = true
         backgroundImage.contentMode = .scaleAspectFill
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.addGestureRecognizer(longPressGesture)
+        
+        setupBlurEffect()
     }
     
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -152,4 +163,34 @@ class LeaderboardTableViewCell: UITableViewCell {
         }
     }
     
+    func animateConstraintChange(of constraint: NSLayoutConstraint, withConstant constant: CGFloat) {
+        constraint.constant = constant
+
+        // Animate the constraint change
+        UIView.animate(withDuration: 0.1) {
+            self.layoutIfNeeded()  // Use `self.layoutIfNeeded()` for UITableViewCell
+        }
+    }
+    
+    func setupBlurEffect() {
+        // Create a blur effect
+        let blurEffect = UIBlurEffect(style: .regular) // Choose style as needed
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+
+        // If you are using Auto Layout, set this property to false
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add the effect view to the view you want to blur
+        minimizedView.insertSubview(blurEffectView, at: 0)
+
+        blurEffectView.alpha = 0.9
+        
+        // Constraints for the blurEffectView to cover the entire view
+        NSLayoutConstraint.activate([
+            blurEffectView.topAnchor.constraint(equalTo: minimizedView.topAnchor),
+            blurEffectView.leadingAnchor.constraint(equalTo: minimizedView.leadingAnchor),
+            blurEffectView.trailingAnchor.constraint(equalTo: minimizedView.trailingAnchor),
+            blurEffectView.bottomAnchor.constraint(equalTo: minimizedView.bottomAnchor)
+        ])
+    }
 }

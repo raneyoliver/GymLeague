@@ -99,11 +99,11 @@
                             <constraint firstAttribute="trailing" secondItem="sLc-pt-WO8" secondAttribute="trailing" id="05Z-M2-FGo"/>
                             <constraint firstAttribute="bottom" secondItem="fV1-gs-kIm" secondAttribute="bottom" constant="5" id="8jU-OF-CFE"/>
                             <constraint firstAttribute="bottom" secondItem="7ah-6H-lkQ" secondAttribute="bottom" id="Bav-jo-UTs"/>
-                            <constraint firstItem="7ah-6H-lkQ" firstAttribute="centerY" secondItem="352-oA-yFe" secondAttribute="centerY" id="LLu-0W-Y7d"/>
                             <constraint firstItem="sLc-pt-WO8" firstAttribute="leading" secondItem="352-oA-yFe" secondAttribute="leading" id="Nh8-Ym-Xeo"/>
                             <constraint firstItem="7ah-6H-lkQ" firstAttribute="leading" secondItem="352-oA-yFe" secondAttribute="leading" id="QgV-uH-vHR"/>
                             <constraint firstItem="sLc-pt-WO8" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" id="XLG-O3-f3T"/>
                             <constraint firstAttribute="trailing" secondItem="fV1-gs-kIm" secondAttribute="trailing" constant="8" id="azD-eb-Qkp"/>
+                            <constraint firstItem="7ah-6H-lkQ" firstAttribute="top" secondItem="352-oA-yFe" secondAttribute="top" id="s58-Y7-VTR"/>
                             <constraint firstAttribute="trailing" secondItem="7ah-6H-lkQ" secondAttribute="trailing" id="v84-tX-wnR"/>
                         </constraints>
                     </view>
@@ -119,6 +119,7 @@
             <connections>
                 <outlet property="arrowButton" destination="2o9-yU-1L8" id="iY9-8D-wZy"/>
                 <outlet property="backgroundImage" destination="7ah-6H-lkQ" id="oab-gk-IOV"/>
+                <outlet property="backgroundImageTopConstraint" destination="s58-Y7-VTR" id="hu8-fW-SFZ"/>
                 <outlet property="badgeDescriptionLabel" destination="fV1-gs-kIm" id="KoW-VZ-2Gf"/>
                 <outlet property="containerView" destination="352-oA-yFe" id="B7D-VB-cV8"/>
                 <outlet property="leadingConstraint" destination="QgV-uH-vHR" id="Sfp-tb-ase"/>

@@ -178,7 +178,14 @@ class LeaderboardsTableViewController: UITableViewController {
             leaderboardRank += 1
             let entry = self.convertToLeaderboardEntry(document: document, leaderboardRank: leaderboardRank)
             self.leaderboardEntries.append(entry)
-            if let sectionIndex = sections.firstIndex(where: { entry.points >= $0.minPoints }) {
+            if let sectionIndex = sections.firstIndex(where: {
+                var enoughPointsForRank:Bool = false
+                if let minPoints = $0?.minPoints {
+                    enoughPointsForRank = entry.points >= minPoints
+                }
+                
+                return enoughPointsForRank
+            }) {
                 // Initialize the section array if needed
                 if sectionIndex >= sectionedEntries.count {
                     sectionedEntries.append([])
@@ -280,19 +287,37 @@ class LeaderboardsTableViewController: UITableViewController {
 //    }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = CustomHeaderView()
-        let bgConfig = backgroundImageConfigs[sections[section].name]
-        header.titleLabel.text = Config.capitalizeFirstLetter(of: sections[section].name)
-        header.detailLabel.text = "\(Int(sections[section].minPoints))+"  // Set this to your detail text
-        
-        header.titleLabel.textColor = UIColor.label
-        header.detailLabel.textColor = UIColor.label
-//        header.titleLabel.textColor = bgConfig!.textColor
-//        header.detailLabel.textColor = bgConfig!.textColor
-        
-        let imageName = bgConfig!.imageName
-        header.backgroundImage.image = UIImage(named: imageName)
-        return header
+        if section == 0 {
+            let header = UIView()
+            let titleLabel = UILabel()
+            titleLabel.text = "Leaderboards"
+            titleLabel.adjustsFontForContentSizeCategory = true
+            titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+            titleLabel.textAlignment = .left
+            
+            header.addSubview(titleLabel)
+            titleLabel.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                titleLabel.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 8),
+                titleLabel.centerYAnchor.constraint(equalTo: header.centerYAnchor)
+            ])
+            
+            return header
+        } else {
+            let header = CustomHeaderView()
+            //let bgConfig = backgroundImageConfigs[sections[section]!.name]
+            header.titleLabel.text = Config.capitalizeFirstLetter(of: sections[section]!.name)
+            header.detailLabel.text = "\(Int(sections[section]!.minPoints))+"  // Set this to your detail text
+            
+            header.titleLabel.textColor = UIColor.label
+            header.detailLabel.textColor = UIColor.label
+            //        header.titleLabel.textColor = bgConfig!.textColor
+            //        header.detailLabel.textColor = bgConfig!.textColor
+            
+            //let imageName = bgConfig!.imageName
+            //header.backgroundImage.image = UIImage(named: imageName)
+            return header
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

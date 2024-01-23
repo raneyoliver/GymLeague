@@ -13,6 +13,7 @@ struct LeaderboardSection {
 }
 
 let sections = [
+    nil,    // to account for Leaderboards title
     LeaderboardSection(name: "elite", minPoints: 1000),
     LeaderboardSection(name: "diamond", minPoints: 500),
     LeaderboardSection(name: "platinum", minPoints: 250),

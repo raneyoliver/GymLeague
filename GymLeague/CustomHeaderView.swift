@@ -59,7 +59,7 @@ class CustomHeaderView: UIView {
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
 //        titleLabel.shadowColor = UIColor.black
 //        titleLabel.shadowOffset = CGSize(width: 1, height: 1)
-        detailLabel.font = UIFont.systemFont(ofSize: 14)
+        detailLabel.font = UIFont.systemFont(ofSize: 12)
         detailLabel.textAlignment = .right
 //        detailLabel.shadowColor = UIColor.black
 //        detailLabel.shadowOffset = CGSize(width: 1, height: 1)
@@ -67,7 +67,7 @@ class CustomHeaderView: UIView {
         backgroundImage.contentMode = .scaleAspectFill // or .scaleToFill based on your need
         backgroundImage.clipsToBounds = true  // If you want to ensure it doesn't extend outside its bounds
         backgroundImage.alpha = 0.1
-        self.backgroundColor = CustomBackgroundView.oneAboveColor //CustomBackgroundView.color
+        self.backgroundColor = CustomBackgroundView.color
         
     }
 }

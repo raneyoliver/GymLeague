@@ -33,7 +33,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             selectedBadge = MakeBadge(fromName: UserData.shared.chosenBadge!)
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                self.collectionView.reloadData()
+                //self.collectionView.reloadData()
+                self.fetchBadges()
                 self.updateSaveButtonState()
             }
         }
@@ -123,7 +124,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        isExpanded = !isExpanded // Toggle the state
+        isExpanded = !isExpanded
+        
         tableView.reloadData()
         tableView.beginUpdates()
         tableView.endUpdates()
@@ -132,11 +134,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.rotateArrow(isExpanded: isExpanded)
         }
         
-        // Option 2: Reload specific row with animation for a smoother experience
-        //tableView.reloadData()
         tableView.beginUpdates()
-        //tableView.reloadRows(at: [indexPath], with: .automatic)
-        
         tableView.endUpdates()
     }
     

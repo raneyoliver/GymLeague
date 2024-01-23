@@ -73,4 +73,48 @@ class FirestoreService {
         }
     }
     
+    func updateLeaderboardBadges(forUserID userID: String) {
+        let collectionRef = db.collection("leaderboards")
+        let query = collectionRef.whereField("userID", isEqualTo: userID)
+
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error finding user document: \(error)")
+                return
+            }
+
+            guard let document = snapshot?.documents.first else {
+                print("User document not found.")
+                return
+            }
+
+            guard let points = document.data()["points"] as? Double else {
+                print("Points field is missing or not a double.")
+                return
+            }
+            
+            var newBadges: [String] = document.data()["badges"] as? [String] ?? []
+                
+            // Check and add badges based on points
+            for section in sections {
+                if let section = section {
+                    if points >= section.minPoints {
+                        if !newBadges.contains(section.name) {
+                            newBadges.append(section.name)
+                        }
+                    }
+                }
+            }
+
+            // Update the document
+            document.reference.updateData(["badges": newBadges]) { err in
+                if let err = err {
+                    print("Error updating badges: \(err)")
+                } else {
+                    print("Badges successfully updated.")
+                }
+            }
+        }
+    }
+    
 }

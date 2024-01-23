@@ -113,7 +113,7 @@ class PlaceTableViewCell: UITableViewCell {
             symbolButton.tintColor = UIColor.systemBlue
         } else if place.whitelistStatus == "pending" {
             image = UIImage(systemName: "hourglass", withConfiguration: symbolConfiguration)
-            symbolButton.tintColor = UIColor.lightGray
+            symbolButton.tintColor = UIColor.white.withAlphaComponent(0.5)
         } else {
             image = UIImage(systemName: "exclamationmark.triangle.fill", withConfiguration: symbolConfiguration)
             symbolButton.tintColor = UIColor.systemYellow
