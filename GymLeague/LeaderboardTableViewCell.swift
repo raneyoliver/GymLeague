@@ -9,7 +9,24 @@ import UIKit
 import GoogleSignIn
 
 
-
+struct LeaderboardTableViewCellSettings {
+    let textLabelColor: UIColor
+    let textBackgroundColor: UIColor
+    let minimizedViewBackgroundColor: UIColor
+    
+    let textCornerRadius: CGFloat
+    
+    let entry: LeaderboardEntry
+    
+    init(textLabelColor: UIColor, textBackgroundColor: UIColor, minimizedViewBackgroundColor: UIColor, textCornerRadius: CGFloat, entry: LeaderboardEntry) {
+        self.textLabelColor = textLabelColor
+        self.textBackgroundColor = textBackgroundColor
+        self.minimizedViewBackgroundColor = minimizedViewBackgroundColor
+        self.textCornerRadius = textCornerRadius
+        self.entry = entry
+    }
+    
+}
 
 class LeaderboardTableViewCell: UITableViewCell {
     
@@ -30,88 +47,103 @@ class LeaderboardTableViewCell: UITableViewCell {
     
     @IBOutlet weak var backgroundImageTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var minimizedView: UIView!
+    
+    @IBOutlet weak var statsView: UIView!
+    
     var initialColor:UIColor!
     
     
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        // Reset any properties that might have been altered during configuration
-        // such as backgroundImage's offset, transform, or other properties
-        //backgroundImage.transform = CGAffineTransform.identity  // Reset transform
-        // Reset any other custom properties or UI elements
     }
 
     
     // Add a function to populate cell data
     func configure(with entry: LeaderboardEntry, isExpanded: Bool, badgeName: String) {
-        rankLabel.text = "\(entry.rank)"
-        nameLabel.text = entry.name
+
+        let cellSettings = makeCellSettings(with: entry)
+
+        setupMinimizedView(withSettings: cellSettings, isExpanded: isExpanded)
+        setupStatsView(withSettings: cellSettings, isExpanded: isExpanded)
+        highlightOwnCell(userID: entry.userID)
+        
         badgeDescriptionLabel.text = Config.capitalizeFirstLetter(of: badgeName)
+        badgeDescriptionLabel.textColor = cellSettings.textLabelColor
         badgeDescriptionLabel.isHidden = !isExpanded
         backgroundImage.image = UIImage(named: entry.bgConfig.imageName)
-        //backgroundImage.tintColor = entry.bgConfig.tintColor
-        
         leadingConstraint.constant = entry.bgConfig.horizontalOffset
-        //trailingConstraint.constant = -entry.bgConfig.horizontalOffset
         
-        //        divisionLabel.text = entry.division
-        pointsLabel.text = "\(Int(entry.points))"
-
+    }
+    
+    func makeCellSettings(with entry: LeaderboardEntry) -> LeaderboardTableViewCellSettings {
         let textLabelColor =  entry.bgConfig.textColor
-        rankLabel.textColor = textLabelColor
-        nameLabel.textColor = textLabelColor
-        badgeDescriptionLabel.textColor = textLabelColor
-        pointsLabel.textColor = textLabelColor
-        
-        arrowButton.tintColor = entry.bgConfig.accentColor
-        
-        let minimizedViewBackgroundColor = entry.bgConfig.tintColor.withAlphaComponent(0.6)
-        minimizedView.backgroundColor = minimizedViewBackgroundColor
-        let textBackgroundTintColor = entry.bgConfig.accentColor.withAlphaComponent(0.3) //UIColor.white.withAlphaComponent(0.3)
-//        nameLabel.backgroundColor = textBackgroundTintColor
-        rankLabel.backgroundColor = textBackgroundTintColor
-        pointsLabel.backgroundColor = textBackgroundTintColor
+        let textBackgroundColor = entry.bgConfig.accentColor.withAlphaComponent(0.6)
         let textCornerRadius:CGFloat = 4
-        nameLabel.layer.cornerRadius = textCornerRadius
-        rankLabel.layer.cornerRadius = textCornerRadius
-        pointsLabel.layer.cornerRadius = textCornerRadius
-        //minimizedView.layer.cornerRadius = 8
+        let minimizedViewBackgroundColor = entry.bgConfig.tintColor.withAlphaComponent(0.6)
+        
+        let cellSettings = LeaderboardTableViewCellSettings(
+            textLabelColor: textLabelColor,
+            textBackgroundColor: textBackgroundColor,
+            minimizedViewBackgroundColor: minimizedViewBackgroundColor,
+            textCornerRadius: textCornerRadius,
+            entry: entry)
+        
+        return cellSettings
+    }
+    
+    func highlightOwnCell(userID: String) {
+        if userID == UserData.shared.userID {
+            containerView.layer.borderWidth = 3.0
+            containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)
+        } else {
+            // Reset styles for other cells
+            containerView.layer.borderWidth = 0
+            containerView.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
+    
+    func setupStatsView(withSettings cellSettings: LeaderboardTableViewCellSettings, isExpanded: Bool) {
+        /// Text
+        divisionLabel.text = cellSettings.entry.division
+        
+        /// Color
+        statsView.backgroundColor = cellSettings.minimizedViewBackgroundColor.withAlphaComponent(0.2)
+        divisionLabel.backgroundColor = cellSettings.textBackgroundColor
+        divisionLabel.textColor = cellSettings.textLabelColor
+        
+        /// Other
+        //statsView.isHidden = !isExpanded
+        divisionLabel.layer.cornerRadius = cellSettings.textCornerRadius
+        divisionLabel.clipsToBounds = true
+    }
+    
+    func setupMinimizedView(withSettings cellSettings: LeaderboardTableViewCellSettings, isExpanded: Bool) {
+        /// Text
+        rankLabel.text = "\(cellSettings.entry.rank)"
+        nameLabel.text = cellSettings.entry.name
+        pointsLabel.text = "\(Int(cellSettings.entry.points))"
+        
+        /// Color
+        rankLabel.textColor = cellSettings.textLabelColor
+        nameLabel.textColor = cellSettings.textLabelColor
+        pointsLabel.textColor = cellSettings.textLabelColor
+        rankLabel.backgroundColor = cellSettings.textBackgroundColor
+        pointsLabel.backgroundColor = cellSettings.textBackgroundColor
+        minimizedView.backgroundColor = cellSettings.minimizedViewBackgroundColor
+        arrowButton.tintColor = cellSettings.entry.bgConfig.accentColor
+        
+        /// Other
+        nameLabel.layer.cornerRadius = cellSettings.textCornerRadius
+        rankLabel.layer.cornerRadius = cellSettings.textCornerRadius
+        pointsLabel.layer.cornerRadius = cellSettings.textCornerRadius
         nameLabel.clipsToBounds = true
         rankLabel.clipsToBounds = true
         pointsLabel.clipsToBounds = true
-        //minimizedView.clipsToBounds = true
         
-        //arrowButton.backgroundColor = entry.bgConfig.tintColor
-        
-//        if entry.bgConfig.textColor != UIColor.black {
-//            rankLabel.shadowColor = UIColor.black
-//            nameLabel.shadowColor = UIColor.black
-//            pointsLabel.shadowColor = UIColor.black
-//        } else {
-//            rankLabel.shadowColor = UIColor.clear
-//            nameLabel.shadowColor = UIColor.clear
-//            pointsLabel.shadowColor = UIColor.clear
-//        }
-        
-        if entry.userID == UserData.shared.userID {
-            // Additional styling if this is the user's cell
-            containerView.layer.borderWidth = 3.0  // Optional: if you want a border
-            containerView.layer.borderColor = UIColor.systemBlue.cgColor.copy(alpha: 0.65)  // Optional: border color
-        } else {
-            // Reset styles for other cells
-            containerView.layer.borderWidth = 0  // No border
-            containerView.layer.borderColor = UIColor.clear.cgColor  // Clear color or whatever the default is
-        }
-        
-
-        if isExpanded {
-            animateConstraintChange(of: backgroundImageTopConstraint, withConstant: minimizedView.frame.height)
-        } else {
-            animateConstraintChange(of: backgroundImageTopConstraint, withConstant: 0)
-        }
-        
+        /// Arrow
         rotateArrow(isExpanded: isExpanded)
+
     }
     
     override func awakeFromNib() {
@@ -144,7 +176,15 @@ class LeaderboardTableViewCell: UITableViewCell {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.addGestureRecognizer(longPressGesture)
         
-        setupBlurEffect()
+        setupBlurEffect(onView: minimizedView, withStyle: .light)
+
+        initStatsView()
+    }
+    
+    func initStatsView() {
+        statsView.layer.cornerRadius = 8
+        statsView.clipsToBounds = true
+        setupBlurEffect(onView: statsView, withStyle: .light)
     }
     
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -172,25 +212,25 @@ class LeaderboardTableViewCell: UITableViewCell {
         }
     }
     
-    func setupBlurEffect() {
+    func setupBlurEffect(onView parentView: UIView, withStyle style: UIBlurEffect.Style) {
         // Create a blur effect
-        let blurEffect = UIBlurEffect(style: .regular) // Choose style as needed
+        let blurEffect = UIBlurEffect(style: style) // Choose style as needed
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
 
         // If you are using Auto Layout, set this property to false
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
 
         // Add the effect view to the view you want to blur
-        minimizedView.insertSubview(blurEffectView, at: 0)
+        parentView.insertSubview(blurEffectView, at: 0)
 
         blurEffectView.alpha = 0.9
         
         // Constraints for the blurEffectView to cover the entire view
         NSLayoutConstraint.activate([
-            blurEffectView.topAnchor.constraint(equalTo: minimizedView.topAnchor),
-            blurEffectView.leadingAnchor.constraint(equalTo: minimizedView.leadingAnchor),
-            blurEffectView.trailingAnchor.constraint(equalTo: minimizedView.trailingAnchor),
-            blurEffectView.bottomAnchor.constraint(equalTo: minimizedView.bottomAnchor)
+            blurEffectView.topAnchor.constraint(equalTo: parentView.topAnchor),
+            blurEffectView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+            blurEffectView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+            blurEffectView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor)
         ])
     }
 }
