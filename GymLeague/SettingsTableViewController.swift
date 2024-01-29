@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import FirebaseAuthUI
 
 class SettingsTableViewController: UITableViewController {
 
@@ -25,10 +26,14 @@ class SettingsTableViewController: UITableViewController {
         // Add a "Yes" action to sign out
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { action in
             // Perform the sign out
-            GIDSignIn.sharedInstance.signOut()
-            
-            // Update the UI as necessary, maybe go back to the login screen or update the current view
-            self.showSignInViewController()
+            let authUI = FUIAuth.defaultAuthUI()
+            do {
+                try authUI!.signOut() //signOut(sender: self)
+                self.showSignInViewController()
+            } catch {
+                print(error)
+            }
+            //GIDSignIn.sharedInstance.signOut()
         }))
         
         // Add a "No" action to cancel
@@ -89,7 +94,8 @@ class SettingsTableViewController: UITableViewController {
             switch indexPath.section {
                 case 0:  // For section 0
                     switch indexPath.row {
-                        case 0: signOut(sender: self)
+                        case 0:
+                        signOut(sender: self)
                         // Add more cases as needed for each cell
                         default: break
                     }

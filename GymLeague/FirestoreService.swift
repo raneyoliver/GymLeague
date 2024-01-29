@@ -117,4 +117,93 @@ class FirestoreService {
         }
     }
     
+    func canUserStartWorkout(for userId: String, completion: @escaping (Bool, Error?) -> Void) {
+        let completedWorkoutsRef = db.collection("completed_workouts").whereField("userID", isEqualTo: userId)
+
+        completedWorkoutsRef.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("error getting completed_workouts")
+                completion(false, error)
+                return
+            }
+
+            guard let documents = snapshot?.documents, !documents.isEmpty else {
+                // If there are no documents, the user hasn't completed any workouts
+                //print(userId)
+                //print(snapshot?.documents ?? ":")
+                print("no completed_workouts for this user found")
+                completion(true, nil)
+                return
+            }
+
+            // Get the most recent workout
+            if let mostRecentWorkout = documents.max(by: {
+                ($0.data()["date"] as? TimeInterval ?? 0) < ($1.data()["date"] as? TimeInterval ?? 0)
+            }), let timeSinceLastWorkout = mostRecentWorkout.data()["date"] as? TimeInterval {
+                // Check if 24 hours have passed since the last workout
+                let lastWorkoutDate = Date(timeIntervalSince1970: timeSinceLastWorkout)
+                let currentDate = Date()
+                let twentyFourHoursAgo = currentDate.addingTimeInterval(-24 * 60 * 60)
+
+                print("24 passed?: \(lastWorkoutDate < twentyFourHoursAgo)")
+                completion(lastWorkoutDate < twentyFourHoursAgo, nil) // More than 24 hours have passed
+            } else {
+                // Error handling if date is not found
+                completion(false, NSError(domain: "DataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Error retrieving date from last workout"]))
+            }
+        }
+    }
+    
+    func addCompletedWorkout(for userId: String, username: String, newPoints: Double, completion: @escaping (Bool) -> Void) {
+        // Prepare data
+        let workoutData: [String: Any] = [
+            "userID": userId,
+            "username": username,
+            "points": newPoints,
+            "date": Int(Date().timeIntervalSince1970) // Current date as Unix timestamp
+        ]
+
+        // Add a new document to the completed_workouts collection
+        db.collection("completed_workouts").addDocument(data: workoutData) { error in
+            if let error = error {
+                print("Error adding document: \(error)")
+                completion(false)
+            } else {
+                print("Document added successfully")
+                // Increment completedWorkouts in the leaderboards collection
+                self.incrementCompletedWorkouts(for: userId)
+                completion(true)
+            }
+            
+            
+        }
+        
+    }
+    
+    func incrementCompletedWorkouts(for userId: String) {
+        let query = db.collection("leaderboards").whereField("userID", isEqualTo: userId)
+
+        // Fetch the document with the matching userID
+        query.getDocuments { [weak self] (snapshot, error) in
+            guard let document = snapshot?.documents.first else {
+                if let error = error {
+                    print("Error fetching document: \(error)")
+                } else {
+                    print("Document with userID \(userId) not found.")
+                }
+                return
+            }
+
+            // Atomically increment the completedWorkouts field by 1
+            self?.db.collection("leaderboards").document(document.documentID).updateData([
+                "completedWorkouts": FieldValue.increment(Int64(1))
+            ]) { error in
+                if let error = error {
+                    print("Error updating completedWorkouts: \(error)")
+                } else {
+                    print("Successfully incremented completedWorkouts")
+                }
+            }
+        }
+    }
 }

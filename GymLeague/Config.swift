@@ -24,6 +24,14 @@ class Config {
         return key
     }
     
+    static func getGoogleServiceInfoValue(keyName: String) -> String {
+        guard let filePath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {
+            fatalError("Couldn't find file 'GoogleService-Info.plist'.")
+        }
+        let plist = NSDictionary(contentsOfFile: filePath)
+        return plist?.object(forKey: keyName) as! String
+    }
+    
     static func capitalizeFirstLetter(of text: String) -> String {
         return text.prefix(1).uppercased() + text.dropFirst()
     }

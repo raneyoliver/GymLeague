@@ -5,6 +5,8 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.999134737658-agog4ec7sdttnbmu9cga0k3oonj8ke56</string>

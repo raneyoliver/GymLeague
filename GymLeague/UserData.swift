@@ -7,40 +7,35 @@
 
 import Foundation
 import GoogleSignIn
+import FirebaseAuth
 
 class UserData {
     static let shared = UserData()
     
     var userID: String?
-    var emailAddress: String?
-    var fullName: String?
-    var givenName: String?
-    var familyName: String?
-    var profilePicUrl: URL?
+//    var emailAddress: String?
+//    var fullName: String?
+//    var givenName: String?
+//    var familyName: String?
+//    var profilePicUrl: URL?
     var points: Double?
     var chosenBadge: String?
     var badges: [String?] = Array()
     var timeSinceLastWorkout: TimeInterval?
     var username: String?
+    var completedWorkouts: Int?
     
     // Prevent external instantiation
     private init() {}
     
-    func populate(with user: GIDGoogleUser) {
+    func populate(with user: User) {
         // Populate user information from GIDGoogleUser
-        UserData.shared.userID = user.userID
-        UserData.shared.emailAddress = user.profile?.email
-        UserData.shared.fullName = user.profile?.name
-        UserData.shared.givenName = user.profile?.givenName
-        UserData.shared.familyName = user.profile?.familyName
-        UserData.shared.profilePicUrl = user.profile?.imageURL(withDimension: 320)
+        UserData.shared.userID = user.uid
+//        UserData.shared.emailAddress = user.profile?.email
+//        UserData.shared.fullName = user.profile?.name
+//        UserData.shared.givenName = user.profile?.givenName
+//        UserData.shared.familyName = user.profile?.familyName
+//        UserData.shared.profilePicUrl = user.profile?.imageURL(withDimension: 320)
     }
-    
-    func updateLeaderboardInfo(with data: [String: Any]) {
-        // Update leaderboard related information
-        UserData.shared.badges = data["badges"] as! [String?]
-        UserData.shared.chosenBadge = data["chosenBadge"] as? String? ?? "default"
-        UserData.shared.points = data["points"] as? Double
-        UserData.shared.username = data["username"] as? String
-    }
+
 }

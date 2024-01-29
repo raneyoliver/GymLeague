@@ -19,42 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         window.tintColor = UIColor.systemBlue // Example to set global tint
 
-        AuthenticationService.shared.restorePreviousSignIn { [weak self] user, error in
-            guard let self = self else { return }
-
-
-
-            if let user = user {
-                // User is signed in, populate UserData
-                UserData.shared.populate(with: user)
-
-                // Fetch the leaderboard entry for the user
-                LeaderboardService.shared.fetchLeaderboardEntry(forUserID: user.userID!) { data, error in
-                    if let data = data {
-                        // Update UserData with leaderboard info
-                        UserData.shared.updateLeaderboardInfo(with: data.data())
-
-                        // Now that UserData is fully populated, show the main interface
-                        DispatchQueue.main.async {
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            window.rootViewController = storyboard.instantiateViewController(withIdentifier: "TabBar")
-                            self.window = window
-                            window.makeKeyAndVisible()
-                            print("sign-in successfully restored")
-                        }
-                    }
-                }
-            } else {
-                // User is not signed in or there was an error, show login
-                DispatchQueue.main.async {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    window.rootViewController = storyboard.instantiateViewController(withIdentifier: "Login")
-                    self.window = window
-                    window.makeKeyAndVisible()
-                    print("error restoring sign-in")
-                }
-            }
-        }
     }
 
 

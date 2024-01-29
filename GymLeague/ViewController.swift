@@ -47,6 +47,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     var location: CLLocation!
     var lastLocationUpdate: Date?
 
+    var userCanWorkout:Bool = false
+    
     var mapView: MKMapView!
     var mapViewContainer: UIView!
     var currentCircle: MKCircle?
@@ -60,7 +62,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     var workoutZoneOverlay: MKCircle!
     var countdownTimer: Timer!
     
-    let minimumWorkoutTime = 10 //20 * 60 // 20 minutes in seconds
+    let minimumWorkoutTime = 20 * 60 // 20 minutes in seconds
     var timeStarted: TimeInterval?
     var timeLeft:Int!
     let workoutRadiusInMeters:Double = 100
@@ -92,18 +94,6 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         super.viewDidLoad()
         placesClient = GMSPlacesClient.shared()
         
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        // Configure locationManager settings
-        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters  // Adjust based on your needs
-        locationManager.distanceFilter = 10  // Minimum change in distance (meters) for update
-        
-
-        // Start receiving location updates
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.startUpdatingLocation()
-        }
         db = Firestore.firestore()
         
         noGymsLabel.isHidden = true
@@ -112,12 +102,22 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         
         setupTableView()
         setupSegmentedControl()
-        setupMapContainerView()
         setupSpinner()
         setupCountdownView()
         
-        titleLabel.text = "Start a workout"
 
+        FirestoreService.shared.canUserStartWorkout(for: UserData.shared.userID!) { canStart, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else {
+                self.userCanWorkout = canStart
+                
+                self.setupLocationManager()
+                self.setupMapContainerView()
+                self.showInitialUI(canStart: self.userCanWorkout)
+            }
+        }
+    
     }
     
     override func viewDidLayoutSubviews() {
@@ -134,7 +134,73 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         ])
 
     }
+    
+    func setupLocationManager() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        // Configure locationManager settings
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters  // Adjust based on your needs
+        locationManager.distanceFilter = 10  // Minimum change in distance (meters) for update
+        
 
+        // Start receiving location updates
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func showInitialUI(canStart: Bool) {
+        if canStart {
+            print("The user can start a new workout.")
+            
+            self.userCanWorkout = true
+            
+            self.noGymsLabel.isHidden = false
+            self.mapViewContainer.isHidden = true
+            self.tableView.isHidden = false
+            self.startWorkoutButton.isHidden = false
+            self.cancelWorkoutButton.isHidden = true
+            self.segmentedControl.isHidden = false
+            self.countdownAndCancelView.isHidden = true
+            self.titleLabel.text = "Start a workout"
+            self.tableView.reloadData()
+            self.selectedGym = nil
+            self.updateStartWorkoutButtonState()
+            
+        } else {
+            print("The user cannot start a new workout yet.")
+            
+            self.userCanWorkout = false
+            
+            self.noGymsLabel.isHidden = true
+            self.mapViewContainer.isHidden = true
+            self.tableView.isHidden = true
+            self.startWorkoutButton.isHidden = true
+            self.cancelWorkoutButton.isHidden = true
+            self.segmentedControl.isHidden = true
+            self.countdownAndCancelView.isHidden = true
+            self.titleLabel.text = "Start a workout"
+            self.selectedGym = nil
+            
+            let label = UILabel()
+            self.view.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+                label.widthAnchor.constraint(equalToConstant: self.view.bounds.width),
+                label.heightAnchor.constraint(equalToConstant: 100)
+            ])
+            
+            label.textAlignment = .center
+            label.text = "You may only workout once per 24 hours"
+            label.font = .italicSystemFont(ofSize: 15)
+            label.textColor = self.noGymsLabel.textColor
+            
+        }
+
+    }
     
     func updateStartWorkoutButtonState() {
         DispatchQueue.main.async {
@@ -438,28 +504,20 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
 
     func handleWorkoutCompletion() {
-        // Do something when the workout is completed
-        // Maybe show a congratulatory message or log the workout
-        DispatchQueue.main.async {
-            self.mapViewContainer.isHidden = true
-            self.tableView.isHidden = false
-            self.startWorkoutButton.isHidden = false
-            self.cancelWorkoutButton.isHidden = true
-            self.segmentedControl.isHidden = false
-            self.countdownAndCancelView.isHidden = true
-            self.titleLabel.text = "Start a workout"
-            self.tableView.reloadData()
-            self.selectedGym = nil
-            self.updateStartWorkoutButtonState()
-        }
-        
         timeLeft = minimumWorkoutTime
         print("workout complete!")
         
         PointsService.shared.awardPoints(forUserID: UserData.shared.userID!) { success in
             if success {
                 print("points awarded succesfully")
-                self.addCompletedWorkout(for: UserData.shared.userID!, username: UserData.shared.username!, newPoints: UserData.shared.points!)
+                FirestoreService.shared.addCompletedWorkout(for: UserData.shared.userID!, username: UserData.shared.username!, newPoints: UserData.shared.points!) { _ in
+                    
+                    // only go back to main screen when completed_workouts is updated, which allows the UI to update accordingly
+                    DispatchQueue.main.async {
+                        self.showInitialUI(canStart: false)
+                    }
+                    
+                }
                 FirestoreService.shared.updateLeaderboardBadges(forUserID: UserData.shared.userID!)
             } else {
                 print("could not award points")
@@ -467,27 +525,9 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         }
     }
     
-    func addCompletedWorkout(for userId: String, username: String, newPoints: Double) {
-        // Prepare data
-        let workoutData: [String: Any] = [
-            "userId": userId,
-            "username": username,
-            "points": newPoints,
-            "date": Int(Date().timeIntervalSince1970) // Current date as Unix timestamp
-        ]
-
-        // Add a new document to the completed_workouts collection
-        db.collection("completed_workouts").addDocument(data: workoutData) { error in
-            if let error = error {
-                print("Error adding document: \(error)")
-            } else {
-                print("Document added successfully")
-            }
-        }
-    }
-
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        guard userCanWorkout else { return }
         
         // Check if this is the first location update
         if location == nil {
@@ -521,7 +561,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     }
 
     func updateUIWithGyms() {
-        if titleLabel.text == "Start a workout" {
+        if titleLabel.text == "Start a workout", !tableView.isHidden {
             updateStartWorkoutButtonState()
             
             if tableView.numberOfRows(inSection: 0) == 0 {

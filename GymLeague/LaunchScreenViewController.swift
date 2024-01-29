@@ -8,11 +8,13 @@
 import UIKit
 import GoogleSignIn
 import FirebaseFirestore
+import FirebaseAuthUI
+import FirebaseGoogleAuthUI
+import FirebaseEmailAuthUI
 
-class LaunchScreenViewController: UIViewController {
+class LaunchScreenViewController: UIViewController, FUIAuthDelegate {
     
     var db: Firestore!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,18 +23,38 @@ class LaunchScreenViewController: UIViewController {
         
         db = Firestore.firestore()
         
-        setupSignInButton()
+        if Auth.auth().currentUser != nil {
+            // User is signed in, proceed to the main app interface
+            self.restorePreviousSignIn(user: Auth.auth().currentUser)
+        }
+        
+        //setupSignInButton()
+        
     }
     
-    func setupSignInButton() {
-        signInButton.style = GIDSignInButtonStyle.iconOnly
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //setupFirebaseSignIn()
     }
     
-    @IBOutlet weak var signInButton: GIDSignInButton!
+    func setupFirebaseSignIn() {
+        let authUI = FUIAuth.defaultAuthUI()
+        // You need to adopt a FUIAuthDelegate protocol to receive callback
+        authUI!.delegate = self
+        
+        let providers: [FUIAuthProvider] = [
+            FUIEmailAuth(),
+            FUIGoogleAuth(authUI: authUI!),
+        ]
+        authUI!.providers = providers
+        
+        let authViewController = authUI!.authViewController()
+        self.present(authViewController, animated: true)
+    }
     
-    @IBAction func signInButtonTapped(_ sender: Any) {
-        print("sign-in button tapped")
-        AuthenticationService.shared.signIn(withPresenting: self) { error in
+    func manualSignIn(user: User?) {
+        AuthenticationService.shared.signIn(withPresenting: self, user: user!) { error in
             DispatchQueue.main.async {
                 if let error = error {
                     self.showErrorAlert(message: error.localizedDescription)
@@ -55,6 +77,59 @@ class LaunchScreenViewController: UIViewController {
         }
     }
     
+    func restorePreviousSignIn(user: User?) {
+
+        if let user = user {
+            // User is signed in, populate UserData
+            UserData.shared.populate(with: user)
+
+            // Fetch the leaderboard entry for the user
+            LeaderboardService.shared.fetchLeaderboardEntry(forUserID: user.uid) { data, error in
+                if let data = data {
+                    // Update UserData with leaderboard info
+                    LeaderboardService.shared.updateUserData(with: data.data())
+
+                    // Now that UserData is fully populated, show the main interface
+                    DispatchQueue.main.async {
+                        self.showMainTabBarController()
+                        print("sign-in successfully restored")
+                    }
+                }
+            }
+        } else {
+            // User is not signed in or there was an error, show login
+            DispatchQueue.main.async {
+                print("error restoring sign-in")
+            }
+        }
+    }
+    
+    func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
+        guard let user = user else { return }
+        manualSignIn(user: user)
+    }
+    
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+        let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?
+      if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
+        return true
+      }
+      // other URL handling goes here.
+      return false
+    }
+    
+    func setupSignInButton() {
+        signInButton.style = GIDSignInButtonStyle.iconOnly
+    }
+    
+    @IBOutlet weak var signInButton: GIDSignInButton!
+    
+    @IBAction func signInButtonTapped(_ sender: Any) {
+        print("sign-in button tapped")
+        setupFirebaseSignIn()
+    }
+    
     func ensureUserOnLeaderboard(completion: @escaping (Bool) -> Void) {
         guard let userID = UserData.shared.userID else {
             print("User ID not available")
@@ -67,7 +142,7 @@ class LaunchScreenViewController: UIViewController {
             if document != nil {
                 // User already has a leaderboard entry
                 print("ensureUserOnLeaderboard: User already has a leaderboard entry")
-                UserData.shared.updateLeaderboardInfo(with: document!.data())
+                LeaderboardService.shared.updateUserData(with: document!.data())
                 completion(true)
             } else {
                 // User is new or error occurred, handle accordingly, perhaps adding the user
@@ -82,7 +157,7 @@ class LaunchScreenViewController: UIViewController {
                     
                     // For new user, add them to leaderboard here
                     // Add a new leaderboard entry for the user
-                    LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, name: UserData.shared.givenName!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username) { success in
+                    LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username, completedWorkouts: UserData.shared.completedWorkouts!) { success in
                         if success {
                             print("New leaderboard entry added for the user.")
                         } else {
