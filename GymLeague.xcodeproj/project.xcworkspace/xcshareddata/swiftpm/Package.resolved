@@ -1,5 +1,4 @@
 {
-  "originHash" : "68a074efb1c5f97073d8cd4c8068836049e6e79b73ce565489c597f9ece2e2bc",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -51,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/FirebaseUI-iOS",
       "state" : {
-        "revision" : "bc0add5ad3abd7afc39eadd50b33c9df9bab0665",
-        "version" : "12.3.1"
+        "revision" : "a80bbc8fd3d27e097982ac44e66abe8b84b28ba3",
+        "version" : "13.1.0"
       }
     },
     {
@@ -182,5 +181,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
