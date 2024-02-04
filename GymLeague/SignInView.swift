@@ -79,18 +79,21 @@ class SignInView: UIView, UITextFieldDelegate {
     }
     
     @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        errorLabel.text = ""
-        if sender.selectedSegmentIndex == 1 {
-            // "New User" is selected
-            signInButton.setTitle("Create account", for: .normal)
-            signInButton.removeTarget(nil, action: nil, for: .allEvents)
-            signInButton.addTarget(self, action: #selector(newUserAction), for: .touchUpInside)
-        } else {
-            // "Returning User" is selected
-            signInButton.setTitle("Sign in", for: .normal)
-            signInButton.removeTarget(nil, action: nil, for: .allEvents)
-            signInButton.addTarget(self, action: #selector(returningUserAction), for: .touchUpInside)
+        DispatchQueue.main.async {
+            self.errorLabel.text = ""
+            if sender.selectedSegmentIndex == 1 {
+                // "New User" is selected
+                self.signInButton.setTitle("Create account", for: .normal)
+                self.signInButton.removeTarget(nil, action: nil, for: .allEvents)
+                self.signInButton.addTarget(self, action: #selector(self.newUserAction), for: .touchUpInside)
+            } else {
+                // "Returning User" is selected
+                self.signInButton.setTitle("Sign in", for: .normal)
+                self.signInButton.removeTarget(nil, action: nil, for: .allEvents)
+                self.signInButton.addTarget(self, action: #selector(self.returningUserAction), for: .touchUpInside)
+            }
         }
+        
     }
     
     @objc func newUserAction() {
@@ -130,7 +133,10 @@ class SignInView: UIView, UITextFieldDelegate {
                         // Handle other errors
                         print("Error attempting to create new user: \(error.localizedDescription)")
                     }
-                    self.errorLabel.text = error.localizedDescription
+                    DispatchQueue.main.async {
+                        self.errorLabel.text = error.localizedDescription
+                    }
+                    
                 } else {
                     print("New user created and signed in successfully")
                     // Handle successful account creation and sign-in
@@ -142,6 +148,10 @@ class SignInView: UIView, UITextFieldDelegate {
 
     private func handleSuccessfulSignIn(authResult: AuthDataResult?) {
         // Common sign-in success handling logic
+        DispatchQueue.main.async {
+            self.errorLabel.text = ""
+        }
+        
         AuthenticationService.shared.manualSignIn(user: authResult?.user) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
