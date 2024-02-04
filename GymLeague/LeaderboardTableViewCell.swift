@@ -68,7 +68,7 @@ class LeaderboardTableViewCell: UITableViewCell {
         setupStatsView(withSettings: cellSettings, isExpanded: isExpanded)
         highlightOwnCell(userID: entry.userID)
         
-        badgeDescriptionLabel.text = Config.capitalizeFirstLetter(of: badgeName)
+        badgeDescriptionLabel.text = Config.shared.capitalizeFirstLetter(of: badgeName)
         badgeDescriptionLabel.textColor = cellSettings.textLabelColor
         badgeDescriptionLabel.isHidden = !isExpanded
         backgroundImage.image = UIImage(named: entry.bgConfig.imageName)
@@ -176,7 +176,7 @@ class LeaderboardTableViewCell: UITableViewCell {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.addGestureRecognizer(longPressGesture)
         
-        setupBlurEffect(onView: minimizedView, withStyle: .light)
+        Config.shared.setupBlurEffect(onView: minimizedView, withStyle: .light)
 
         initStatsView()
     }
@@ -184,7 +184,7 @@ class LeaderboardTableViewCell: UITableViewCell {
     func initStatsView() {
         statsView.layer.cornerRadius = 8
         statsView.clipsToBounds = true
-        setupBlurEffect(onView: statsView, withStyle: .light)
+        Config.shared.setupBlurEffect(onView: statsView, withStyle: .light)
     }
     
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -212,25 +212,5 @@ class LeaderboardTableViewCell: UITableViewCell {
         }
     }
     
-    func setupBlurEffect(onView parentView: UIView, withStyle style: UIBlurEffect.Style) {
-        // Create a blur effect
-        let blurEffect = UIBlurEffect(style: style) // Choose style as needed
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
 
-        // If you are using Auto Layout, set this property to false
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-
-        // Add the effect view to the view you want to blur
-        parentView.insertSubview(blurEffectView, at: 0)
-
-        blurEffectView.alpha = 0.9
-        
-        // Constraints for the blurEffectView to cover the entire view
-        NSLayoutConstraint.activate([
-            blurEffectView.topAnchor.constraint(equalTo: parentView.topAnchor),
-            blurEffectView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
-            blurEffectView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
-            blurEffectView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor)
-        ])
-    }
 }

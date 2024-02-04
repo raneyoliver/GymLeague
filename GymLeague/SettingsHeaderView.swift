@@ -26,7 +26,7 @@ class SettingsHeaderView: UITableViewHeaderFooterView {
 
     private func setupHeader() {
         // Configure returnButton
-        if let image = UIImage(systemName: "chevron.down") {
+        if let image = UIImage(systemName: "arrow.turn.up.left") {
             returnButton.setImage(image, for: .normal)
         }
         returnButton.addTarget(self, action: #selector(returnButtonTapped), for: .touchUpInside)

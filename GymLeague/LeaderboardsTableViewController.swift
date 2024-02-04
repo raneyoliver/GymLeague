@@ -306,7 +306,7 @@ class LeaderboardsTableViewController: UITableViewController {
         } else {
             let header = CustomHeaderView()
             //let bgConfig = backgroundImageConfigs[sections[section]!.name]
-            header.titleLabel.text = Config.capitalizeFirstLetter(of: sections[section]!.name)
+            header.titleLabel.text = Config.shared.capitalizeFirstLetter(of: sections[section]!.name)
             header.detailLabel.text = "\(Int(sections[section]!.minPoints))+"  // Set this to your detail text
             
             header.titleLabel.textColor = UIColor.label

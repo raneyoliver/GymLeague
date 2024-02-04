@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FED8394E-A011-43DB-949A-342D260A8DD7"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GymLeague/LeaderboardService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "fetchLeaderboardEntry(forUserID:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8A746A10-D10F-4C95-B374-3ED049C53E18"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -34,6 +18,54 @@
             endingLineNumber = "136"
             landmarkName = "fetchLeaderboards()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8B668B16-C44A-4662-AB7B-8E83775DA7F0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Library/Developer/Xcode/DerivedData/GymLeague-hazrirhxcsylacdnxbaymqgdrmel/SourcePackages/checkouts/FirebaseUI-iOS/FirebaseEmailAuthUI/Sources/FUIEmailAuth.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
+            landmarkName = "-handleEmaiLinkSignIn:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8B668B16-C44A-4662-AB7B-8E83775DA7F0 - 598337a41bbb255b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FUIEmailAuth handleEmaiLinkSignIn:]"
+                  moduleName = "GymLeagueDev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/oliver/Library/Developer/Xcode/DerivedData/GymLeague-hazrirhxcsylacdnxbaymqgdrmel/SourcePackages/checkouts/FirebaseUI-iOS/FirebaseEmailAuthUI/Sources/FUIEmailAuth.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "416"
+                  endingLineNumber = "416"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "8B668B16-C44A-4662-AB7B-8E83775DA7F0 - 3783ff08f0eae879"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FUIEmailAuth handleEmaiLinkSignIn:]"
+                  moduleName = "GymLeague"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/oliver/Library/Developer/Xcode/DerivedData/GymLeague-hazrirhxcsylacdnxbaymqgdrmel/SourcePackages/checkouts/FirebaseUI-iOS/FirebaseEmailAuthUI/Sources/FUIEmailAuth.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "416"
+                  endingLineNumber = "416"
+                  offsetFromSymbolStart = "132">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

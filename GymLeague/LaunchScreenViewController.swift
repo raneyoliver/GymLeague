@@ -12,6 +12,7 @@ import FirebaseAuthUI
 import FirebaseGoogleAuthUI
 import FirebaseEmailAuthUI
 
+
 class LaunchScreenViewController: UIViewController, FUIAuthDelegate {
     
     var db: Firestore!
@@ -27,54 +28,25 @@ class LaunchScreenViewController: UIViewController, FUIAuthDelegate {
             // User is signed in, proceed to the main app interface
             self.restorePreviousSignIn(user: Auth.auth().currentUser)
         }
-        
-        //setupSignInButton()
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        //setupFirebaseSignIn()
     }
     
     func setupFirebaseSignIn() {
-        let authUI = FUIAuth.defaultAuthUI()
+        guard let authUI = FUIAuth.defaultAuthUI() else { return }
         // You need to adopt a FUIAuthDelegate protocol to receive callback
-        authUI!.delegate = self
+        authUI.delegate = self
         
         let providers: [FUIAuthProvider] = [
-            FUIEmailAuth(),
-            FUIGoogleAuth(authUI: authUI!),
+            //FUIEmailAuth(),
+            FUIGoogleAuth(authUI: authUI),
         ]
-        authUI!.providers = providers
-        
-        let authViewController = authUI!.authViewController()
+        authUI.providers = providers
+
+        let authViewController = authUI.authViewController()
         self.present(authViewController, animated: true)
     }
     
-    func manualSignIn(user: User?) {
-        AuthenticationService.shared.signIn(withPresenting: self, user: user!) { error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.showErrorAlert(message: error.localizedDescription)
-                } else {
-                    print("sign-in successful")
-                    // Check if the user is new and add them to leaderboard if necessary
-                    self.ensureUserOnLeaderboard { success in
-                        if success {
-                            DispatchQueue.main.async {
-                                // Now it's safe to show the main tab bar
-                                self.showMainTabBarController()
-                            }
-                        } else {
-                            // Handle error, failed to ensure user on leaderboard
-                            print("Failed to ensure user on leaderboard")
-                        }
-                    }
-                }
-            }
-        }
+    func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
+      return CustomAuthPickerViewController(authUI: authUI)
     }
     
     func restorePreviousSignIn(user: User?) {
@@ -91,7 +63,7 @@ class LaunchScreenViewController: UIViewController, FUIAuthDelegate {
 
                     // Now that UserData is fully populated, show the main interface
                     DispatchQueue.main.async {
-                        self.showMainTabBarController()
+                        Config.shared.showMainTabBarController()
                         print("sign-in successfully restored")
                     }
                 }
@@ -106,7 +78,13 @@ class LaunchScreenViewController: UIViewController, FUIAuthDelegate {
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
         guard let user = user else { return }
-        manualSignIn(user: user)
+        AuthenticationService.shared.manualSignIn(user: user) { error in
+            if let error = error {
+                self.showErrorAlert(message: error.localizedDescription)
+            } else {
+                Config.shared.showMainTabBarController()
+            }
+        }
     }
     
     func application(_ app: UIApplication, open url: URL,
@@ -118,69 +96,10 @@ class LaunchScreenViewController: UIViewController, FUIAuthDelegate {
       // other URL handling goes here.
       return false
     }
-    
-    func setupSignInButton() {
-        signInButton.style = GIDSignInButtonStyle.iconOnly
-    }
-    
-    @IBOutlet weak var signInButton: GIDSignInButton!
+
     
     @IBAction func signInButtonTapped(_ sender: Any) {
-        print("sign-in button tapped")
         setupFirebaseSignIn()
-    }
-    
-    func ensureUserOnLeaderboard(completion: @escaping (Bool) -> Void) {
-        guard let userID = UserData.shared.userID else {
-            print("User ID not available")
-            completion(false)
-            return
-        }
-        
-        // Attempt to fetch the user's leaderboard entry
-        LeaderboardService.shared.fetchLeaderboardEntry(forUserID: userID) { document, error in
-            if document != nil {
-                // User already has a leaderboard entry
-                print("ensureUserOnLeaderboard: User already has a leaderboard entry")
-                LeaderboardService.shared.updateUserData(with: document!.data())
-                completion(true)
-            } else {
-                // User is new or error occurred, handle accordingly, perhaps adding the user
-                
-                AuthenticationService.shared.promptForUsername(viewController: self) { username in
-                    guard let username = username else {
-                        print("Username entry was cancelled")
-                        return
-                    }
-                    
-                    UserData.shared.username = username
-                    
-                    // For new user, add them to leaderboard here
-                    // Add a new leaderboard entry for the user
-                    LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username, completedWorkouts: UserData.shared.completedWorkouts!) { success in
-                        if success {
-                            print("New leaderboard entry added for the user.")
-                        } else {
-                            print("Failed to add a new leaderboard entry.")
-                        }
-                        completion(success)
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    func showMainTabBarController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let mainTabBarController = storyboard.instantiateViewController(withIdentifier: "TabBar") as? UITabBarController,
-           let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let sceneDelegate = windowScene.delegate as? SceneDelegate,
-           let window = sceneDelegate.window {
-            
-            window.rootViewController = mainTabBarController
-            window.makeKeyAndVisible()
-        }
     }
     
     // Helper function to show error message

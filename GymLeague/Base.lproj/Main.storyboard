@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QgF-fW-tUm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QgF-fW-tUm">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -18,19 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tvu-cg-sOZ" customClass="GIDSignInButton">
-                                <rect key="frame" x="172.66666666666666" y="631" width="48" height="48"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="G0L-CA-c2e"/>
-                                    <constraint firstAttribute="width" constant="48" id="Ijz-kZ-Xxy"/>
-                                </constraints>
-                                <connections>
-                                    <action selector="signInButtonTapped:" destination="QgF-fW-tUm" eventType="touchUpInside" id="Or8-Qq-iAn"/>
-                                </connections>
-                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="badge_new" translatesAutoresizingMaskIntoConstraints="NO" id="tPL-F2-OAF">
-                                <rect key="frame" x="76.666666666666686" y="306" width="240" height="240"/>
+                                <rect key="frame" x="76.666666666666686" y="207" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="3Ss-fb-Vcj"/>
                                     <constraint firstAttribute="height" constant="240" id="Te7-Qm-1Y6"/>
@@ -41,17 +30,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Fv-pa-H77">
-                                <rect key="frame" x="164.33333333333334" y="575" width="64.666666666666657" height="27"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="27" id="Xye-X2-WtE"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gym League" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42P-3j-hGe">
-                                <rect key="frame" x="104" y="162" width="185" height="41"/>
+                                <rect key="frame" x="104.33333333333333" y="86" width="184.66666666666669" height="41"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="41" id="XZ7-HA-JEg"/>
                                 </constraints>
@@ -60,35 +40,39 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beta" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z38-nU-8oF">
-                                <rect key="frame" x="181" y="211" width="31.333333333333343" height="18"/>
+                                <rect key="frame" x="181" y="135" width="31.333333333333343" height="18"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M69-FG-Z2i">
+                                <rect key="frame" x="64" y="510.99999999999994" width="265" height="34.333333333333314"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Sign in"/>
+                                <connections>
+                                    <action selector="signInButtonTapped:" destination="QgF-fW-tUm" eventType="touchUpInside" id="POO-8c-sev"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RSb-BR-ddL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
                         <constraints>
-                            <constraint firstItem="42P-3j-hGe" firstAttribute="top" secondItem="RSb-BR-ddL" secondAttribute="top" constant="103" id="7SI-V5-hvZ"/>
-                            <constraint firstItem="8Fv-pa-H77" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="7eP-Ey-qel"/>
-                            <constraint firstItem="8Fv-pa-H77" firstAttribute="top" secondItem="tPL-F2-OAF" secondAttribute="bottom" constant="29" id="B4D-Y2-hzp"/>
+                            <constraint firstItem="42P-3j-hGe" firstAttribute="top" secondItem="RSb-BR-ddL" secondAttribute="top" constant="27" id="7SI-V5-hvZ"/>
                             <constraint firstItem="tPL-F2-OAF" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="FOb-QU-gm0"/>
+                            <constraint firstItem="tPL-F2-OAF" firstAttribute="top" secondItem="z38-nU-8oF" secondAttribute="bottom" constant="54" id="HBu-qm-z8k"/>
                             <constraint firstItem="z38-nU-8oF" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="JHH-Q3-NFA"/>
                             <constraint firstItem="42P-3j-hGe" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="Oaj-UJ-AXL"/>
+                            <constraint firstItem="M69-FG-Z2i" firstAttribute="top" secondItem="tPL-F2-OAF" secondAttribute="bottom" constant="64" id="RYa-Uf-wv7"/>
                             <constraint firstItem="z38-nU-8oF" firstAttribute="top" secondItem="42P-3j-hGe" secondAttribute="bottom" constant="8" symbolic="YES" id="SjE-pW-F9n"/>
-                            <constraint firstItem="tvu-cg-sOZ" firstAttribute="centerX" secondItem="KwN-dO-mvh" secondAttribute="centerX" id="brL-As-KXZ"/>
-                            <constraint firstItem="tPL-F2-OAF" firstAttribute="centerY" secondItem="KwN-dO-mvh" secondAttribute="centerY" id="oYJ-T4-xyd"/>
-                            <constraint firstItem="tvu-cg-sOZ" firstAttribute="top" secondItem="8Fv-pa-H77" secondAttribute="bottom" constant="29" id="rWI-rA-zdH"/>
+                            <constraint firstItem="M69-FG-Z2i" firstAttribute="leading" secondItem="RSb-BR-ddL" secondAttribute="leading" constant="64" id="UAh-3t-mjJ"/>
+                            <constraint firstItem="RSb-BR-ddL" firstAttribute="trailing" secondItem="M69-FG-Z2i" secondAttribute="trailing" constant="64" id="rML-sA-TPL"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="signInButton" destination="tvu-cg-sOZ" id="AkW-dd-4YW"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xau-5c-D2T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3671" y="-23"/>
+            <point key="canvasLocation" x="-3672.5190839694656" y="-23.239436619718312"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Wpa-1K-r6h">
@@ -382,16 +366,16 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="rosette" catalog="system" width="107" height="128"/>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

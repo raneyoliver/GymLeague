@@ -17,22 +17,14 @@ class AuthenticationService {
     
     private init() {}  // Private constructor to ensure singleton usage
     
-    func signIn(withPresenting presentingVC: UIViewController, user: User, completion: @escaping (Error?) -> Void) {
+    func manualSignIn(user: User?, completion: @escaping (Error?) -> Void) {
+        AuthenticationService.shared.signIn(user: user!) { error in
+            completion(error)
+        }
+    }
+    
+    func signIn(user: User, completion: @escaping (Error?) -> Void) {
         print("attempting to sign-in")
-//        let clientID = Config.getGoogleServiceInfoValue(keyName: "CLIENT_ID")
-//        let signInConfig = GIDConfiguration(clientID: clientID)
-//        GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: presentingVC) { [weak self] user, error in
-//            guard self != nil else { return }
-//
-//            if let error = error {
-//                // Handle sign-in errors
-//                print("Sign-in failed with error: \(error.localizedDescription)")
-//                completion(error)
-//                return
-//            }
-//
-//            guard let user = user else { return }
-            
         
             // Store user data
         UserData.shared.userID = user.uid
@@ -55,10 +47,62 @@ class AuthenticationService {
             }
         }
     }
+    
+    func ensureUserOnLeaderboard(viewController: UIViewController, completion: @escaping (Bool) -> Void) {
+        guard let userID = UserData.shared.userID else {
+            print("User ID not available")
+            completion(false)
+            return
+        }
+        
+        // Attempt to fetch the user's leaderboard entry
+        LeaderboardService.shared.fetchLeaderboardEntry(forUserID: userID) { document, error in
+            if document != nil {
+                // User already has a leaderboard entry
+                print("ensureUserOnLeaderboard: User already has a leaderboard entry")
+                LeaderboardService.shared.updateUserData(with: document!.data())
+                completion(true)
+            } else {
+                // User is new or error occurred, handle accordingly, perhaps adding the user
+                
+                AuthenticationService.shared.promptForUsername(viewController: viewController) { username in
+                    guard let username = username else {
+                        print("Username entry was cancelled")
+                        return
+                    }
+                    
+                    UserData.shared.username = username
+                    
+                    // For new user, add them to leaderboard here
+                    // Add a new leaderboard entry for the user
+                    LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username, completedWorkouts: UserData.shared.completedWorkouts!) { success in
+                        if success {
+                            print("New leaderboard entry added for the user.")
+                        } else {
+                            print("Failed to add a new leaderboard entry.")
+                        }
+                        completion(success)
+                    }
+                }
+            }
+        }
+    }
 
     func restorePreviousSignIn(completion: @escaping (GIDGoogleUser?, Error?) -> Void) {
         GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
             completion(user, error)
+        }
+    }
+    
+    func manualCreateFirebaseUser(email: String, password: String) {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Error creating user: \(error.localizedDescription)")
+            } else {
+                print("User created successfully!")
+                
+                Config.shared.showMainTabBarController()
+            }
         }
     }
     

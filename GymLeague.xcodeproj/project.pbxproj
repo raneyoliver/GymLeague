@@ -38,13 +38,24 @@
 		A75113B92B683BC6002F8C03 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A75113B82B683BC6002F8C03 /* FirebaseAnalytics */; };
 		A75113BB2B683BCF002F8C03 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A75113BA2B683BCF002F8C03 /* FirebaseFirestore */; };
 		A75113BD2B683BD9002F8C03 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A75113BC2B683BD9002F8C03 /* FirebaseAuth */; };
+		A763EFC42B6F22BB00132F57 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A763EFC32B6F22BB00132F57 /* GoogleService-Info.plist */; };
 		A77C89002B4F0BF200EB2120 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */; };
 		A77C89022B5086E800EB2120 /* PointsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C89012B5086E800EB2120 /* PointsService.swift */; };
 		A77C89042B53626F00EB2120 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */; };
+		A785556D2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A785556B2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift */; };
+		A785556E2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A785556B2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift */; };
+		A785556F2B6DBBE3009CE540 /* CustomAuthPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A785556C2B6DBBE3009CE540 /* CustomAuthPickerViewController.xib */; };
+		A78555702B6DBBE3009CE540 /* CustomAuthPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A785556C2B6DBBE3009CE540 /* CustomAuthPickerViewController.xib */; };
+		A78555722B6EC03D009CE540 /* SignInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A78555712B6EC03D009CE540 /* SignInView.xib */; };
+		A78555732B6EC03D009CE540 /* SignInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A78555712B6EC03D009CE540 /* SignInView.xib */; };
+		A78555752B6EC0ED009CE540 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78555742B6EC0ED009CE540 /* SignInView.swift */; };
+		A78555762B6EC0ED009CE540 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78555742B6EC0ED009CE540 /* SignInView.swift */; };
 		A787A8132B65C77400843177 /* FirebaseAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = A787A8122B65C77400843177 /* FirebaseAuthUI */; };
 		A787A8152B65C77400843177 /* FirebaseEmailAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = A787A8142B65C77400843177 /* FirebaseEmailAuthUI */; };
 		A787A8172B65C77400843177 /* FirebaseGoogleAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = A787A8162B65C77400843177 /* FirebaseGoogleAuthUI */; };
 		A787A81A2B65CC6F00843177 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A787A8192B65CC6F00843177 /* AppAuth */; };
+		A79271B62B6B317B00FCCEC8 /* FilterPillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79271B52B6B317B00FCCEC8 /* FilterPillButton.swift */; };
+		A79271B72B6B317B00FCCEC8 /* FilterPillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79271B52B6B317B00FCCEC8 /* FilterPillButton.swift */; };
 		A792AFA02B66D56C00B1C20E /* LeaderboardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750EA2B4257CA00BC5128 /* LeaderboardTableViewCell.swift */; };
 		A792AFA12B66D56C00B1C20E /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */; };
 		A792AFA22B66D56C00B1C20E /* BadgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */; };
@@ -100,7 +111,6 @@
 		A7DF6CB72B583C5500422D13 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7DF6CB62B583C5500422D13 /* keys.plist */; };
 		A7DF6CBE2B5ADEFF00422D13 /* username_filters in Resources */ = {isa = PBXBuildFile; fileRef = A7DF6CBD2B5ADEFF00422D13 /* username_filters */; };
 		A7DF6CC02B5B492B00422D13 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */; };
-		A7DF6CC22B65699D00422D13 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7DF6CC12B65699D00422D13 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,9 +152,15 @@
 		A71751042B4C6B3B00BC5128 /* GymButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymButton.swift; sourceTree = "<group>"; };
 		A71751062B4CD5F200BC5128 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
+		A763EFC32B6F22BB00132F57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		A77C89012B5086E800EB2120 /* PointsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsService.swift; sourceTree = "<group>"; };
 		A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		A785556B2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAuthPickerViewController.swift; sourceTree = "<group>"; };
+		A785556C2B6DBBE3009CE540 /* CustomAuthPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAuthPickerViewController.xib; sourceTree = "<group>"; };
+		A78555712B6EC03D009CE540 /* SignInView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInView.xib; sourceTree = "<group>"; };
+		A78555742B6EC0ED009CE540 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		A79271B52B6B317B00FCCEC8 /* FilterPillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPillButton.swift; sourceTree = "<group>"; };
 		A792AFD32B66D56C00B1C20E /* GymLeagueDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymLeagueDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A792AFD42B66D56C00B1C20E /* GymLeague copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GymLeague copy-Info.plist"; path = "/Users/oliver/Documents/GymLeague/GymLeague copy-Info.plist"; sourceTree = "<absolute>"; };
 		A792AFD92B66D91700B1C20E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GymLeagueDevPList/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -165,10 +181,8 @@
 		A7D096762B3F81F200378E5F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		A7DF6CB62B583C5500422D13 /* keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		A7DF6CBA2B58916A00422D13 /* credentials.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
-		A7DF6CBC2B58929900422D13 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A7DF6CBD2B5ADEFF00422D13 /* username_filters */ = {isa = PBXFileReference; lastKnownFileType = folder; name = username_filters; path = ../../username_filters; sourceTree = "<group>"; };
 		A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
-		A7DF6CC12B65699D00422D13 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,8 +253,8 @@
 		A7D096332B3F502300378E5F = {
 			isa = PBXGroup;
 			children = (
-				A7DF6CC12B65699D00422D13 /* GoogleService-Info.plist */,
 				A792AFD92B66D91700B1C20E /* GoogleService-Info.plist */,
+				A763EFC32B6F22BB00132F57 /* GoogleService-Info.plist */,
 				A71750D82B40FC2600BC5128 /* credentials.plist */,
 				A7D096742B3F816D00378E5F /* .gitignore */,
 				A7D0963E2B3F502300378E5F /* GymLeague */,
@@ -267,7 +281,6 @@
 		A7D0963E2B3F502300378E5F /* GymLeague */ = {
 			isa = PBXGroup;
 			children = (
-				A7DF6CBC2B58929900422D13 /* GoogleService-Info.plist */,
 				A71750FC2B49C02400BC5128 /* CustomBackgroundView.swift */,
 				A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */,
 				A7D0963F2B3F502300378E5F /* AppDelegate.swift */,
@@ -275,7 +288,12 @@
 				A7D096412B3F502300378E5F /* SceneDelegate.swift */,
 				A71750DF2B41F6F000BC5128 /* UserData.swift */,
 				A71750DB2B41009600BC5128 /* LaunchScreenViewController.swift */,
+				A785556B2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift */,
+				A785556C2B6DBBE3009CE540 /* CustomAuthPickerViewController.xib */,
+				A78555712B6EC03D009CE540 /* SignInView.xib */,
+				A78555742B6EC0ED009CE540 /* SignInView.swift */,
 				A7D096452B3F502300378E5F /* Main.storyboard */,
+				A79271B52B6B317B00FCCEC8 /* FilterPillButton.swift */,
 				A71751022B4B2C8500BC5128 /* SettingsHeaderView.swift */,
 				A71751002B4B26C700BC5128 /* SettingsTableViewController.swift */,
 				A71750DD2B41EF3700BC5128 /* ProfileViewController.swift */,
@@ -481,6 +499,8 @@
 				A792AFC72B66D56C00B1C20E /* .gitignore in Resources */,
 				A792AFC82B66D56C00B1C20E /* username_filters in Resources */,
 				A792AFC92B66D56C00B1C20E /* PlaceTableViewCell.xib in Resources */,
+				A78555732B6EC03D009CE540 /* SignInView.xib in Resources */,
+				A78555702B6DBBE3009CE540 /* CustomAuthPickerViewController.xib in Resources */,
 				A792AFCA2B66D56C00B1C20E /* LaunchScreen.storyboard in Resources */,
 				A792AFCB2B66D56C00B1C20E /* Assets.xcassets in Resources */,
 				A792AFCC2B66D56C00B1C20E /* BadgeCollectionViewCell.xib in Resources */,
@@ -494,15 +514,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A763EFC42B6F22BB00132F57 /* GoogleService-Info.plist in Resources */,
 				A7DF6CB72B583C5500422D13 /* keys.plist in Resources */,
 				A71750D92B40FC2600BC5128 /* credentials.plist in Resources */,
 				A7D096752B3F816D00378E5F /* .gitignore in Resources */,
 				A7DF6CBE2B5ADEFF00422D13 /* username_filters in Resources */,
 				A71751092B4CD5F200BC5128 /* PlaceTableViewCell.xib in Resources */,
+				A78555722B6EC03D009CE540 /* SignInView.xib in Resources */,
+				A785556F2B6DBBE3009CE540 /* CustomAuthPickerViewController.xib in Resources */,
 				A7D0964C2B3F502400378E5F /* LaunchScreen.storyboard in Resources */,
 				A7D096492B3F502400378E5F /* Assets.xcassets in Resources */,
 				A71750F72B462ACF00BC5128 /* BadgeCollectionViewCell.xib in Resources */,
-				A7DF6CC22B65699D00422D13 /* GoogleService-Info.plist in Resources */,
 				A71750ED2B4257CA00BC5128 /* LeaderboardTableViewCell.xib in Resources */,
 				A7D096472B3F502300378E5F /* Main.storyboard in Resources */,
 			);
@@ -533,8 +555,11 @@
 				A792AFA12B66D56C00B1C20E /* FirestoreService.swift in Sources */,
 				A792AFA22B66D56C00B1C20E /* BadgeCollectionViewCell.swift in Sources */,
 				A792AFA32B66D56C00B1C20E /* ProfileViewController.swift in Sources */,
+				A79271B72B6B317B00FCCEC8 /* FilterPillButton.swift in Sources */,
+				A785556E2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift in Sources */,
 				A792AFA42B66D56C00B1C20E /* GymButton.swift in Sources */,
 				A792AFA52B66D56C00B1C20E /* LeaderboardSection.swift in Sources */,
+				A78555762B6EC0ED009CE540 /* SignInView.swift in Sources */,
 				A792AFA62B66D56C00B1C20E /* ViewController.swift in Sources */,
 				A792AFA72B66D56C00B1C20E /* SettingsHeaderView.swift in Sources */,
 				A792AFA82B66D56C00B1C20E /* UserData.swift in Sources */,
@@ -565,8 +590,11 @@
 				A7DF6CC02B5B492B00422D13 /* FirestoreService.swift in Sources */,
 				A71750F62B462ACF00BC5128 /* BadgeCollectionViewCell.swift in Sources */,
 				A71750DE2B41EF3700BC5128 /* ProfileViewController.swift in Sources */,
+				A79271B62B6B317B00FCCEC8 /* FilterPillButton.swift in Sources */,
+				A785556D2B6DBBE3009CE540 /* CustomAuthPickerViewController.swift in Sources */,
 				A71751052B4C6B3B00BC5128 /* GymButton.swift in Sources */,
 				A71750FB2B48870D00BC5128 /* LeaderboardSection.swift in Sources */,
+				A78555752B6EC0ED009CE540 /* SignInView.swift in Sources */,
 				A7D096442B3F502300378E5F /* ViewController.swift in Sources */,
 				A71751032B4B2C8500BC5128 /* SettingsHeaderView.swift in Sources */,
 				A71750E02B41F6F000BC5128 /* UserData.swift in Sources */,

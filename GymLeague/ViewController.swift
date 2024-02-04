@@ -590,7 +590,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
     func isTypeNearby(location: CLLocation, type: String?, completion: @escaping (Bool) -> Void) {
         let locationString = locationString(from: location)
         
-        let apiKey = Config.getGooglePlacesAPIKey()
+        let apiKey = Config.shared.getGooglePlacesAPIKey()
         
         var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(searchRadiusInMeters)&key=\(apiKey)"
         if let type = type {
@@ -709,7 +709,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
 
     
     func fetchPhoto(for reference: String, completion: @escaping (UIImage?) -> Void) {
-        let photoURLString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=\(reference)&key=\(Config.getGooglePlacesAPIKey())"
+        let photoURLString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=\(reference)&key=\(Config.shared.getGooglePlacesAPIKey())"
         guard let photoURL = URL(string: photoURLString) else {
             completion(nil)
             return
