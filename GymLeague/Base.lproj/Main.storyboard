@@ -307,13 +307,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xp0-NA-gp2">
-                                <rect key="frame" x="290.33333333333331" y="662" width="92" height="35"/>
+                                <rect key="frame" x="223.33333333333337" y="662" width="159" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="Lok-yS-5bX"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Save Changes"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Save"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Save changes"/>
                                 <connections>
                                     <action selector="saveChangesButtonTapped:" destination="qeg-GZ-6Vo" eventType="touchUpInside" id="9X6-bl-avU"/>
                                 </connections>
@@ -340,7 +340,7 @@
                             <constraint firstItem="tTD-2j-EMw" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="8" id="Mn7-yl-eWF"/>
                             <constraint firstItem="A4L-oc-0Wn" firstAttribute="top" secondItem="AJb-1R-A43" secondAttribute="bottom" constant="20" id="N5m-6C-AOk"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="trailing" secondItem="Xp0-NA-gp2" secondAttribute="trailing" constant="10.67" id="Udn-bx-ls1"/>
-                            <constraint firstItem="Xp0-NA-gp2" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="290.32998657226562" id="Z7d-z6-gF6"/>
+                            <constraint firstItem="Xp0-NA-gp2" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="223.33000183105469" id="Xii-Os-z6m"/>
                             <constraint firstItem="AJb-1R-A43" firstAttribute="top" secondItem="pRE-uy-JSG" secondAttribute="top" constant="97" id="Z9Z-1k-dVE"/>
                             <constraint firstItem="pRE-uy-JSG" firstAttribute="bottom" secondItem="Xp0-NA-gp2" secondAttribute="bottom" constant="72" id="ni9-4Q-QlV"/>
                             <constraint firstItem="vRD-jT-rfS" firstAttribute="leading" secondItem="pRE-uy-JSG" secondAttribute="leading" constant="8" id="ttY-WW-J3g"/>

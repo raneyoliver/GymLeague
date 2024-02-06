@@ -39,16 +39,8 @@ class LeaderboardsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Only fetch if the entries array is empty
-//        if !leaderboardEntries.isEmpty {
-//        let allEmpty = sectionedEntries.allSatisfy { $0.isEmpty }
-//        if !allEmpty {
-////            sectionedEntries = Array(repeating: [], count: sections.count)
-////            self.leaderboardEntries.removeAll()
-//            refreshData()
-//        }
+
         refreshData()
-//        fetchLeaderboards()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,7 +49,7 @@ class LeaderboardsTableViewController: UITableViewController {
         // Reset all expanded states to false
         // Update expandedCells for each section
         for (sectionIndex, section) in expandedCells.enumerated() {
-            expandedCells[sectionIndex] = Array(repeating: false, count: section.count)
+            expandedCells[sectionIndex] = Array(repeating: true, count: section.count)
         }
         sectionedEntries = Array(repeating: [], count: sections.count)
 
@@ -84,21 +76,15 @@ class LeaderboardsTableViewController: UITableViewController {
         tableView.tableFooterView = spinner
         
         NotificationCenter.default.addObserver(self, selector: #selector(toggleAllCells), name: NSNotification.Name("ToggleExpansionNotification"), object: nil)
-        
-        //NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .badgeUpdated, object: nil)
-        
-        sectionedEntries = Array(repeating: [], count: sections.count)
-        
-        //initializeExpandedCells()
-        
-        //fetchLeaderboards()
 
+        sectionedEntries = Array(repeating: [], count: sections.count)
+    
         tableView.backgroundColor = CustomBackgroundView.color
     }
     
     func initializeExpandedCells() {
         expandedCells = sectionedEntries.map { section in
-            return Array(repeating: false, count: section.count)
+            return Array(repeating: true, count: section.count)
         }
     }
 
@@ -282,10 +268,6 @@ class LeaderboardsTableViewController: UITableViewController {
         return isFetchingMore ? 0 : sectionedEntries[section].count
     }
     
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return sections[section].name
-//    }
-    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             let header = UIView()
@@ -302,7 +284,23 @@ class LeaderboardsTableViewController: UITableViewController {
                 titleLabel.centerYAnchor.constraint(equalTo: header.centerYAnchor)
             ])
             
+            let infoButton = UIButton()
+            infoButton.setTitle("", for: .normal)
+            infoButton.setImage(UIImage(systemName: "info.circle"), for: .normal)
+            header.addSubview(infoButton)
+            infoButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                infoButton.trailingAnchor.constraint(equalTo: header.trailingAnchor, constant: -10),
+                infoButton.centerYAnchor.constraint(equalTo: header.centerYAnchor),
+                infoButton.heightAnchor.constraint(equalToConstant: 40),
+                infoButton.widthAnchor.constraint(equalToConstant: 40)
+            ])
+            
+            infoButton.addTarget(self, action: #selector(showTutorial), for: .touchUpInside)
+            
             return header
+        } else if sectionedEntries[section].isEmpty {
+            return nil
         } else {
             let header = CustomHeaderView()
             //let bgConfig = backgroundImageConfigs[sections[section]!.name]
@@ -319,9 +317,21 @@ class LeaderboardsTableViewController: UITableViewController {
             return header
         }
     }
+    
+    @objc func showTutorial() {
+        let tutorialVC = TutorialViewController()
+        self.present(tutorialVC, animated: true, completion: nil)
+    }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 25  // Set a height that works for your design
+        if section == 0 {
+            return 25
+        }
+        else if sectionedEntries.allSatisfy({ $0.isEmpty }) {
+            return 25
+        } else {
+            return sectionedEntries[section].isEmpty ? 0 : 25
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

@@ -25,7 +25,8 @@ class BadgeCollectionViewCell: UICollectionViewCell {
             }
             
         } else {
-            imageView.image = UIImage(named: "locked")
+            imageView.image = UIImage(systemName: "lock.fill") //UIImage(named: "locked")
+            imageView.tintColor = CustomBackgroundView.twoAboveColor
         }
         
         

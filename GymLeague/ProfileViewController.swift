@@ -72,8 +72,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         collectionView.clipsToBounds = true
         
         collectionView.backgroundColor = CustomBackgroundView.oneAboveColor
+        Config.shared.setupBlurEffect(onView: collectionView, withStyle: .regular)
+        
         tableView.backgroundColor = CustomBackgroundView.color
         tableView.isScrollEnabled = false
+        
         
     }
     
