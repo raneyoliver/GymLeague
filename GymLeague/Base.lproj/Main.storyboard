@@ -86,7 +86,7 @@
                     <connections>
                         <segue destination="qeg-GZ-6Vo" kind="relationship" relationship="viewControllers" id="9t2-rR-ZDz"/>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="7ve-vo-y5g"/>
-                        <segue destination="9e8-k7-R55" kind="relationship" relationship="viewControllers" id="ewQ-fP-QMw"/>
+                        <segue destination="IAd-PH-QE0" kind="relationship" relationship="viewControllers" id="8nf-Hl-44X"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zn7-L2-xeB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -186,10 +186,10 @@
             </objects>
             <point key="canvasLocation" x="-706.10687022900765" y="-23.239436619718312"/>
         </scene>
-        <!--Leaderboards Table View Controller-->
+        <!--Table View Controller-->
         <scene sceneID="b6y-gP-Kjy">
             <objects>
-                <tableViewController id="9e8-k7-R55" customClass="LeaderboardsTableViewController" customModule="GymLeague" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="9e8-k7-R55" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" id="Mje-Qk-yLM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -214,6 +214,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="522-aa-K7X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="172" y="-23"/>
+        </scene>
+        <!--Base Leaderboards Table View Controller-->
+        <scene sceneID="s2R-sl-AuN">
+            <objects>
+                <viewController id="IAd-PH-QE0" customClass="BaseLeaderboardsTableViewController" customModule="GymLeague" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="X6q-QF-Akz">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="6BV-WG-gZm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="rosette" catalog="system" selectedImage="rosette" id="F39-u8-qJm"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q82-RF-dsm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="897" y="-23"/>
         </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="1Qz-AG-ebp">

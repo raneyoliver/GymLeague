@@ -79,7 +79,17 @@ class LeaderboardsTableViewController: UITableViewController {
 
         sectionedEntries = Array(repeating: [], count: sections.count)
     
-        tableView.backgroundColor = CustomBackgroundView.color
+        tableView.backgroundColor = .clear //CustomBackgroundView.color
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
+        
     }
     
     func initializeExpandedCells() {
@@ -271,6 +281,7 @@ class LeaderboardsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             let header = UIView()
+            header.backgroundColor = .clear
             let titleLabel = UILabel()
             titleLabel.text = "Leaderboards"
             titleLabel.adjustsFontForContentSizeCategory = true
@@ -303,7 +314,7 @@ class LeaderboardsTableViewController: UITableViewController {
             return nil
         } else {
             let header = CustomHeaderView()
-            //let bgConfig = backgroundImageConfigs[sections[section]!.name]
+            header.backgroundColor = .clear
             header.titleLabel.text = Config.shared.capitalizeFirstLetter(of: sections[section]!.name)
             header.detailLabel.text = "\(Int(sections[section]!.minPoints))+"  // Set this to your detail text
             
@@ -319,23 +330,28 @@ class LeaderboardsTableViewController: UITableViewController {
     }
     
     @objc func showTutorial() {
-        let tutorialVC = TutorialViewController()
+        let tutorialVC = PageViewController()
         self.present(tutorialVC, animated: true, completion: nil)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if sectionedEntries.allSatisfy( { $0.isEmpty } ) {
+            return 0
+        }
+        
         if section == 0 {
             return 25
-        }
-        else if sectionedEntries.allSatisfy({ $0.isEmpty }) {
-            return 25
         } else {
-            return sectionedEntries[section].isEmpty ? 0 : 25
+            if sectionedEntries[section].isEmpty {
+                return 0
+            } else {
+                return 25
+            }
         }
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude  // Adjust this value for the desired space below each section
+        return .zero
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

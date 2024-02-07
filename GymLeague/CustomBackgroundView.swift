@@ -18,6 +18,8 @@ class CustomBackgroundView: UIView {
         commonInit()
     }
     
+    static let image:UIImage = UIImage(named: "GLBG")!
+    
     static let color:UIColor = UIColor.systemGray6
     static let oneAboveColor:UIColor = UIColor.systemGray5
     static let twoAboveColor:UIColor = UIColor.systemGray4
@@ -33,6 +35,7 @@ class CustomBackgroundView: UIView {
     
     private func commonInit() {
         backgroundColor = CustomBackgroundView.color
+        
     }
 }
 

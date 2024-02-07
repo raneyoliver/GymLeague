@@ -28,8 +28,8 @@ class PlaceTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.25
         containerView.layer.masksToBounds = false
         
-        containerView.backgroundColor = CustomBackgroundView.twoAboveColor //UIColor.init(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)
-        contentView.backgroundColor = CustomBackgroundView.oneAboveColor
+        self.backgroundColor = .clear.withAlphaComponent(0)
+        contentView.backgroundColor = .clear.withAlphaComponent(0) //CustomBackgroundView.oneAboveColor
         
         self.selectionStyle = .none
         

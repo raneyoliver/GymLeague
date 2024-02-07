@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import GoogleSignIn
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class ProfileViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -71,12 +71,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         collectionView.layer.cornerRadius = 8
         collectionView.clipsToBounds = true
         
-        collectionView.backgroundColor = CustomBackgroundView.oneAboveColor
+        collectionView.backgroundColor = .clear //CustomBackgroundView.oneAboveColor
         Config.shared.setupBlurEffect(onView: collectionView, withStyle: .regular)
         
-        tableView.backgroundColor = CustomBackgroundView.color
         tableView.isScrollEnabled = false
-        
         
     }
     
@@ -107,6 +105,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
 
+        tableView.backgroundColor = .clear.withAlphaComponent(0)
+        profileLeaderboardCell.backgroundColor = .clear.withAlphaComponent(0)
+        profileLeaderboardCell.contentView.backgroundColor = .clear.withAlphaComponent(0)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

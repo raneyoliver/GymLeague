@@ -41,26 +41,57 @@ class Config {
     }
     
     func setupBlurEffect(onView parentView: UIView, withStyle style: UIBlurEffect.Style) {
-        // Create a blur effect
-        let blurEffect = UIBlurEffect(style: style) // Choose style as needed
+        let blurEffect = UIBlurEffect(style: style)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-
-        // If you are using Auto Layout, set this property to false
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-
-        // Add the effect view to the view you want to blur
-        parentView.insertSubview(blurEffectView, at: 0)
-
-        blurEffectView.alpha = 0.9
         
-        // Constraints for the blurEffectView to cover the entire view
-        NSLayoutConstraint.activate([
-            blurEffectView.topAnchor.constraint(equalTo: parentView.topAnchor),
-            blurEffectView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
-            blurEffectView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
-            blurEffectView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor)
-        ])
+        // Set the frame to match the parent view (for UILabel, you might want to adjust this to match the label's frame specifically)
+        blurEffectView.frame = parentView.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // For resizing with orientation changes
+        
+        // Check the type of the parent view and apply the blur effect accordingly
+        if let collectionView = parentView as? UICollectionView {
+            setupBlurForCollectionView(collectionView, blurEffectView: blurEffectView)
+        } else if let tableView = parentView as? UITableView {
+            setupBlurForTableView(tableView, blurEffectView: blurEffectView)
+        } else if parentView is UILabel {
+            setupBlurForLabel(parentView, blurEffectView: blurEffectView)
+        } else {
+            // For other types of parent views, insert the blur effect view directly
+            parentView.insertSubview(blurEffectView, at: 0)
+        }
     }
+
+    func setupBlurForCollectionView(_ collectionView: UICollectionView, blurEffectView: UIVisualEffectView) {
+        if collectionView.backgroundView == nil {
+            collectionView.backgroundView = UIView(frame: collectionView.bounds)
+        }
+        collectionView.backgroundView?.addSubview(blurEffectView)
+    }
+
+    func setupBlurForTableView(_ tableView: UITableView, blurEffectView: UIVisualEffectView) {
+        if tableView.backgroundView == nil {
+            tableView.backgroundView = UIView(frame: tableView.bounds)
+        }
+        tableView.backgroundView?.addSubview(blurEffectView)
+    }
+
+    func setupBlurForLabel(_ label: UIView, blurEffectView: UIVisualEffectView) {
+        // Insert the blurEffectView behind the label in its parent view
+        if let parentView = label.superview {
+            parentView.insertSubview(blurEffectView, belowSubview: label)
+            
+            // Optional: Add constraints to blurEffectView to match label's size and position
+            blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                blurEffectView.topAnchor.constraint(equalTo: label.topAnchor),
+                blurEffectView.leadingAnchor.constraint(equalTo: label.leadingAnchor),
+                blurEffectView.trailingAnchor.constraint(equalTo: label.trailingAnchor),
+                blurEffectView.bottomAnchor.constraint(equalTo: label.bottomAnchor)
+            ])
+        }
+    }
+
+
     
     func showMainTabBarController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

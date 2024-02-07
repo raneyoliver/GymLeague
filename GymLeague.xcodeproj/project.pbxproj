@@ -34,6 +34,14 @@
 		A7241E002B700F5600BF3886 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241DFD2B700F5600BF3886 /* TutorialViewController.swift */; };
 		A7241E012B700F5600BF3886 /* TutorialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7241DFE2B700F5600BF3886 /* TutorialViewController.xib */; };
 		A7241E022B700F5600BF3886 /* TutorialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7241DFE2B700F5600BF3886 /* TutorialViewController.xib */; };
+		A7241E042B72F20400BF3886 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E032B72F20400BF3886 /* PageViewController.swift */; };
+		A7241E052B72F20400BF3886 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E032B72F20400BF3886 /* PageViewController.swift */; };
+		A7241E072B72FE1200BF3886 /* TutorialElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E062B72FE1200BF3886 /* TutorialElements.swift */; };
+		A7241E082B72FE1200BF3886 /* TutorialElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E062B72FE1200BF3886 /* TutorialElements.swift */; };
+		A7241E0A2B730E4F00BF3886 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E092B730E4F00BF3886 /* BaseViewController.swift */; };
+		A7241E0B2B730E4F00BF3886 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E092B730E4F00BF3886 /* BaseViewController.swift */; };
+		A7241E102B73281600BF3886 /* BaseLeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */; };
+		A7241E112B73281600BF3886 /* BaseLeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */; };
 		A73F4B5F2B681BA300A387F4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A73F4B5E2B681BA300A387F4 /* FirebaseAuth */; };
 		A73F4B612B681BA300A387F4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A73F4B602B681BA300A387F4 /* FirebaseFirestore */; };
 		A75113B32B683BB1002F8C03 /* FirebaseAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = A75113B22B683BB1002F8C03 /* FirebaseAuthUI */; };
@@ -158,6 +166,10 @@
 		A71751072B4CD5F200BC5128 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
 		A7241DFD2B700F5600BF3886 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		A7241DFE2B700F5600BF3886 /* TutorialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TutorialViewController.xib; sourceTree = "<group>"; };
+		A7241E032B72F20400BF3886 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		A7241E062B72FE1200BF3886 /* TutorialElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialElements.swift; sourceTree = "<group>"; };
+		A7241E092B730E4F00BF3886 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLeaderboardsTableViewController.swift; sourceTree = "<group>"; };
 		A763EFC32B6F22BB00132F57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		A77C89012B5086E800EB2120 /* PointsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsService.swift; sourceTree = "<group>"; };
@@ -287,9 +299,12 @@
 		A7D0963E2B3F502300378E5F /* GymLeague */ = {
 			isa = PBXGroup;
 			children = (
+				A7241E092B730E4F00BF3886 /* BaseViewController.swift */,
 				A71750FC2B49C02400BC5128 /* CustomBackgroundView.swift */,
 				A77C89032B53626E00EB2120 /* MainTabBarViewController.swift */,
 				A7D0963F2B3F502300378E5F /* AppDelegate.swift */,
+				A7241E032B72F20400BF3886 /* PageViewController.swift */,
+				A7241E062B72FE1200BF3886 /* TutorialElements.swift */,
 				A7241DFD2B700F5600BF3886 /* TutorialViewController.swift */,
 				A7241DFE2B700F5600BF3886 /* TutorialViewController.xib */,
 				A7D096762B3F81F200378E5F /* Config.swift */,
@@ -317,6 +332,7 @@
 				A71750F02B45EE3600BC5128 /* AuthenticationService.swift */,
 				A71750EE2B45E6BD00BC5128 /* LeaderboardService.swift */,
 				A71750E82B42309B00BC5128 /* LeaderboardsTableViewController.swift */,
+				A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */,
 				A71750FA2B48870D00BC5128 /* LeaderboardSection.swift */,
 				A71750FE2B49DEBB00BC5128 /* CustomHeaderView.swift */,
 				A7DF6CBF2B5B492A00422D13 /* FirestoreService.swift */,
@@ -561,6 +577,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7241E082B72FE1200BF3886 /* TutorialElements.swift in Sources */,
 				A792AFA02B66D56C00B1C20E /* LeaderboardTableViewCell.swift in Sources */,
 				A792AFA12B66D56C00B1C20E /* FirestoreService.swift in Sources */,
 				A792AFA22B66D56C00B1C20E /* BadgeCollectionViewCell.swift in Sources */,
@@ -573,15 +590,18 @@
 				A792AFA62B66D56C00B1C20E /* ViewController.swift in Sources */,
 				A792AFA72B66D56C00B1C20E /* SettingsHeaderView.swift in Sources */,
 				A792AFA82B66D56C00B1C20E /* UserData.swift in Sources */,
+				A7241E0B2B730E4F00BF3886 /* BaseViewController.swift in Sources */,
 				A792AFA92B66D56C00B1C20E /* CustomHeaderView.swift in Sources */,
 				A792AFAA2B66D56C00B1C20E /* MainTabBarViewController.swift in Sources */,
 				A792AFAB2B66D56C00B1C20E /* PointsService.swift in Sources */,
+				A7241E112B73281600BF3886 /* BaseLeaderboardsTableViewController.swift in Sources */,
 				A792AFAC2B66D56C00B1C20E /* AuthenticationService.swift in Sources */,
 				A7241E002B700F5600BF3886 /* TutorialViewController.swift in Sources */,
 				A792AFAD2B66D56C00B1C20E /* SettingsTableViewController.swift in Sources */,
 				A792AFAE2B66D56C00B1C20E /* Config.swift in Sources */,
 				A792AFAF2B66D56C00B1C20E /* Badge.swift in Sources */,
 				A792AFB02B66D56C00B1C20E /* LeaderboardService.swift in Sources */,
+				A7241E052B72F20400BF3886 /* PageViewController.swift in Sources */,
 				A792AFB12B66D56C00B1C20E /* BackgroundImageConfig.swift in Sources */,
 				A792AFB22B66D56C00B1C20E /* CustomBackgroundView.swift in Sources */,
 				A792AFB32B66D56C00B1C20E /* AppDelegate.swift in Sources */,
@@ -597,6 +617,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7241E072B72FE1200BF3886 /* TutorialElements.swift in Sources */,
 				A71750EC2B4257CA00BC5128 /* LeaderboardTableViewCell.swift in Sources */,
 				A7DF6CC02B5B492B00422D13 /* FirestoreService.swift in Sources */,
 				A71750F62B462ACF00BC5128 /* BadgeCollectionViewCell.swift in Sources */,
@@ -609,15 +630,18 @@
 				A7D096442B3F502300378E5F /* ViewController.swift in Sources */,
 				A71751032B4B2C8500BC5128 /* SettingsHeaderView.swift in Sources */,
 				A71750E02B41F6F000BC5128 /* UserData.swift in Sources */,
+				A7241E0A2B730E4F00BF3886 /* BaseViewController.swift in Sources */,
 				A71750FF2B49DEBB00BC5128 /* CustomHeaderView.swift in Sources */,
 				A77C89042B53626F00EB2120 /* MainTabBarViewController.swift in Sources */,
 				A77C89022B5086E800EB2120 /* PointsService.swift in Sources */,
+				A7241E102B73281600BF3886 /* BaseLeaderboardsTableViewController.swift in Sources */,
 				A71750F12B45EE3600BC5128 /* AuthenticationService.swift in Sources */,
 				A7241DFF2B700F5600BF3886 /* TutorialViewController.swift in Sources */,
 				A71751012B4B26C700BC5128 /* SettingsTableViewController.swift in Sources */,
 				A7D096772B3F81F200378E5F /* Config.swift in Sources */,
 				A71750F92B47404C00BC5128 /* Badge.swift in Sources */,
 				A71750EF2B45E6BE00BC5128 /* LeaderboardService.swift in Sources */,
+				A7241E042B72F20400BF3886 /* PageViewController.swift in Sources */,
 				A71750F32B4605C400BC5128 /* BackgroundImageConfig.swift in Sources */,
 				A71750FD2B49C02400BC5128 /* CustomBackgroundView.swift in Sources */,
 				A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */,

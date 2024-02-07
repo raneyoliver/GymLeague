@@ -159,8 +159,9 @@ class LeaderboardTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.25
         containerView.layer.masksToBounds = false
         
-        containerView.backgroundColor = UIColor.white
-        contentView.backgroundColor = CustomBackgroundView.color
+        self.backgroundColor = .clear
+        containerView.backgroundColor = .clear //UIColor.white
+        contentView.backgroundColor = .clear //CustomBackgroundView.color
         
         self.selectionStyle = .none
         

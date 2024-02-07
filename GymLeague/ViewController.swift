@@ -24,7 +24,7 @@ struct Place {
     var whitelistStatus: String
 }
 
-class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, PlaceTableViewCellDelegate {
+class ViewController : BaseViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, PlaceTableViewCellDelegate {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noGymsLabel: UILabel!
@@ -249,7 +249,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             countdownView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countdownView.widthAnchor.constraint(equalToConstant: width)
         ])
-        countdownView.backgroundColor = CustomBackgroundView.color
+        countdownView.backgroundColor = .clear.withAlphaComponent(0) //CustomBackgroundView.color
         countdownView.layer.cornerRadius = 8
         countdownView.clipsToBounds = true
         
@@ -258,6 +258,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
         stackView.spacing = 2 // Adjust the spacing as needed
+        stackView.backgroundColor = .clear.withAlphaComponent(0)
 
         countdownView.addSubview(stackView)
 
@@ -276,21 +277,12 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             label.text = char
             label.font = UIFont.monospacedDigitSystemFont(ofSize: 30, weight: .bold)
             label.textAlignment = .center
-            label.backgroundColor = UIColor.black.withAlphaComponent(0.15) // Set individual background color here
+            label.backgroundColor = .clear.withAlphaComponent(0)
             label.layer.cornerRadius = 4
             label.clipsToBounds = true
             stackView.addArrangedSubview(label)
+            Config.shared.setupBlurEffect(onView: label, withStyle: .light)
 
-//
-//            // Add constraints or set frame
-//            label.translatesAutoresizingMaskIntoConstraints = false
-//            NSLayoutConstraint.activate([
-//                label.widthAnchor.constraint(equalToConstant: 20),
-//                label.heightAnchor.constraint(equalTo: countdownView.heightAnchor),
-//                label.centerYAnchor.constraint(equalTo: countdownView.centerYAnchor),
-//                // Adjust horizontal positioning based on index
-//            ])
-//
             digitLabels.append(label)
         }
         
@@ -301,7 +293,7 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
             cancelWorkoutButton.topAnchor.constraint(equalTo: countdownView.bottomAnchor, constant: 8),
         ])
         
-        countdownAndCancelView.backgroundColor = CustomBackgroundView.color
+        countdownAndCancelView.backgroundColor = .clear.withAlphaComponent(0) //CustomBackgroundView.color
     }
     
     func setupSegmentedControl() {
@@ -341,7 +333,8 @@ class ViewController : UIViewController, CLLocationManagerDelegate, MKMapViewDel
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.backgroundColor = CustomBackgroundView.oneAboveColor
+        tableView.backgroundColor = .clear.withAlphaComponent(0) //CustomBackgroundView.oneAboveColor
+        Config.shared.setupBlurEffect(onView: tableView, withStyle: .regular)
         tableView.layer.cornerRadius = 8
         tableView.clipsToBounds = true
         
