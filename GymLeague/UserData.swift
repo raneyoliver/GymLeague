@@ -24,6 +24,7 @@ class UserData {
     var timeSinceLastWorkout: TimeInterval?
     var username: String?
     var completedWorkouts: Int?
+    var showOnLeaderboards: Bool?
     
     // Prevent external instantiation
     private init() {}

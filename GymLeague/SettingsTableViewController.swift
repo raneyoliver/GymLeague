@@ -17,6 +17,8 @@ class SettingsTableViewController: UITableViewController {
         tableView.register(SettingsHeaderView.self, forHeaderFooterViewReuseIdentifier: "SettingsHeaderView")
         
         self.view.backgroundColor = CustomBackgroundView.color
+        tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: "SettingsTableViewCell")
+
     }
 
     func signOut(sender: Any) {
@@ -56,6 +58,27 @@ class SettingsTableViewController: UITableViewController {
             window.makeKeyAndVisible()
         }
     }
+    
+    func updateShowOnLeaderboards(withValue show: Bool) {
+        LeaderboardService.shared.updateLeaderboardsField(field: "showOnLeaderboards", with: show, forUserID: UserData.shared.userID!) { success in
+            if success {
+                UserData.shared.showOnLeaderboards = show
+            } else {
+                print("Error: could not update showOnLeaderboards")
+            }
+        }
+    }
+    
+    func handleSwitchStateChange(isOn: Bool, forRowAt indexPath: IndexPath) {
+        LeaderboardService.shared.updateLeaderboardsField(field: "showOnLeaderboards", with: isOn, forUserID: UserData.shared.userID!) { success in
+            if success {
+                UserData.shared.showOnLeaderboards = isOn
+                print("Firestore and UserData updated showOnLeaderboards: \(isOn)")
+            } else {
+                print("Could not update showOnLeaderboards")
+            }
+        }
+    }
 
     // MARK: - Table view data source
 
@@ -66,24 +89,37 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return section == 1 ? 0 : 1 // Assuming section 0 is your main section
+        return section == 1 ? 0 : 2 // Assuming section 0 is your main section
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath)
-        
-        cell.backgroundColor = CustomBackgroundView.oneAboveColor
-        cell.layer.cornerRadius = 8
-        cell.clipsToBounds = true
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableViewCell", for: indexPath) as? SettingsTableViewCell else {
+            fatalError("The dequeued cell is not an instance of SettingsTableViewCell.")
+        }
         
         // Configure your cell
         if indexPath.row == 0 {
             cell.textLabel?.text = "Sign Out"
+            // Set the disclosure indicator
+            cell.accessoryType = .disclosureIndicator
+            
+        } else if indexPath.row == 1 {
+            cell.textLabel?.text = "Show on Leaderboards"
+            cell.accessoryType = .detailButton
+        
+            cell.configureSwitch() // Use the cell's method to configure the switch
+        
+            cell.switchValueChangedClosure = { [weak self] isOn in
+                self?.handleSwitchStateChange(isOn: isOn, forRowAt: indexPath)
+            }
         }
         
         
-        // Set the disclosure indicator
-        cell.accessoryType = .disclosureIndicator
+        
+        
+        cell.backgroundColor = CustomBackgroundView.oneAboveColor
+        cell.layer.cornerRadius = 8
+        cell.clipsToBounds = true
         
         return cell
     }
@@ -91,20 +127,22 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         // Determine the cell that was tapped and perform an action
-            switch indexPath.section {
-                case 0:  // For section 0
-                    switch indexPath.row {
-                        case 0:
-                        signOut(sender: self)
-                        // Add more cases as needed for each cell
-                        default: break
-                    }
-                // Add more cases for additional sections
-                default: break
+        switch indexPath.section {
+        case 0:  // For section 0
+            switch indexPath.row {
+            case 0:
+                signOut(sender: self)
+                
+            case 1:
+                break
+                
+            default: break
             }
+            // Add more cases for additional sections
+        default: break
+        }
     }
-
-
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SettingsHeaderView") as! SettingsHeaderView
         headerView.delegate = self  // SettingsTableViewController is now the delegate

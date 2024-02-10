@@ -15,6 +15,7 @@ struct LeaderboardEntry {
     var points: Double
     var division: String
     var bgConfig: BackgroundImageConfig
+    var showOnLeaderboards: Bool
 }
 
 class LeaderboardService {
@@ -60,6 +61,7 @@ class LeaderboardService {
                     "timeSinceLastWorkout": timeSinceLastWorkout,
                     "username": username,
                     "completedWorkouts": completedWorkouts,
+                    "showOnLeaderboards": true
                 ]
                 
                 // Add the new document
@@ -85,11 +87,12 @@ class LeaderboardService {
     
     func handleNewUser() {
         // Set default values for a new user
-        UserData.shared.badges = ["new", "beta", "hotstreak", "bronze", "silver", "gold", "platinum", "diamond", "elite"]
+        UserData.shared.badges = ["new", "beta", "bronze"]
         UserData.shared.chosenBadge = "new"
         UserData.shared.points = 20
         UserData.shared.timeSinceLastWorkout = Date().timeIntervalSince1970
         UserData.shared.completedWorkouts = 0
+        UserData.shared.showOnLeaderboards = true
     }
 
     func updateUserData(with data: [String: Any]) {
@@ -99,19 +102,18 @@ class LeaderboardService {
         UserData.shared.username = data["username"] as? String ?? ""
         UserData.shared.points = data["points"] as? Double ?? 0
         UserData.shared.completedWorkouts = data["completedWorkouts"] as? Int ?? 0
+        UserData.shared.showOnLeaderboards = data["showOnLeaderboards"] as? Bool ?? true
     }
 
-    func updateChosenBadge(forUserID userID: String, chosenBadge: String, completion: @escaping (Bool) -> Void) {
+    func updateLeaderboardsField(field: String, with newValue: Any, forUserID userID: String, completion: @escaping (Bool) -> Void) {
         let leaderboardsCollection = db.collection("leaderboards")
         leaderboardsCollection.whereField("userID", isEqualTo: userID).getDocuments { querySnapshot, error in
             if let document = querySnapshot?.documents.first {
-                document.reference.updateData(["chosenBadge": chosenBadge]) { error in
+                document.reference.updateData([field: newValue]) { error in
                     if let error = error {
                         print("Error updating document: \(error)")
                         completion(false)
                     } else {
-                        // Also update UserData with updated info
-                        UserData.shared.chosenBadge = chosenBadge
                         completion(true)
                     }
                 }
@@ -121,7 +123,7 @@ class LeaderboardService {
             }
         }
     }
-
+    
     func getUserRank(completion: @escaping (Int?, Error?) -> Void) {
             // Reference to the collection
             let leaderboardsCollection = db.collection("leaderboards")

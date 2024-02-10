@@ -49,7 +49,7 @@ class LeaderboardsTableViewController: UITableViewController {
         // Reset all expanded states to false
         // Update expandedCells for each section
         for (sectionIndex, section) in expandedCells.enumerated() {
-            expandedCells[sectionIndex] = Array(repeating: true, count: section.count)
+            expandedCells[sectionIndex] = Array(repeating: false, count: section.count)
         }
         sectionedEntries = Array(repeating: [], count: sections.count)
 
@@ -94,7 +94,7 @@ class LeaderboardsTableViewController: UITableViewController {
     
     func initializeExpandedCells() {
         expandedCells = sectionedEntries.map { section in
-            return Array(repeating: true, count: section.count)
+            return Array(repeating: false, count: section.count)
         }
     }
 
@@ -173,6 +173,9 @@ class LeaderboardsTableViewController: UITableViewController {
         for document in documents {
             leaderboardRank += 1
             let entry = self.convertToLeaderboardEntry(document: document, leaderboardRank: leaderboardRank)
+            
+            if !entry.showOnLeaderboards { continue }
+            
             self.leaderboardEntries.append(entry)
             if let sectionIndex = sections.firstIndex(where: {
                 var enoughPointsForRank:Bool = false
@@ -205,7 +208,9 @@ class LeaderboardsTableViewController: UITableViewController {
             name: data?["username"] as? String ?? "can't fetch username",
             points: data?["points"] as? Double ?? 0,
             division: "placeholderDivision",
-            bgConfig: config)
+            bgConfig: config,
+            showOnLeaderboards: data?["showOnLeaderboards"] as? Bool ?? true
+        )
         
         return entry
     }
@@ -359,6 +364,7 @@ class LeaderboardsTableViewController: UITableViewController {
         
         let isExpanded = expandedCells[indexPath.section][indexPath.row]
         let entry = sectionedEntries[indexPath.section][indexPath.row]
+        
         cell.configure(with: entry, isExpanded: isExpanded, badgeName: backgroundImageConfigs.first(where: {$0.value.imageName == entry.bgConfig.imageName})!.key)
         
         return cell

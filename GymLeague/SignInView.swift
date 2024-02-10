@@ -47,7 +47,7 @@ class SignInView: UIView, UITextFieldDelegate {
     }
     
     @objc func textFieldEditingChanged(_ textField: UITextField) {
-        updateSignInButtonState()
+        //updateSignInButtonState()
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -56,15 +56,19 @@ class SignInView: UIView, UITextFieldDelegate {
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
 
-        // Enable signInButton if both text fields are non-empty, disable otherwise
+        // Check if the email field is being edited and if the password field meets the requirements
         if textField == emailTextField {
-            signInButton.isEnabled = !updatedText.isEmpty && !(passwordTextField.text?.isEmpty ?? true)
-        } else if textField == passwordTextField {
-            signInButton.isEnabled = !updatedText.isEmpty && !(emailTextField.text?.isEmpty ?? true)
+            signInButton.isEnabled = !updatedText.isEmpty && (passwordTextField.text?.count ?? 0) >= 6
+        }
+        // Check if the password field is being edited and if the email field is non-empty
+        else if textField == passwordTextField {
+            let isPasswordValid = updatedText.count >= 6
+            signInButton.isEnabled = isPasswordValid && !(emailTextField.text?.isEmpty ?? true)
         }
 
         return true
     }
+
 
     func updateSignInButtonState() {
         signInButton.isEnabled = !(emailTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
@@ -99,77 +103,38 @@ class SignInView: UIView, UITextFieldDelegate {
     @objc func newUserAction() {
         // Handle new user sign-up
         print("Handle New User Sign-Up")
-        self.attemptEmailSignIn(returningUser: false, email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
+        self.fullEmailSignIn(returningUser: false, email: emailTextField.text!, password: passwordTextField.text!) { success in
+            if success {
+                print("Signed Up successfully")
+                Config.shared.showMainTabBarController()
+            } else {
+                print("Sign up failed")
+            }
+        }
     }
     
     @objc func returningUserAction() {
         // Handle returning user sign-in
         print("Handle Returning User Sign-In")
-        self.attemptEmailSignIn(returningUser: true, email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
-    }
-    
-    func attemptEmailSignIn(returningUser: Bool, email: String, password: String) {
-        if returningUser {
-            // Attempt to sign in for returning users
-            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-                if let error = error as NSError? {
-                    // Handle sign-in errors
-                    print("Error attempting email sign in: \(error.localizedDescription)")
-                    self.errorLabel.text = error.localizedDescription
-                } else {
-                    print("Returning user signed in successfully")
-                    // Handle successful sign-in
-                    self.handleSuccessfulSignIn(authResult: authResult)
-                }
-            }
-        } else {
-            // Attempt to create a new user for new users
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                if let error = error as NSError? {
-                    if AuthErrorCode.Code(rawValue: error.code) == .emailAlreadyInUse {
-                        // Handle error if the email is already in use
-                        print("Email already in use, cannot create new user.")
-                    } else {
-                        // Handle other errors
-                        print("Error attempting to create new user: \(error.localizedDescription)")
-                    }
-                    DispatchQueue.main.async {
-                        self.errorLabel.text = error.localizedDescription
-                    }
-                    
-                } else {
-                    print("New user created and signed in successfully")
-                    // Handle successful account creation and sign-in
-                    self.handleSuccessfulSignIn(authResult: authResult)
-                }
-            }
-        }
-    }
-
-    private func handleSuccessfulSignIn(authResult: AuthDataResult?) {
-        // Common sign-in success handling logic
-        DispatchQueue.main.async {
-            self.errorLabel.text = ""
-        }
-        
-        AuthenticationService.shared.manualSignIn(user: authResult?.user) { error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
+        self.fullEmailSignIn(returningUser: true, email: emailTextField.text!, password: passwordTextField.text!) { success in
+            if success {
+                print("Returned User successfully")
+                Config.shared.showMainTabBarController()
             } else {
-                print("Sign-in successful")
-                self.useParentVCToEnsureUserOnLeaderboard()
+                print("Sign in failed")
             }
         }
     }
 
-    
-    func useParentVCToEnsureUserOnLeaderboard() {
+    func fullEmailSignIn(returningUser: Bool, email: String, password: String, completion: @escaping (Bool) -> Void) {
         // When some action occurs, notify the delegate
-        delegate?.ensureUserOnLeaderboard()
+        delegate?.fullEmailSignIn(returningUser: returningUser, email: email, password: password) { success in
+            completion(success)
+        }
     }
     
 }
 
 protocol SignInViewDelegate: AnyObject {
-    func ensureUserOnLeaderboard()
+    func fullEmailSignIn(returningUser: Bool, email: String, password: String, completion: @escaping (Bool) -> Void)
 }

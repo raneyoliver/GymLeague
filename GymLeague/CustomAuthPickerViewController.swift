@@ -26,19 +26,43 @@ class CustomAuthPickerViewController: FUIAuthPickerViewController, SignInViewDel
         view.endEditing(true)
     }
     
-    func ensureUserOnLeaderboard() {
-        AuthenticationService.shared.ensureUserOnLeaderboard(viewController: self) { success in
-            if success {
-                DispatchQueue.main.async {
-                    // Now it's safe to show the main tab bar
-                    Config.shared.showMainTabBarController()
+    func fullEmailSignIn(returningUser: Bool, email: String, password: String, completion: @escaping (Bool) -> Void) {
+        // Prompt for username
+        AuthenticationService.shared.promptForUsername(viewController: self) { (username: String?) in
+            guard let username = username else {
+                completion(false)
+                return
+            }
+
+            UserData.shared.username = username
+
+            AuthenticationService.shared.attemptEmailSignIn(returningUser: returningUser, email: email, password: password) { (authResult: AuthDataResult?, error: Error?) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    completion(false)
+                    return
                 }
-            } else {
-                // Handle error, failed to ensure user on leaderboard
-                print("Failed to ensure user on leaderboard")
+
+                guard let user = authResult?.user else {
+                    completion(false)
+                    return
+                }
+
+                AuthenticationService.shared.signIn(user: user) { (error: Error?) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        completion(false)
+                        return
+                    }
+
+                    AuthenticationService.shared.ensureUserOnLeaderboard(viewController: self) { (success: Bool) in
+                        completion(success)
+                    }
+                }
             }
         }
-     }
+
+    }
     
     func setupOrLabel() {
         self.view.addSubview(orLabel)

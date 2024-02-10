@@ -65,15 +65,7 @@ class AuthenticationService {
             } else {
                 // User is new or error occurred, handle accordingly, perhaps adding the user
                 
-                AuthenticationService.shared.promptForUsername(viewController: viewController) { username in
-                    guard let username = username else {
-                        print("Username entry was cancelled")
-                        return
-                    }
-                    
-                    UserData.shared.username = username
-                    
-                    // For new user, add them to leaderboard here
+                if let username = UserData.shared.username {
                     // Add a new leaderboard entry for the user
                     LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username, completedWorkouts: UserData.shared.completedWorkouts!) { success in
                         if success {
@@ -82,6 +74,28 @@ class AuthenticationService {
                             print("Failed to add a new leaderboard entry.")
                         }
                         completion(success)
+                    }
+                } else {
+                    AuthenticationService.shared.promptForUsername(viewController: viewController) { username in
+                        guard let username = username else {
+                            print("Username entry was cancelled")
+                            return
+                        }
+                        
+                        
+                        
+                        UserData.shared.username = username
+                        
+                        // For new user, add them to leaderboard here
+                        // Add a new leaderboard entry for the user
+                        LeaderboardService.shared.addLeaderboardEntry(forUserID: UserData.shared.userID!, points: UserData.shared.points!, badges: UserData.shared.badges, chosenBadge: UserData.shared.chosenBadge!, timeSinceLastWorkout: UserData.shared.timeSinceLastWorkout!, username: username, completedWorkouts: UserData.shared.completedWorkouts!) { success in
+                            if success {
+                                print("New leaderboard entry added for the user.")
+                            } else {
+                                print("Failed to add a new leaderboard entry.")
+                            }
+                            completion(success)
+                        }
                     }
                 }
             }
@@ -94,14 +108,42 @@ class AuthenticationService {
         }
     }
     
-    func manualCreateFirebaseUser(email: String, password: String) {
+    func attemptEmailSignIn(returningUser: Bool, email: String, password: String, completion: @escaping (AuthDataResult?, Error?) -> Void) {
+        if returningUser {
+            // Attempt to sign in for returning users
+            self.signinFirebaseUser(email: email, password: password) { authResult, error in
+                    completion(authResult, error)
+            }
+        } else {
+            // Attempt to create a new user for new users
+            self.createFirebaseUser(email: email, password: password) { authResult, error in
+                    completion(authResult, error)
+            }
+        }
+    }
+    
+    func signinFirebaseUser(email: String, password: String, completion: @escaping (AuthDataResult?, Error?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            if let error = error as NSError? {
+                // Handle sign-in errors
+                print("Error attempting email sign in: \(error.localizedDescription)")
+                completion(nil, error)
+            } else {
+                print("Returning user signed in successfully")
+                // Handle successful sign-in
+                completion(authResult, nil)
+            }
+        }
+    }
+    
+    func createFirebaseUser(email: String, password: String, completion: @escaping (AuthDataResult?, Error?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 print("Error creating user: \(error.localizedDescription)")
+                completion(nil, error)
             } else {
                 print("User created successfully!")
-                
-                Config.shared.showMainTabBarController()
+                completion(authResult, nil)
             }
         }
     }
@@ -170,7 +212,7 @@ class AuthenticationService {
 
 
     func validateAndCheckUsername(_ username: String, completion: @escaping (Bool) -> Void) {
-        if isUsernameInappropriate(username) {
+        if !isUsernameAppropriate(username) {
             completion(false) // Username is inappropriate
             return
         }
@@ -188,16 +230,16 @@ class AuthenticationService {
         }
     }
 
-    func isUsernameInappropriate(_ username: String) -> Bool {
+    func isUsernameAppropriate(_ username: String) -> Bool {
         // List of disallowed words
         disallowedWords = loadProfanityWords()
 
         for word in disallowedWords {
             if username.lowercased().contains(word) {
-                return true
+                return false
             }
         }
-        return false
+        return true
     }
 
     func loadProfanityWords() -> [String] {

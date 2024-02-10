@@ -42,6 +42,8 @@
 		A7241E0B2B730E4F00BF3886 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E092B730E4F00BF3886 /* BaseViewController.swift */; };
 		A7241E102B73281600BF3886 /* BaseLeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */; };
 		A7241E112B73281600BF3886 /* BaseLeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */; };
+		A7241E132B75696100BF3886 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E122B75696100BF3886 /* SettingsTableViewCell.swift */; };
+		A7241E142B75696100BF3886 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7241E122B75696100BF3886 /* SettingsTableViewCell.swift */; };
 		A73F4B5F2B681BA300A387F4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A73F4B5E2B681BA300A387F4 /* FirebaseAuth */; };
 		A73F4B612B681BA300A387F4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A73F4B602B681BA300A387F4 /* FirebaseFirestore */; };
 		A75113B32B683BB1002F8C03 /* FirebaseAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = A75113B22B683BB1002F8C03 /* FirebaseAuthUI */; };
@@ -170,6 +172,7 @@
 		A7241E062B72FE1200BF3886 /* TutorialElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialElements.swift; sourceTree = "<group>"; };
 		A7241E092B730E4F00BF3886 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A7241E0F2B73281600BF3886 /* BaseLeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLeaderboardsTableViewController.swift; sourceTree = "<group>"; };
+		A7241E122B75696100BF3886 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		A763EFC32B6F22BB00132F57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A77C88FF2B4F0BF200EB2120 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		A77C89012B5086E800EB2120 /* PointsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsService.swift; sourceTree = "<group>"; };
@@ -319,6 +322,7 @@
 				A79271B52B6B317B00FCCEC8 /* FilterPillButton.swift */,
 				A71751022B4B2C8500BC5128 /* SettingsHeaderView.swift */,
 				A71751002B4B26C700BC5128 /* SettingsTableViewController.swift */,
+				A7241E122B75696100BF3886 /* SettingsTableViewCell.swift */,
 				A71750DD2B41EF3700BC5128 /* ProfileViewController.swift */,
 				A71750F82B47404C00BC5128 /* Badge.swift */,
 				A71750F42B462ACF00BC5128 /* BadgeCollectionViewCell.swift */,
@@ -605,6 +609,7 @@
 				A792AFB12B66D56C00B1C20E /* BackgroundImageConfig.swift in Sources */,
 				A792AFB22B66D56C00B1C20E /* CustomBackgroundView.swift in Sources */,
 				A792AFB32B66D56C00B1C20E /* AppDelegate.swift in Sources */,
+				A7241E142B75696100BF3886 /* SettingsTableViewCell.swift in Sources */,
 				A792AFB42B66D56C00B1C20E /* PlaceTableViewCell.swift in Sources */,
 				A792AFB52B66D56C00B1C20E /* LaunchScreenViewController.swift in Sources */,
 				A792AFB62B66D56C00B1C20E /* FullScreenImageViewController.swift in Sources */,
@@ -645,6 +650,7 @@
 				A71750F32B4605C400BC5128 /* BackgroundImageConfig.swift in Sources */,
 				A71750FD2B49C02400BC5128 /* CustomBackgroundView.swift in Sources */,
 				A7D096402B3F502300378E5F /* AppDelegate.swift in Sources */,
+				A7241E132B75696100BF3886 /* SettingsTableViewCell.swift in Sources */,
 				A71751082B4CD5F200BC5128 /* PlaceTableViewCell.swift in Sources */,
 				A71750DC2B41009600BC5128 /* LaunchScreenViewController.swift in Sources */,
 				A77C89002B4F0BF200EB2120 /* FullScreenImageViewController.swift in Sources */,
@@ -904,7 +910,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = DAF7F3897B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GymLeague/Info.plist;
@@ -921,7 +927,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.GymLeague;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -942,7 +948,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = DAF7F3897B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GymLeague/Info.plist;
@@ -959,7 +965,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.GymLeague;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

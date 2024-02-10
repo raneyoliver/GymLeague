@@ -94,7 +94,9 @@ class ProfileViewController: BaseViewController, UITableViewDelegate, UITableVie
                         name: UserData.shared.username!,
                         points: UserData.shared.points!,
                         division: "placeholderDivision",
-                        bgConfig: config!)
+                        bgConfig: config!,
+                        showOnLeaderboards: true
+                    )
                     
                     profileLeaderboardCell.configure(with: entry, isExpanded: self.isExpanded, badgeName: chosenBadgeName)
                     
@@ -215,9 +217,10 @@ class ProfileViewController: BaseViewController, UITableViewDelegate, UITableVie
             return
         }
     
-        LeaderboardService.shared.updateChosenBadge(forUserID: userID, chosenBadge: chosenBadge) { success in
+        LeaderboardService.shared.updateLeaderboardsField(field: "chosenBadge", with: chosenBadge, forUserID: userID) { success in
             if success {
                 print("Chosen badge updated successfully")
+                UserData.shared.chosenBadge = chosenBadge
                 self.updateSaveButtonState()
                 NotificationCenter.default.post(name: .badgeUpdated, object: nil)
             } else {
